@@ -407,27 +407,27 @@ Partial Class NetEdit
         Me.grpConnected.ResumeLayout(false)
         Me.ResumeLayout(false)
     End Sub
-    Private timerDelayedScan As System.Windows.Forms.Timer
-    Private headConnType As System.Windows.Forms.ColumnHeader
-    Private headConnV6Status As System.Windows.Forms.ColumnHeader
-    Private headConnV4Status As System.Windows.Forms.ColumnHeader
-    Private headConnInterface As System.Windows.Forms.ColumnHeader
-    Private headConnName As System.Windows.Forms.ColumnHeader
-    Private lstConnected As System.Windows.Forms.ListView
+    Private WithEvents timerDelayedScan As System.Windows.Forms.Timer
+    Private WithEvents headConnType As System.Windows.Forms.ColumnHeader
+    Private WithEvents headConnV6Status As System.Windows.Forms.ColumnHeader
+    Private WithEvents headConnV4Status As System.Windows.Forms.ColumnHeader
+    Private WithEvents headConnInterface As System.Windows.Forms.ColumnHeader
+    Private WithEvents headConnName As System.Windows.Forms.ColumnHeader
+    Private WithEvents lstConnected As System.Windows.Forms.ListView
     Private WithEvents btnConnChangeType As System.Windows.Forms.Button
     Private grpConnected As System.Windows.Forms.GroupBox
-    Private headAllSignatureSource As System.Windows.Forms.ColumnHeader
-    Private headAllSignatureFirstNetwork As System.Windows.Forms.ColumnHeader
-    Private headAllSignatureDesc As System.Windows.Forms.ColumnHeader
-    Private headAllSignatureDNS As System.Windows.Forms.ColumnHeader
-    Private headAllSignatureMac As System.Windows.Forms.ColumnHeader
-    Private headAllNetworkCategoryType As System.Windows.Forms.ColumnHeader
-    Private headAllNetworkNameType As System.Windows.Forms.ColumnHeader
-    Private headAllNetworkManaged As System.Windows.Forms.ColumnHeader
-    Private headAllNetworkDesc As System.Windows.Forms.ColumnHeader
-    Private headAllNetworkCategory As System.Windows.Forms.ColumnHeader
-    Private headAllNetworkName As System.Windows.Forms.ColumnHeader
-    Private lstAll As System.Windows.Forms.ListView
+    Private WithEvents headAllSignatureSource As System.Windows.Forms.ColumnHeader
+    Private WithEvents headAllSignatureFirstNetwork As System.Windows.Forms.ColumnHeader
+    Private WithEvents headAllSignatureDesc As System.Windows.Forms.ColumnHeader
+    Private WithEvents headAllSignatureDNS As System.Windows.Forms.ColumnHeader
+    Private WithEvents headAllSignatureMac As System.Windows.Forms.ColumnHeader
+    Private WithEvents headAllNetworkCategoryType As System.Windows.Forms.ColumnHeader
+    Private WithEvents headAllNetworkNameType As System.Windows.Forms.ColumnHeader
+    Private WithEvents headAllNetworkManaged As System.Windows.Forms.ColumnHeader
+    Private WithEvents headAllNetworkDesc As System.Windows.Forms.ColumnHeader
+    Private WithEvents headAllNetworkCategory As System.Windows.Forms.ColumnHeader
+    Private WithEvents headAllNetworkName As System.Windows.Forms.ColumnHeader
+    Private WithEvents lstAll As System.Windows.Forms.ListView
     Private WithEvents btnAllName As System.Windows.Forms.Button
     Private WithEvents btnAllCategory As System.Windows.Forms.Button
     Private WithEvents btnAllDescription As System.Windows.Forms.Button
