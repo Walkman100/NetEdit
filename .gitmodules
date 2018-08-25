@@ -1,0 +1,3 @@
+[submodule "WalkmanLib"]
+	path = WalkmanLib
+	url = https://github.com/Walkman100/WalkmanLib
