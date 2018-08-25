@@ -222,18 +222,18 @@ Public Partial Class NetEdit
             For Each line As String In PowerShellFunctionOutput.Split(Chr(13)) 'Chr(13): Carriage Return (10 is Line Feed)
                 line = line.Trim()
                 
-                If line.StartsWith("Name") Then
-                    tmpProfile.Name = line.Substring(line.IndexOf(":") + 1).Trim()
-                ElseIf line.StartsWith("InterfaceAlias", True, Nothing) Then
-                    tmpProfile.InterfaceAlias = line.Substring(line.IndexOf(":") + 1).Trim()
-                ElseIf line.StartsWith("InterfaceIndex", True, Nothing) Then
-                    tmpProfile.InterfaceIndex = CType(line.Substring(line.IndexOf(":") + 1).Trim(), Integer)
-                ElseIf line.StartsWith("NetworkCategory", True, Nothing) Then
-                    tmpProfile.NetworkCategory = line.Substring(line.IndexOf(":") + 1).Trim()
+                If     line.StartsWith("Name",             True, Nothing) Then
+                    tmpProfile.Name =                 ProcessLineContents(line)
+                ElseIf line.StartsWith("InterfaceAlias",   True, Nothing) Then
+                    tmpProfile.InterfaceAlias =       ProcessLineContents(line)
+                ElseIf line.StartsWith("InterfaceIndex",   True, Nothing) Then
+                    tmpProfile.InterfaceIndex = CType(ProcessLineContents(line), Integer)
+                ElseIf line.StartsWith("NetworkCategory",  True, Nothing) Then
+                    tmpProfile.NetworkCategory =      ProcessLineContents(line)
                 ElseIf line.StartsWith("IPv4Connectivity", True, Nothing) Then
-                    tmpProfile.IPv4Connectivity = line.Substring(line.IndexOf(":") + 1).Trim()
+                    tmpProfile.IPv4Connectivity =     ProcessLineContents(line)
                 ElseIf line.StartsWith("IPv6Connectivity", True, Nothing) Then
-                    tmpProfile.IPv6Connectivity = line.Substring(line.IndexOf(":") + 1).Trim()
+                    tmpProfile.IPv6Connectivity =     ProcessLineContents(line)
                 ElseIf line = ""
                     returnProfiles.Add(tmpProfile)
                     tmpProfile = New ActiveNetworkProfile
@@ -241,9 +241,20 @@ Public Partial Class NetEdit
             Next
             
             Return returnProfiles
-            
         Catch ex As Exception
             WalkmanLib.ErrorDialog(ex)
         End Try
+    End Function
+    
+    Function ProcessLineContents(line As String) As String
+        If line.Contains(":") Then
+            Dim seperatorIndex = line.IndexOf(":") + 1
+            
+            line = line.Substring(seperatorIndex)
+            line = line.Trim()
+            Return line
+        Else
+            Return "Error: Line doesn't contain seperator!"
+        End If
     End Function
 End Class
