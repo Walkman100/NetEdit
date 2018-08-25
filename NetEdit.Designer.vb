@@ -66,6 +66,7 @@ Partial Class NetEdit
         Me.headConnV6Status = New System.Windows.Forms.ColumnHeader()
         Me.headConnType = New System.Windows.Forms.ColumnHeader()
         Me.timerDelayedScan = New System.Windows.Forms.Timer(Me.components)
+        Me.btnConnRefresh = New System.Windows.Forms.Button()
         Me.grpAll.SuspendLayout
         Me.grpAllSignature.SuspendLayout
         Me.grpConnected.SuspendLayout
@@ -98,7 +99,7 @@ Partial Class NetEdit
         Me.btnAllDeleteNetwork.Location = New System.Drawing.Point(666, 217)
         Me.btnAllDeleteNetwork.Name = "btnAllDeleteNetwork"
         Me.btnAllDeleteNetwork.Size = New System.Drawing.Size(91, 23)
-        Me.btnAllDeleteNetwork.TabIndex = 9
+        Me.btnAllDeleteNetwork.TabIndex = 7
         Me.btnAllDeleteNetwork.Text = "Delete Network"
         Me.btnAllDeleteNetwork.UseVisualStyleBackColor = true
         '
@@ -126,7 +127,7 @@ Partial Class NetEdit
         Me.btnAllDeleteBoth.Location = New System.Drawing.Point(663, 19)
         Me.btnAllDeleteBoth.Name = "btnAllDeleteBoth"
         Me.btnAllDeleteBoth.Size = New System.Drawing.Size(148, 23)
-        Me.btnAllDeleteBoth.TabIndex = 13
+        Me.btnAllDeleteBoth.TabIndex = 6
         Me.btnAllDeleteBoth.Text = "Delete Network & Signature"
         Me.btnAllDeleteBoth.UseMnemonic = false
         Me.btnAllDeleteBoth.UseVisualStyleBackColor = false
@@ -137,7 +138,7 @@ Partial Class NetEdit
         Me.btnAllSignatureDelete.Location = New System.Drawing.Point(561, 19)
         Me.btnAllSignatureDelete.Name = "btnAllSignatureDelete"
         Me.btnAllSignatureDelete.Size = New System.Drawing.Size(96, 23)
-        Me.btnAllSignatureDelete.TabIndex = 12
+        Me.btnAllSignatureDelete.TabIndex = 5
         Me.btnAllSignatureDelete.Text = "Delete Signature"
         Me.btnAllSignatureDelete.UseVisualStyleBackColor = true
         '
@@ -146,7 +147,7 @@ Partial Class NetEdit
         Me.btnAllSignatureSource.Location = New System.Drawing.Point(464, 19)
         Me.btnAllSignatureSource.Name = "btnAllSignatureSource"
         Me.btnAllSignatureSource.Size = New System.Drawing.Size(91, 23)
-        Me.btnAllSignatureSource.TabIndex = 11
+        Me.btnAllSignatureSource.TabIndex = 4
         Me.btnAllSignatureSource.Text = "Change Source"
         Me.btnAllSignatureSource.UseVisualStyleBackColor = true
         '
@@ -155,7 +156,7 @@ Partial Class NetEdit
         Me.btnAllSignatureFirstNetwork.Location = New System.Drawing.Point(342, 19)
         Me.btnAllSignatureFirstNetwork.Name = "btnAllSignatureFirstNetwork"
         Me.btnAllSignatureFirstNetwork.Size = New System.Drawing.Size(116, 23)
-        Me.btnAllSignatureFirstNetwork.TabIndex = 10
+        Me.btnAllSignatureFirstNetwork.TabIndex = 3
         Me.btnAllSignatureFirstNetwork.Text = "Change FirstNetwork"
         Me.btnAllSignatureFirstNetwork.UseVisualStyleBackColor = true
         '
@@ -164,7 +165,7 @@ Partial Class NetEdit
         Me.btnAllSignatureDescription.Location = New System.Drawing.Point(226, 19)
         Me.btnAllSignatureDescription.Name = "btnAllSignatureDescription"
         Me.btnAllSignatureDescription.Size = New System.Drawing.Size(110, 23)
-        Me.btnAllSignatureDescription.TabIndex = 9
+        Me.btnAllSignatureDescription.TabIndex = 2
         Me.btnAllSignatureDescription.Text = "Change Description"
         Me.btnAllSignatureDescription.UseVisualStyleBackColor = true
         '
@@ -173,7 +174,7 @@ Partial Class NetEdit
         Me.btnAllSignatureDNS.Location = New System.Drawing.Point(111, 19)
         Me.btnAllSignatureDNS.Name = "btnAllSignatureDNS"
         Me.btnAllSignatureDNS.Size = New System.Drawing.Size(109, 23)
-        Me.btnAllSignatureDNS.TabIndex = 8
+        Me.btnAllSignatureDNS.TabIndex = 1
         Me.btnAllSignatureDNS.Text = "Change DNS Suffix"
         Me.btnAllSignatureDNS.UseVisualStyleBackColor = true
         '
@@ -182,7 +183,7 @@ Partial Class NetEdit
         Me.btnAllSignatureGateway.Location = New System.Drawing.Point(6, 19)
         Me.btnAllSignatureGateway.Name = "btnAllSignatureGateway"
         Me.btnAllSignatureGateway.Size = New System.Drawing.Size(99, 23)
-        Me.btnAllSignatureGateway.TabIndex = 7
+        Me.btnAllSignatureGateway.TabIndex = 0
         Me.btnAllSignatureGateway.Text = "Change Gateway"
         Me.btnAllSignatureGateway.UseVisualStyleBackColor = true
         '
@@ -324,6 +325,7 @@ Partial Class NetEdit
         '
         Me.grpConnected.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left)  _
                         Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.grpConnected.Controls.Add(Me.btnConnRefresh)
         Me.grpConnected.Controls.Add(Me.btnConnChangeType)
         Me.grpConnected.Controls.Add(Me.lstConnected)
         Me.grpConnected.Location = New System.Drawing.Point(12, 318)
@@ -336,10 +338,10 @@ Partial Class NetEdit
         'btnConnChangeType
         '
         Me.btnConnChangeType.Anchor = System.Windows.Forms.AnchorStyles.Bottom
-        Me.btnConnChangeType.Location = New System.Drawing.Point(492, 271)
+        Me.btnConnChangeType.Location = New System.Drawing.Point(536, 271)
         Me.btnConnChangeType.Name = "btnConnChangeType"
         Me.btnConnChangeType.Size = New System.Drawing.Size(81, 23)
-        Me.btnConnChangeType.TabIndex = 1
+        Me.btnConnChangeType.TabIndex = 2
         Me.btnConnChangeType.Text = "Change Type"
         Me.btnConnChangeType.UseVisualStyleBackColor = true
         '
@@ -391,6 +393,16 @@ Partial Class NetEdit
         '
         Me.timerDelayedScan.Interval = 50
         '
+        'btnConnRefresh
+        '
+        Me.btnConnRefresh.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.btnConnRefresh.Location = New System.Drawing.Point(454, 271)
+        Me.btnConnRefresh.Name = "btnConnRefresh"
+        Me.btnConnRefresh.Size = New System.Drawing.Size(75, 23)
+        Me.btnConnRefresh.TabIndex = 1
+        Me.btnConnRefresh.Text = "Refresh"
+        Me.btnConnRefresh.UseVisualStyleBackColor = true
+        '
         'NetEdit
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
@@ -407,6 +419,7 @@ Partial Class NetEdit
         Me.grpConnected.ResumeLayout(false)
         Me.ResumeLayout(false)
     End Sub
+    Private WithEvents btnConnRefresh As System.Windows.Forms.Button
     Private WithEvents timerDelayedScan As System.Windows.Forms.Timer
     Private WithEvents headConnType As System.Windows.Forms.ColumnHeader
     Private WithEvents headConnV6Status As System.Windows.Forms.ColumnHeader

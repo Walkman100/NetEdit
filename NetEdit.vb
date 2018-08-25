@@ -7,6 +7,10 @@ Public Partial Class NetEdit
     Public Sub New()
         Me.InitializeComponent()
         
+        If WalkmanLib.IsAdmin Then
+            Me.Text = "[Admin] " & Me.Text
+        End If
+        
         timerDelayedScan.Start()
     End Sub
     
@@ -207,6 +211,8 @@ Public Partial Class NetEdit
         End If
     End Sub
     
+    ' Populating lists:
+    
     Sub PopulateProfileList()
         
         lstAll.Items.Clear()
@@ -214,7 +220,7 @@ Public Partial Class NetEdit
         GetProfiles
     End Sub
     
-    Sub PopulateNetworkList()
+    Sub PopulateNetworkList() Handles btnConnRefresh.Click
         
         lstConnected.Items.Clear()
         
@@ -258,7 +264,7 @@ Public Partial Class NetEdit
             If PowerShellFunctionExitCode <> 0 Then Throw New Exception("powershell.exe: " & PowerShellFunctionError)
             
             Dim returnProfiles As New List(Of ActiveNetworkProfile)
-            Dim tmpProfile As ActiveNetworkProfile
+            Dim tmpProfile As ActiveNetworkProfile = New ActiveNetworkProfile
             
             For Each line As String In PowerShellFunctionOutput.Split(Chr(13)) 'Chr(13): Carriage Return (10 is Line Feed)
                 line = line.Trim()
@@ -284,6 +290,8 @@ Public Partial Class NetEdit
             Return returnProfiles
         Catch ex As Exception
             WalkmanLib.ErrorDialog(ex)
+            
+            Return New List(Of ActiveNetworkProfile)
         End Try
     End Function
     
