@@ -1,11 +1,16 @@
-﻿Public Partial Class NetEdit
+﻿Option Explicit On
+Option Strict On
+Option Compare Binary
+Option Infer On
+
+Public Partial Class NetEdit
     Public Sub New()
         Me.InitializeComponent()
         
         timerDelayedScan.Start()
     End Sub
     
-    Interface NetworkProfile
+    Structure NetworkProfile
         ''' <summary>REG_SZ</summary>
         Property ProfileGuid() As Guid
         ''' <summary>REG_SZ</summary>
@@ -30,16 +35,16 @@
         Property SignatureFirstNetwork() As String
         ''' <summary>REG_DWORD</summary>
         Property SignatureSource() As String
-    End Interface
+    End Structure
     
-    Interface ActiveNetworkProfile
+    Structure ActiveNetworkProfile
         Property InterfaceIndex() As Integer
         Property Name() As String
         Property InterfaceAlias() As String
         Property IPv4Connectivity() As String
         Property IPv6Connectivity() As String
         Property NetworkCategory() As String
-    End Interface
+    End Structure
     
     Sub timerDelayedScan_Tick() Handles timerDelayedScan.Tick
         timerDelayedScan.Stop()
@@ -47,11 +52,7 @@
         lstAllSelectionUpdated()
         lstConnectedSelectionUpdated()
         
-        lstAll.Items.Clear()
-        
         PopulateProfileList()
-        
-        lstConnected.Items.Clear()
         
         PopulateNetworkList()
         
@@ -163,25 +164,31 @@
         
     End Sub
     
-    Sub btnConnChangeType_Click() Handles btnConnChangeType.Click
+    Sub btnConnChangeType_Click() Handles btnConnChangeType.Click, lstConnected.DoubleClick
         
     End Sub
     
     Sub PopulateProfileList()
+        
+        lstAll.Items.Clear()
+        
         GetProfiles
     End Sub
     
     Sub PopulateNetworkList()
+        
+        lstConnected.Items.Clear()
+        
         GetNetworks
     End Sub
     
     ' =================== Functions ===================
     
-    Function GetProfiles()
+    Function GetProfiles() As NetworkProfile()
         
     End Function
     
-    Function GetNetworks()
+    Function GetNetworks() As List(Of ActiveNetworkProfile)
         
     End Function
 End Class
