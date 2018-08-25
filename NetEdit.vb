@@ -179,7 +179,17 @@ Public Partial Class NetEdit
         
         lstConnected.Items.Clear()
         
-        GetNetworks
+        Dim tmpListViewItem As ListViewItem
+        For Each connectedNetwork In GetNetworks()
+            tmpListViewItem = New ListViewItem(New String() {connectedNetwork.Name, connectedNetwork.InterfaceAlias, _
+                connectedNetwork.IPv4Connectivity, connectedNetwork.IPv6Connectivity, connectedNetwork.NetworkCategory})
+            
+            tmpListViewItem.Tag = connectedNetwork.InterfaceIndex
+            
+            lstConnected.Items.Add(tmpListViewItem)
+        Next
+        
+        lstConnected.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize)
     End Sub
     
     ' =================== Functions ===================
@@ -189,6 +199,51 @@ Public Partial Class NetEdit
     End Function
     
     Function GetNetworks() As List(Of ActiveNetworkProfile)
+        Dim PowerShellFunctionError As String = ""
+        Dim PowerShellFunctionExitCode As Integer
+        Dim PowerShellFunctionOutput As String
         
+        Dim PowerShellPath As String
+        
+        If Environment.Is64BitOperatingSystem And Not Environment.Is64BitProcess Then
+            PowerShellPath = "C:\Windows\Sysnative\WindowsPowerShell\v1.0\powershell.exe"
+        Else
+            PowerShellPath = "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"
+        End If
+        
+        Try
+            PowerShellFunctionOutput = WalkmanLib.RunAndGetOutput(PowerShellPath, "Get-NetConnectionProfile", False, PowerShellFunctionError, PowerShellFunctionExitCode)
+            
+            If PowerShellFunctionExitCode <> 0 Then Throw New Exception("powershell.exe: " & PowerShellFunctionError)
+            
+            Dim returnProfiles As New List(Of ActiveNetworkProfile)
+            Dim tmpProfile As ActiveNetworkProfile
+            
+            For Each line As String In PowerShellFunctionOutput.Split(Chr(13)) 'Chr(13): Carriage Return (10 is Line Feed)
+                line = line.Trim()
+                
+                If line.StartsWith("Name") Then
+                    tmpProfile.Name = line.Substring(line.IndexOf(":") + 1).Trim()
+                ElseIf line.StartsWith("InterfaceAlias", True, Nothing) Then
+                    tmpProfile.InterfaceAlias = line.Substring(line.IndexOf(":") + 1).Trim()
+                ElseIf line.StartsWith("InterfaceIndex", True, Nothing) Then
+                    tmpProfile.InterfaceIndex = CType(line.Substring(line.IndexOf(":") + 1).Trim(), Integer)
+                ElseIf line.StartsWith("NetworkCategory", True, Nothing) Then
+                    tmpProfile.NetworkCategory = line.Substring(line.IndexOf(":") + 1).Trim()
+                ElseIf line.StartsWith("IPv4Connectivity", True, Nothing) Then
+                    tmpProfile.IPv4Connectivity = line.Substring(line.IndexOf(":") + 1).Trim()
+                ElseIf line.StartsWith("IPv6Connectivity", True, Nothing) Then
+                    tmpProfile.IPv6Connectivity = line.Substring(line.IndexOf(":") + 1).Trim()
+                ElseIf line = ""
+                    returnProfiles.Add(tmpProfile)
+                    tmpProfile = New ActiveNetworkProfile
+                End If
+            Next
+            
+            Return returnProfiles
+            
+        Catch ex As Exception
+            WalkmanLib.ErrorDialog(ex)
+        End Try
     End Function
 End Class
