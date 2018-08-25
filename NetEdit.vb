@@ -165,7 +165,46 @@ Public Partial Class NetEdit
     End Sub
     
     Sub btnConnChangeType_Click() Handles btnConnChangeType.Click, lstConnected.DoubleClick
-        
+        If lstConnected.SelectedIndices.Count <> 0 Then
+            
+            If lstConnected.SelectedItems.Item(0).SubItems.Item(4).Text = "Private" Then
+                NetworkTypeSelector.SelectedNetworkType = NetworkCategory.Private
+            Else
+                NetworkTypeSelector.SelectedNetworkType = NetworkCategory.Public
+            End If
+            
+            If NetworkTypeSelector.ShowDialog() = DialogResult.OK Then
+                Dim currentNetworkIndex As Integer = DirectCast(lstConnected.SelectedItems.Item(0).Tag, Integer)
+                
+                Dim PowerShellFunctionError As String = ""
+                Dim PowerShellFunctionExitCode As Integer
+                Dim PowerShellFunctionOutput As String
+                
+                Try
+                    Dim PowerShellArgs = "Set-NetConnectionProfile -InterfaceIndex " & currentNetworkIndex & " -NetworkCategory " & NetworkTypeSelector.SelectedNetworkType.ToString
+                    
+                    PowerShellFunctionOutput = WalkmanLib.RunAndGetOutput(PowerShellPath, PowerShellArgs, False, PowerShellFunctionError, PowerShellFunctionExitCode)
+                    
+                    If PowerShellFunctionExitCode <> 0 Then
+                        If PowerShellFunctionError.Contains("PermissionDenied") Then
+                            If MsgBox("Permission Denied! Either run " & My.Application.Info.AssemblyName & " as an administrator or run the PowerShell command as administrator." & vbNewLine & vbNewLine & _
+                                "Attempt to launch PowerShell as administrator?", MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, "Permission Denied") = MsgBoxResult.Yes Then
+                                
+                                ' apparently you can't run programs in Sysnative as administrator...
+                                'WalkmanLib.RunAsAdmin(PowerShellPath, PowerShellArgs)
+                                WalkmanLib.RunAsAdmin("cmd.exe", "/c " & PowerShellPath & " " & PowerShellArgs)
+                            End If
+                        Else
+                            Throw New Exception("powershell.exe: " & PowerShellFunctionError)
+                        End If
+                    End If
+                Catch ex As Exception
+                    WalkmanLib.ErrorDialog(ex)
+                End Try
+                
+                PopulateNetworkList()
+            End If
+        End If
     End Sub
     
     Sub PopulateProfileList()
@@ -190,6 +229,8 @@ Public Partial Class NetEdit
         Next
         
         lstConnected.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize)
+        
+        lstConnectedSelectionUpdated()
     End Sub
     
     ' =================== Functions ===================
@@ -198,18 +239,18 @@ Public Partial Class NetEdit
         
     End Function
     
+    Function PowerShellPath() As String
+        If Environment.Is64BitOperatingSystem And Not Environment.Is64BitProcess Then
+            Return "C:\Windows\Sysnative\WindowsPowerShell\v1.0\powershell.exe"
+        Else
+            Return "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"
+        End If
+    End Function
+    
     Function GetNetworks() As List(Of ActiveNetworkProfile)
         Dim PowerShellFunctionError As String = ""
         Dim PowerShellFunctionExitCode As Integer
         Dim PowerShellFunctionOutput As String
-        
-        Dim PowerShellPath As String
-        
-        If Environment.Is64BitOperatingSystem And Not Environment.Is64BitProcess Then
-            PowerShellPath = "C:\Windows\Sysnative\WindowsPowerShell\v1.0\powershell.exe"
-        Else
-            PowerShellPath = "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"
-        End If
         
         Try
             PowerShellFunctionOutput = WalkmanLib.RunAndGetOutput(PowerShellPath, "Get-NetConnectionProfile", False, PowerShellFunctionError, PowerShellFunctionExitCode)
