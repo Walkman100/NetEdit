@@ -13,7 +13,7 @@ Namespace My
         End Sub
         
         Protected Overrides Sub OnCreateMainForm()
-            Me.MainForm = My.Forms.MainForm
+            Me.MainForm = My.Forms.NetEdit
         End Sub
     End Class
 End Namespace
