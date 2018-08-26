@@ -20,9 +20,9 @@ Public Partial Class NetEdit
         lstAllSelectionUpdated()  ' These make sure the buttons start disabled
         lstConnectedSelectionUpdated()
         
-        PopulateProfileList()
-        
         PopulateNetworkList()
+        ' load active networks first because if that fails it just gives an empty list back
+        PopulateProfileList()
         
     End Sub
     
@@ -30,7 +30,7 @@ Public Partial Class NetEdit
     
     Structure NetworkProfile
         ''' <summary>REG_SZ</summary>
-        Property ProfileGuid() As Guid
+        Property ProfileGuid() As String
         ''' <summary>REG_SZ</summary>
         Property ProfileName() As String
         ''' <summary>REG_DWORD</summary>
@@ -95,11 +95,89 @@ Public Partial Class NetEdit
         
         lstAll.Items.Clear()
         
-        GetProfiles
+        Dim tmpListViewItem As ListViewItem
+        For Each profile In GetProfiles()
+            Dim profileCategory As String
+            Select Case profile.Category
+                Case 0: profileCategory = "Public"
+                Case 1: profileCategory = "Home"
+                Case 2: profileCategory = "Work/Domain"
+                Case Else: profileCategory = profile.Category.ToString()
+            End Select
+            
+            Dim profileManaged As String
+            Select Case profile.Managed
+                Case 0: profileManaged = "No"
+                Case 1: profileManaged = "Yes"
+                Case Else: profileManaged = profile.Managed.ToString()
+            End Select
+            
+            Dim profileNameType As String
+            Select Case profile.NameType
+                Case 6: profileNameType = "Wired Network"
+                Case 23: profileNameType = "VPN"
+                Case 71: profileNameType = "Wireless Network"
+                Case 243: profileNameType = "Mobile Broadband"
+                Case Else: profileNameType = profile.NameType.ToString()
+            End Select
+            
+            tmpListViewItem = New ListViewItem(New String() {profile.ProfileName, profileCategory, profile.Description, profileManaged, profileNameType, IIf(profile.CategoryType = -1, "", profile.CategoryType).ToString()})
+            
+            tmpListViewItem.Tag = profile.ProfileGuid
+            
+            lstAll.Items.Add(tmpListViewItem)
+        Next
+        
+        lstAll.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize)
+        
+        lstAllSelectionUpdated()
+        
+        ' add signature info here
     End Sub
     
-    Function GetProfiles() As NetworkProfile()
+    Function GetProfiles() As List(Of NetworkProfile)
+        ' thanks to https://stackoverflow.com/a/13232372/2999220
+        Dim localKey As Win32.RegistryKey
         
+        If Environment.Is64BitOperatingSystem Then
+            localKey = Win32.RegistryKey.OpenBaseKey(Win32.RegistryHive.LocalMachine, Win32.RegistryView.Registry64)
+        Else
+            localKey = Win32.RegistryKey.OpenBaseKey(Win32.RegistryHive.LocalMachine, Win32.RegistryView.Registry32)
+        End If
+        
+        localKey = localKey.OpenSubKey("SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkList\Profiles")
+        
+        If localKey Is Nothing Then
+            MsgBox("Error loading registry key!")
+            Return New List(Of NetworkProfile)
+        End If
+        
+        Dim returnProfiles As New List(Of NetworkProfile)
+        Dim tmpProfile As NetworkProfile = New NetworkProfile
+        
+        Try
+            For Each subKeyName As String In localKey.GetSubKeyNames
+                Dim tmpKey = localKey.OpenSubKey(subKeyName)
+                
+                tmpProfile.ProfileGuid = tmpKey.Name.Substring(tmpKey.Name.LastIndexOf("\") +1)
+                
+                If tmpKey.GetValue("ProfileName")  IsNot Nothing Then tmpProfile.ProfileName =             tmpKey.GetValue("ProfileName").ToString
+                If tmpKey.GetValue("Category")     IsNot Nothing Then tmpProfile.Category =     DirectCast(tmpKey.GetValue("Category"), Integer)
+                If tmpKey.GetValue("Description")  IsNot Nothing Then tmpProfile.Description =             tmpKey.GetValue("Description").ToString
+                If tmpKey.GetValue("Managed")      IsNot Nothing Then tmpProfile.Managed =      DirectCast(tmpKey.GetValue("Managed"), Integer)
+                If tmpKey.GetValue("NameType")     IsNot Nothing Then tmpProfile.NameType =     DirectCast(tmpKey.GetValue("NameType"), Integer)
+                If tmpKey.GetValue("CategoryType") IsNot Nothing Then tmpProfile.CategoryType = DirectCast(tmpKey.GetValue("CategoryType"), Integer) Else tmpProfile.CategoryType = -1
+                
+                returnProfiles.Add(tmpProfile)
+                tmpProfile = New NetworkProfile
+            Next
+            
+            Return returnProfiles
+        Catch ex As Exception
+            WalkmanLib.ErrorDialog(ex)
+            
+            Return New List(Of NetworkProfile)
+        End Try
     End Function
     
     ' ------------------- Write -------------------
