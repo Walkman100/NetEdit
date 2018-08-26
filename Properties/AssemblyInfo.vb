@@ -9,11 +9,11 @@ Imports System.Runtime.InteropServices
 ' you compile.
 
 <assembly: AssemblyTitle("NetEdit")>
-<assembly: AssemblyDescription("")>
+<assembly: AssemblyDescription("A Windows Network Profile manager/editor")>
 <assembly: AssemblyConfiguration("")>
-<assembly: AssemblyCompany("")>
+<assembly: AssemblyCompany("WalkmanOSS")>
 <assembly: AssemblyProduct("NetEdit")>
-<assembly: AssemblyCopyright("Copyright 2018")>
+<assembly: AssemblyCopyright("FOSS from Walkman 2018")>
 <assembly: AssemblyTrademark("")>
 <assembly: AssemblyCulture("")>
 
@@ -28,4 +28,4 @@ Imports System.Runtime.InteropServices
 ' You can specify all values by your own or you can build default build and revision
 ' numbers with the '*' character (the default):
 
-<assembly: AssemblyVersion("1.0.*")>
+<assembly: AssemblyVersion("1.0.0.0")>
