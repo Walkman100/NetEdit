@@ -52,7 +52,7 @@ Public Partial Class NetEdit
         ''' <summary>REG_SZ</summary>
         Property SignatureFirstNetwork() As String
         ''' <summary>REG_DWORD</summary>
-        Property SignatureSource() As String
+        Property SignatureSource() As Integer
     End Structure
     
     Sub lstAllSelectionUpdated() Handles lstAll.SelectedIndexChanged
@@ -121,7 +121,8 @@ Public Partial Class NetEdit
                 Case Else: profileNameType = profile.NameType.ToString()
             End Select
             
-            tmpListViewItem = New ListViewItem(New String() {profile.ProfileName, profileCategory, profile.Description, profileManaged, profileNameType, IIf(profile.CategoryType = -1, "", profile.CategoryType).ToString()})
+            tmpListViewItem = New ListViewItem(New String() {profile.ProfileName, profileCategory, profile.Description, profileManaged, profileNameType, IIf(profile.CategoryType = -1, "", profile.CategoryType).ToString(), _
+                "", "", "", "", ""})
             
             tmpListViewItem.Tag = profile.ProfileGuid
             
@@ -132,8 +133,27 @@ Public Partial Class NetEdit
         
         lstAllSelectionUpdated()
         
-        ' add signature info here
+        For Each profile In GetProfileSignatures()
+            For Each itemProfile As ListViewItem In lstAll.Items
+                If itemProfile.Tag.ToString() = profile.ProfileGuid Then
+                    
+                    itemProfile.SubItems.Item(6).Text = profile.SignatureDefaultGatewayMac
+                    itemProfile.SubItems.Item(7).Text = profile.SignatureDNSSuffix
+                    itemProfile.SubItems.Item(8).Text = profile.SignatureDescription
+                    itemProfile.SubItems.Item(9).Text = profile.SignatureFirstNetwork
+                    itemProfile.SubItems.Item(10).Text = profile.SignatureSource.ToString()
+                    
+                    Exit For
+                End If
+            Next
+        Next
+        
+        lstAll.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize)
+        
+        lstAllSelectionUpdated()
     End Sub
+    
+    Const ProfileRegPath As String = "SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkList\Profiles\"
     
     Function GetProfiles() As List(Of NetworkProfile)
         ' thanks to https://stackoverflow.com/a/13232372/2999220
@@ -145,10 +165,11 @@ Public Partial Class NetEdit
             localKey = Win32.RegistryKey.OpenBaseKey(Win32.RegistryHive.LocalMachine, Win32.RegistryView.Registry32)
         End If
         
-        localKey = localKey.OpenSubKey("SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkList\Profiles")
+        ' this fails if not running as admin... not sure how best to handle that
+        localKey = localKey.OpenSubKey(ProfileRegPath)
         
         If localKey Is Nothing Then
-            MsgBox("Error loading registry key!")
+            MsgBox("Error loading registry key!", MsgBoxStyle.Critical)
             Return New List(Of NetworkProfile)
         End If
         
@@ -167,6 +188,70 @@ Public Partial Class NetEdit
                 If tmpKey.GetValue("Managed")      IsNot Nothing Then tmpProfile.Managed =      DirectCast(tmpKey.GetValue("Managed"), Integer)
                 If tmpKey.GetValue("NameType")     IsNot Nothing Then tmpProfile.NameType =     DirectCast(tmpKey.GetValue("NameType"), Integer)
                 If tmpKey.GetValue("CategoryType") IsNot Nothing Then tmpProfile.CategoryType = DirectCast(tmpKey.GetValue("CategoryType"), Integer) Else tmpProfile.CategoryType = -1
+                
+                returnProfiles.Add(tmpProfile)
+                tmpProfile = New NetworkProfile
+            Next
+            
+            Return returnProfiles
+        Catch ex As Exception
+            WalkmanLib.ErrorDialog(ex)
+            
+            Return New List(Of NetworkProfile)
+        End Try
+    End Function
+    
+    Const SignatureRegPath As String = "SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkList\Signatures\"
+    
+    Function GetProfileSignatures() As List(Of NetworkProfile)
+        Dim localKeyRoot As Win32.RegistryKey
+        
+        If Environment.Is64BitOperatingSystem Then
+            localKeyRoot = Win32.RegistryKey.OpenBaseKey(Win32.RegistryHive.LocalMachine, Win32.RegistryView.Registry64)
+        Else
+            localKeyRoot = Win32.RegistryKey.OpenBaseKey(Win32.RegistryHive.LocalMachine, Win32.RegistryView.Registry32)
+        End If
+        
+        localKeyRoot = localKeyRoot.OpenSubKey(SignatureRegPath)
+        
+        If localKeyRoot Is Nothing Then
+            MsgBox("Error loading registry key!", MsgBoxStyle.Critical)
+            Return New List(Of NetworkProfile)
+        End If
+        
+        Dim returnProfiles As New List(Of NetworkProfile)
+        Dim tmpProfile As NetworkProfile = New NetworkProfile
+        
+        Try
+            Dim localKey As Win32.RegistryKey = localKeyRoot.OpenSubKey("Unmanaged")
+            
+            For Each subKeyName As String In localKey.GetSubKeyNames
+                Dim tmpKey = localKey.OpenSubKey(subKeyName)
+                
+                tmpProfile.ProfileGuid = tmpKey.GetValue("ProfileGuid").ToString
+                
+                If tmpKey.GetValue("DefaultGatewayMac") IsNot Nothing Then tmpProfile.SignatureDefaultGatewayMac = tmpKey.GetValue("DefaultGatewayMac").ToString
+                If tmpKey.GetValue("Description")       IsNot Nothing Then tmpProfile.SignatureDescription =       tmpKey.GetValue("Description").ToString
+                If tmpKey.GetValue("DnsSuffix")         IsNot Nothing Then tmpProfile.SignatureDNSSuffix =         tmpKey.GetValue("DnsSuffix").ToString
+                If tmpKey.GetValue("FirstNetwork")      IsNot Nothing Then tmpProfile.SignatureFirstNetwork =      tmpKey.GetValue("FirstNetwork").ToString
+                If tmpKey.GetValue("Source")            IsNot Nothing Then tmpProfile.SignatureSource = DirectCast(tmpKey.GetValue("Source"), Integer)
+                
+                returnProfiles.Add(tmpProfile)
+                tmpProfile = New NetworkProfile
+            Next
+            
+            localKey = localKeyRoot.OpenSubKey("Managed")
+            
+            For Each subKeyName As String In localKey.GetSubKeyNames
+                Dim tmpKey = localKey.OpenSubKey(subKeyName)
+                
+                tmpProfile.ProfileGuid = tmpKey.GetValue("ProfileGuid").ToString
+                
+                If tmpKey.GetValue("DefaultGatewayMac") IsNot Nothing Then tmpProfile.SignatureDefaultGatewayMac = tmpKey.GetValue("ProfileName").ToString
+                If tmpKey.GetValue("Description")       IsNot Nothing Then tmpProfile.SignatureDescription =       tmpKey.GetValue("Category").ToString
+                If tmpKey.GetValue("DnsSuffix")         IsNot Nothing Then tmpProfile.SignatureDNSSuffix =         tmpKey.GetValue("Description").ToString
+                If tmpKey.GetValue("FirstNetwork")      IsNot Nothing Then tmpProfile.SignatureFirstNetwork =      tmpKey.GetValue("Managed").ToString
+                If tmpKey.GetValue("Source")            IsNot Nothing Then tmpProfile.SignatureSource = DirectCast(tmpKey.GetValue("NameType"), Integer)
                 
                 returnProfiles.Add(tmpProfile)
                 tmpProfile = New NetworkProfile
@@ -375,6 +460,9 @@ Public Partial Class NetEdit
                                 ' apparently you can't run programs in Sysnative as administrator...
                                 'WalkmanLib.RunAsAdmin(PowerShellPath, PowerShellArgs)
                                 WalkmanLib.RunAsAdmin("cmd.exe", "/c " & PowerShellPath & " " & PowerShellArgs)
+                                
+                                ' sleep the thread to delay the list update
+                                Threading.Thread.Sleep(500)
                             End If
                         Else
                             Throw New Exception("powershell.exe: " & PowerShellFunctionError)

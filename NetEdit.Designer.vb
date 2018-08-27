@@ -58,6 +58,7 @@ Partial Class NetEdit
         Me.headAllSignatureFirstNetwork = New System.Windows.Forms.ColumnHeader()
         Me.headAllSignatureSource = New System.Windows.Forms.ColumnHeader()
         Me.grpConnected = New System.Windows.Forms.GroupBox()
+        Me.btnConnRefresh = New System.Windows.Forms.Button()
         Me.btnConnChangeType = New System.Windows.Forms.Button()
         Me.lstConnected = New System.Windows.Forms.ListView()
         Me.headConnName = New System.Windows.Forms.ColumnHeader()
@@ -66,7 +67,6 @@ Partial Class NetEdit
         Me.headConnV6Status = New System.Windows.Forms.ColumnHeader()
         Me.headConnType = New System.Windows.Forms.ColumnHeader()
         Me.timerDelayedScan = New System.Windows.Forms.Timer(Me.components)
-        Me.btnConnRefresh = New System.Windows.Forms.Button()
         Me.grpAll.SuspendLayout
         Me.grpAllSignature.SuspendLayout
         Me.grpConnected.SuspendLayout
@@ -335,6 +335,16 @@ Partial Class NetEdit
         Me.grpConnected.TabStop = false
         Me.grpConnected.Text = "Connected Networks:"
         '
+        'btnConnRefresh
+        '
+        Me.btnConnRefresh.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.btnConnRefresh.Location = New System.Drawing.Point(454, 271)
+        Me.btnConnRefresh.Name = "btnConnRefresh"
+        Me.btnConnRefresh.Size = New System.Drawing.Size(75, 23)
+        Me.btnConnRefresh.TabIndex = 1
+        Me.btnConnRefresh.Text = "Refresh"
+        Me.btnConnRefresh.UseVisualStyleBackColor = true
+        '
         'btnConnChangeType
         '
         Me.btnConnChangeType.Anchor = System.Windows.Forms.AnchorStyles.Bottom
@@ -392,16 +402,6 @@ Partial Class NetEdit
         'timerDelayedScan
         '
         Me.timerDelayedScan.Interval = 50
-        '
-        'btnConnRefresh
-        '
-        Me.btnConnRefresh.Anchor = System.Windows.Forms.AnchorStyles.Bottom
-        Me.btnConnRefresh.Location = New System.Drawing.Point(454, 271)
-        Me.btnConnRefresh.Name = "btnConnRefresh"
-        Me.btnConnRefresh.Size = New System.Drawing.Size(75, 23)
-        Me.btnConnRefresh.TabIndex = 1
-        Me.btnConnRefresh.Text = "Refresh"
-        Me.btnConnRefresh.UseVisualStyleBackColor = true
         '
         'NetEdit
         '

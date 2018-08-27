@@ -35,7 +35,7 @@ Partial Class NetworkTypeSelector
         '
         'btnSave
         '
-        Me.btnSave.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.btnSave.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.btnSave.DialogResult = System.Windows.Forms.DialogResult.OK
         Me.btnSave.Location = New System.Drawing.Point(12, 85)
         Me.btnSave.Name = "btnSave"
@@ -46,7 +46,7 @@ Partial Class NetworkTypeSelector
         '
         'btnCancel
         '
-        Me.btnCancel.Anchor = System.Windows.Forms.AnchorStyles.Bottom
+        Me.btnCancel.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
         Me.btnCancel.Location = New System.Drawing.Point(93, 85)
         Me.btnCancel.Name = "btnCancel"
@@ -57,8 +57,7 @@ Partial Class NetworkTypeSelector
         '
         'optPrivate
         '
-        Me.optPrivate.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left)  _
-                        Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.optPrivate.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.optPrivate.Location = New System.Drawing.Point(12, 25)
         Me.optPrivate.Name = "optPrivate"
         Me.optPrivate.Size = New System.Drawing.Size(156, 24)
@@ -69,8 +68,7 @@ Partial Class NetworkTypeSelector
         '
         'optPublic
         '
-        Me.optPublic.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left)  _
-                        Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.optPublic.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.optPublic.Location = New System.Drawing.Point(12, 55)
         Me.optPublic.Name = "optPublic"
         Me.optPublic.Size = New System.Drawing.Size(156, 24)
@@ -81,6 +79,7 @@ Partial Class NetworkTypeSelector
         '
         'lblInfo
         '
+        Me.lblInfo.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.lblInfo.AutoSize = true
         Me.lblInfo.Location = New System.Drawing.Point(12, 9)
         Me.lblInfo.Name = "lblInfo"
@@ -103,6 +102,8 @@ Partial Class NetworkTypeSelector
         Me.MaximizeBox = false
         Me.MinimizeBox = false
         Me.Name = "NetworkTypeSelector"
+        Me.ShowInTaskbar = false
+        Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Select Network Type"
         Me.ResumeLayout(false)
