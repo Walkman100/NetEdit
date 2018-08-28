@@ -133,7 +133,10 @@ Public Partial Class NetEdit
         
         lstAllSelectionUpdated()
         
+        Dim assignedSignature As Boolean
         For Each profile In GetProfileSignatures()
+            assignedSignature = False
+            
             For Each itemProfile As ListViewItem In lstAll.Items
                 If itemProfile.Tag.ToString() = profile.ProfileGuid Then
                     
@@ -143,9 +146,19 @@ Public Partial Class NetEdit
                     itemProfile.SubItems.Item(9).Text = profile.SignatureFirstNetwork
                     itemProfile.SubItems.Item(10).Text = profile.SignatureSource.ToString()
                     
+                    assignedSignature = True
                     Exit For
                 End If
             Next
+            
+            If assignedSignature = False Then ' no profile with the same GUID, add a new entry
+                tmpListViewItem = New ListViewItem(New String() {"", "", "", "", "", "", _
+                BitConverter.ToString(profile.SignatureDefaultGatewayMac).Replace("-", ":"), profile.SignatureDNSSuffix, profile.SignatureDescription, profile.SignatureFirstNetwork, profile.SignatureSource.ToString()})
+                
+                tmpListViewItem.Tag = profile.ProfileGuid
+                
+                lstAll.Items.Add(tmpListViewItem)
+            End If
         Next
         
         lstAll.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize)
@@ -192,13 +205,11 @@ Public Partial Class NetEdit
                 returnProfiles.Add(tmpProfile)
                 tmpProfile = New NetworkProfile
             Next
-            
-            Return returnProfiles
         Catch ex As Exception
             WalkmanLib.ErrorDialog(ex)
-            
-            Return New List(Of NetworkProfile)
         End Try
+        
+        Return returnProfiles
     End Function
     
     Const SignatureRegPath As String = "SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkList\Signatures\"
@@ -256,13 +267,11 @@ Public Partial Class NetEdit
                 returnProfiles.Add(tmpProfile)
                 tmpProfile = New NetworkProfile
             Next
-            
-            Return returnProfiles
         Catch ex As Exception
             WalkmanLib.ErrorDialog(ex)
-            
-            Return New List(Of NetworkProfile)
         End Try
+        
+        Return returnProfiles
     End Function
     
     ' ------------------- Write -------------------
