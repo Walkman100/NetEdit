@@ -2,9 +2,15 @@
 
 A Windows Network Profile manager/editor
 
-### Downloads
+## Download
+Get the latest version [here](https://github.com/Walkman100/NetEdit/releases), and the latest build from commit
+[here](https://ci.appveyor.com/project/Walkman100/NetEdit/build/artifacts)
+(note that these builds are built for the Debug config and so are not optimised)
 
-### Credits
+## Compile requirements
+See [CompileInstructions.md](https://github.com/Walkman100/gists/blob/master/CompileInstructions.md)
+
+## Credits
 
 Inspiration for the Connected Networks part is from https://www.servethehome.com/change-hyper-v-network-category-public-private-powershell/
 
