@@ -44,7 +44,7 @@ Public Partial Class NetEdit
         ''' <summary>REG_DWORD</summary>
         Property CategoryType() As Integer
         ''' <summary>REG_BINARY</summary>
-        Property SignatureDefaultGatewayMac() As String
+        Property SignatureDefaultGatewayMac() As Byte()
         ''' <summary>REG_SZ</summary>
         Property SignatureDNSSuffix() As String
         ''' <summary>REG_SZ</summary>
@@ -137,7 +137,7 @@ Public Partial Class NetEdit
             For Each itemProfile As ListViewItem In lstAll.Items
                 If itemProfile.Tag.ToString() = profile.ProfileGuid Then
                     
-                    itemProfile.SubItems.Item(6).Text = profile.SignatureDefaultGatewayMac
+                    itemProfile.SubItems.Item(6).Text = BitConverter.ToString(profile.SignatureDefaultGatewayMac).Replace("-", ":")
                     itemProfile.SubItems.Item(7).Text = profile.SignatureDNSSuffix
                     itemProfile.SubItems.Item(8).Text = profile.SignatureDescription
                     itemProfile.SubItems.Item(9).Text = profile.SignatureFirstNetwork
@@ -230,7 +230,7 @@ Public Partial Class NetEdit
                 
                 tmpProfile.ProfileGuid = tmpKey.GetValue("ProfileGuid").ToString
                 
-                If tmpKey.GetValue("DefaultGatewayMac") IsNot Nothing Then tmpProfile.SignatureDefaultGatewayMac = tmpKey.GetValue("DefaultGatewayMac").ToString
+                If tmpKey.GetValue("DefaultGatewayMac") IsNot Nothing Then tmpProfile.SignatureDefaultGatewayMac = DirectCast(tmpKey.GetValue("DefaultGatewayMac"), Byte())
                 If tmpKey.GetValue("Description")       IsNot Nothing Then tmpProfile.SignatureDescription =       tmpKey.GetValue("Description").ToString
                 If tmpKey.GetValue("DnsSuffix")         IsNot Nothing Then tmpProfile.SignatureDNSSuffix =         tmpKey.GetValue("DnsSuffix").ToString
                 If tmpKey.GetValue("FirstNetwork")      IsNot Nothing Then tmpProfile.SignatureFirstNetwork =      tmpKey.GetValue("FirstNetwork").ToString
@@ -247,11 +247,11 @@ Public Partial Class NetEdit
                 
                 tmpProfile.ProfileGuid = tmpKey.GetValue("ProfileGuid").ToString
                 
-                If tmpKey.GetValue("DefaultGatewayMac") IsNot Nothing Then tmpProfile.SignatureDefaultGatewayMac = tmpKey.GetValue("ProfileName").ToString
-                If tmpKey.GetValue("Description")       IsNot Nothing Then tmpProfile.SignatureDescription =       tmpKey.GetValue("Category").ToString
-                If tmpKey.GetValue("DnsSuffix")         IsNot Nothing Then tmpProfile.SignatureDNSSuffix =         tmpKey.GetValue("Description").ToString
-                If tmpKey.GetValue("FirstNetwork")      IsNot Nothing Then tmpProfile.SignatureFirstNetwork =      tmpKey.GetValue("Managed").ToString
-                If tmpKey.GetValue("Source")            IsNot Nothing Then tmpProfile.SignatureSource = DirectCast(tmpKey.GetValue("NameType"), Integer)
+                If tmpKey.GetValue("DefaultGatewayMac") IsNot Nothing Then tmpProfile.SignatureDefaultGatewayMac = DirectCast(tmpKey.GetValue("DefaultGatewayMac"), Byte())
+                If tmpKey.GetValue("Description")       IsNot Nothing Then tmpProfile.SignatureDescription =       tmpKey.GetValue("Description").ToString
+                If tmpKey.GetValue("DnsSuffix")         IsNot Nothing Then tmpProfile.SignatureDNSSuffix =         tmpKey.GetValue("DnsSuffix").ToString
+                If tmpKey.GetValue("FirstNetwork")      IsNot Nothing Then tmpProfile.SignatureFirstNetwork =      tmpKey.GetValue("FirstNetwork").ToString
+                If tmpKey.GetValue("Source")            IsNot Nothing Then tmpProfile.SignatureSource = DirectCast(tmpKey.GetValue("Source"), Integer)
                 
                 returnProfiles.Add(tmpProfile)
                 tmpProfile = New NetworkProfile
