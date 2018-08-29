@@ -410,6 +410,7 @@ Partial Class NetEdit
         Me.ClientSize = New System.Drawing.Size(1089, 630)
         Me.Controls.Add(Me.grpConnected)
         Me.Controls.Add(Me.grpAll)
+        Me.Icon = Global.NetEdit.Resources.NetEdit
         Me.Name = "NetEdit"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "NetEdit"

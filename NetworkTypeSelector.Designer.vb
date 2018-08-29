@@ -99,6 +99,7 @@ Partial Class NetworkTypeSelector
         Me.Controls.Add(Me.optPrivate)
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnSave)
+        Me.Icon = Global.NetEdit.Resources.NetEdit
         Me.MaximizeBox = false
         Me.MinimizeBox = false
         Me.Name = "NetworkTypeSelector"
