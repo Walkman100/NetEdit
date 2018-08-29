@@ -282,20 +282,79 @@ Public Partial Class NetEdit
     
     ' ------------------- Write -------------------
     
-    Sub LstAll_AfterLabelEdit(sender As Object, e As LabelEditEventArgs)
+    Sub SetKey(keyPath As String, value As String, data As Object)
+        Try
+            Dim localKey As Win32.RegistryKey
+            
+            If Environment.Is64BitOperatingSystem Then
+                localKey = Win32.RegistryKey.OpenBaseKey(Win32.RegistryHive.LocalMachine, Win32.RegistryView.Registry64)
+            Else
+                localKey = Win32.RegistryKey.OpenBaseKey(Win32.RegistryHive.LocalMachine, Win32.RegistryView.Registry32)
+            End If
+            
+            localKey = localKey.OpenSubKey(keyPath, True)
+            
+            localKey.SetValue(value, data)
+            
+            ' this uses 32-bit registry on 64-bit windows, we need 64-bit registry on 64-bit windows
+            'Win32.Registry.SetValue(keyPath, value, data)
+        Catch ex As UnauthorizedAccessException
+            If MsgBox("Permission Denied! Either run " & My.Application.Info.AssemblyName & " as an administrator or run the system registry editor." & vbNewLine & vbNewLine & _
+                "Attempt to launch a system tool as administrator?", MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, "Permission Denied") = MsgBoxResult.Yes Then
+                
+                WalkmanLib.RunAsAdmin("reg.exe", "ADD """ & keyPath & """ /v """ & value & """ /d """ & data.ToString() & """ /f ")
+                
+                ' sleep the thread to delay a list update
+                Threading.Thread.Sleep(100)
+            End If
+        Catch ex As Exception
+            WalkmanLib.ErrorDialog(ex)
+        End Try
         
+        PopulateProfileList()
+    End Sub
+    
+    Sub lstAll_AfterLabelEdit(sender As Object, e As LabelEditEventArgs) Handles lstAll.AfterLabelEdit
+        SetKey(ProfileRegPath & lstAll.Items.Item(e.Item).Tag.ToString, "ProfileName", e.Label)
     End Sub
     
     Sub btnAllName_Click() Handles btnAllName.Click
-        
+        If lstAll.SelectedIndices.Count <> 0 Then
+            Dim response = InputBox("Enter new name:", "Set Profile Name", lstAll.SelectedItems.Item(0).Text)
+            If response <> "" Then
+                SetKey(ProfileRegPath & lstAll.SelectedItems.Item(0).Tag.ToString, "ProfileName", response)
+            End If
+        End If
     End Sub
     
     Sub btnAllCategory_Click() Handles btnAllCategory.Click
-        
+        If lstAll.SelectedIndices.Count <> 0 Then
+            If lstAll.SelectedItems.Item(0).SubItems.Item(1).Text = "Home" Then
+                NetworkTypeSelector.SelectedNetworkType = NetworkCategory.Private
+            Else
+                NetworkTypeSelector.SelectedNetworkType = NetworkCategory.Public
+            End If
+            
+            If NetworkTypeSelector.ShowDialog() = DialogResult.OK Then
+                
+                Dim profileCategory As Integer
+                Select Case NetworkTypeSelector.SelectedNetworkType
+                    Case NetworkCategory.Public: profileCategory = 0
+                    Case NetworkCategory.Private: profileCategory = 1
+                End Select
+                
+                SetKey(ProfileRegPath & lstAll.SelectedItems.Item(0).Tag.ToString, "Category", profileCategory)
+            End If
+        End If
     End Sub
     
     Sub btnAllDescription_Click() Handles btnAllDescription.Click
-        
+        If lstAll.SelectedIndices.Count <> 0 Then
+            Dim response = InputBox("Enter new description:", "Set Profile Description", lstAll.SelectedItems.Item(0).SubItems.Item(2).Text)
+            If response <> "" Then
+                SetKey(ProfileRegPath & lstAll.SelectedItems.Item(0).Tag.ToString, "Description", response)
+            End If
+        End If
     End Sub
     
     Sub btnAllManaged_Click() Handles btnAllManaged.Click
@@ -319,15 +378,51 @@ Public Partial Class NetEdit
     End Sub
     
     Sub btnAllSignatureDNS_Click() Handles btnAllSignatureDNS.Click
-        
+        If lstAll.SelectedIndices.Count <> 0 Then
+            Dim signatureManagedString As String
+            If lstAll.SelectedItems.Item(0).SubItems.Item(3).Text = "Yes" Then
+                signatureManagedString = "Managed\"
+            Else
+                signatureManagedString = "Unmanaged\"
+            End If
+            
+            Dim response = InputBox("Enter DNS suffix:", "Set Signature's DNS Suffix", lstAll.SelectedItems.Item(0).SubItems.Item(7).Text)
+            If response <> "" Then
+                SetKey(SignatureRegPath & signatureManagedString & lstAll.SelectedItems.Item(0).SubItems.Item(11).Text, "DnsSuffix", response)
+            End If
+        End If
     End Sub
     
     Sub btnAllSignatureDescription_Click() Handles btnAllSignatureDescription.Click
-        
+        If lstAll.SelectedIndices.Count <> 0 Then
+            Dim signatureManagedString As String
+            If lstAll.SelectedItems.Item(0).SubItems.Item(3).Text = "Yes" Then
+                signatureManagedString = "Managed\"
+            Else
+                signatureManagedString = "Unmanaged\"
+            End If
+            
+            Dim response = InputBox("Enter Description:", "Set Signature's Description", lstAll.SelectedItems.Item(0).SubItems.Item(8).Text)
+            If response <> "" Then
+                SetKey(SignatureRegPath & signatureManagedString & lstAll.SelectedItems.Item(0).SubItems.Item(11).Text, "Description", response)
+            End If
+        End If
     End Sub
     
     Sub btnAllSignatureFirstNetwork_Click() Handles btnAllSignatureFirstNetwork.Click
-        
+        If lstAll.SelectedIndices.Count <> 0 Then
+            Dim signatureManagedString As String
+            If lstAll.SelectedItems.Item(0).SubItems.Item(3).Text = "Yes" Then
+                signatureManagedString = "Managed\"
+            Else
+                signatureManagedString = "Unmanaged\"
+            End If
+            
+            Dim response = InputBox("Enter FirstNetwork name:", "Set Signature's FirstNetwork name", lstAll.SelectedItems.Item(0).SubItems.Item(9).Text)
+            If response <> "" Then
+                SetKey(SignatureRegPath & signatureManagedString & lstAll.SelectedItems.Item(0).SubItems.Item(11).Text, "FirstNetwork", response)
+            End If
+        End If
     End Sub
     
     Sub btnAllSignatureSource_Click() Handles btnAllSignatureSource.Click
