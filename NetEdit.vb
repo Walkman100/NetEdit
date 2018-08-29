@@ -419,7 +419,7 @@ Public Partial Class NetEdit
     
     Sub btnAllSignatureDelete_Click() Handles btnAllSignatureDelete.Click
         If lstAll.SelectedIndices.Count <> 0 Then
-            If MsgBox("Are you sure you want to delete the selected signature? This cannot be undone, and if a profile was assigned to it it will not be reassigned if it is detected again.", _
+            If MsgBox("Are you sure you want to delete the selected signature? This cannot be undone, and if a profile was assigned to it that profile will not be reassigned if it is detected again.", _
               MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, "Deleting a Network Signature") = MsgBoxResult.Yes Then
                 
                 Dim signatureManagedString As String = GetSignatureManagedString(lstAll.SelectedItems.Item(0).SubItems.Item(3).Text)
@@ -443,10 +443,11 @@ Public Partial Class NetEdit
             If MsgBox("Are you sure you want to delete network """ & lstAll.SelectedItems.Item(0).Text & """ and it's signature? This cannot be undone, but both will be re-created by Windows if encountered again.", _
               MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, "Deleting a Network Profile & Signature") = MsgBoxResult.Yes Then
                 
-                Dim signatureManagedString As String = GetSignatureManagedString(lstAll.SelectedItems.Item(0).SubItems.Item(3).Text)
+                Dim signatureManagedString As String = GetSignatureManagedString(lstAll.SelectedItems.Item(0).SubItems.Item(3).Text) & lstAll.SelectedItems.Item(0).SubItems.Item(11).Text
+                ' have to get the signature path before deleting the profile as DeleteKey() refreshes the list
                 
-                DeleteKey(SignatureRegPath & signatureManagedString & lstAll.SelectedItems.Item(0).SubItems.Item(11).Text)
                 DeleteKey(ProfileRegPath & lstAll.SelectedItems.Item(0).Tag.ToString)
+                DeleteKey(SignatureRegPath & signatureManagedString)
             End If
         End If
     End Sub
@@ -488,7 +489,7 @@ Public Partial Class NetEdit
             line = line.Trim()
             Return line
         Else
-            Return "Error: Line doesn't contain seperator!"
+            Return "Error: """ & line & """ doesn't contain seperator!"
         End If
     End Function
     
