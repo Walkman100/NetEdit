@@ -3,7 +3,7 @@
 ; As a program that all Power PC users should have, Notepad++ is recommended to edit this file
 
 !define ProgramName "NetEdit"
-;Icon "My Project\Shell32(#326).ico"
+Icon "Properties\NetEdit.ico"
 
 Name "${ProgramName}"
 Caption "${ProgramName} Installer"
