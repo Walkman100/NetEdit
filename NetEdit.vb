@@ -53,6 +53,8 @@ Public Partial Class NetEdit
         Property SignatureFirstNetwork() As String
         ''' <summary>REG_DWORD</summary>
         Property SignatureSource() As Integer
+        ''' <summary>Keyname of the profile's signature</summary>
+        Property SignatureKey() As String
     End Structure
     
     Sub lstAllSelectionUpdated() Handles lstAll.SelectedIndexChanged
@@ -122,7 +124,7 @@ Public Partial Class NetEdit
             End Select
             
             tmpListViewItem = New ListViewItem(New String() {profile.ProfileName, profileCategory, profile.Description, profileManaged, profileNameType, IIf(profile.CategoryType = -1, "", profile.CategoryType).ToString(), _
-                "", "", "", "", ""})
+                "", "", "", "", "", ""})
             
             tmpListViewItem.Tag = profile.ProfileGuid
             
@@ -145,6 +147,7 @@ Public Partial Class NetEdit
                     itemProfile.SubItems.Item(8).Text = profile.SignatureDescription
                     itemProfile.SubItems.Item(9).Text = profile.SignatureFirstNetwork
                     itemProfile.SubItems.Item(10).Text = profile.SignatureSource.ToString()
+                    itemProfile.SubItems.Item(11).Text = profile.SignatureKey
                     
                     assignedSignature = True
                     Exit For
@@ -153,7 +156,8 @@ Public Partial Class NetEdit
             
             If assignedSignature = False Then ' no profile with the same GUID, add a new entry
                 tmpListViewItem = New ListViewItem(New String() {"", "", "", "", "", "", _
-                BitConverter.ToString(profile.SignatureDefaultGatewayMac).Replace("-", ":"), profile.SignatureDNSSuffix, profile.SignatureDescription, profile.SignatureFirstNetwork, profile.SignatureSource.ToString()})
+                    BitConverter.ToString(profile.SignatureDefaultGatewayMac).Replace("-", ":"), profile.SignatureDNSSuffix, profile.SignatureDescription, _
+                    profile.SignatureFirstNetwork, profile.SignatureSource.ToString(), profile.SignatureKey})
                 
                 tmpListViewItem.Tag = profile.ProfileGuid
                 
@@ -239,6 +243,7 @@ Public Partial Class NetEdit
             For Each subKeyName As String In localKey.GetSubKeyNames
                 Dim tmpKey = localKey.OpenSubKey(subKeyName)
                 
+                tmpProfile.SignatureKey = tmpKey.Name.Substring(tmpKey.Name.LastIndexOf("\") +1)
                 tmpProfile.ProfileGuid = tmpKey.GetValue("ProfileGuid").ToString
                 
                 If tmpKey.GetValue("DefaultGatewayMac") IsNot Nothing Then tmpProfile.SignatureDefaultGatewayMac = DirectCast(tmpKey.GetValue("DefaultGatewayMac"), Byte())
@@ -256,6 +261,7 @@ Public Partial Class NetEdit
             For Each subKeyName As String In localKey.GetSubKeyNames
                 Dim tmpKey = localKey.OpenSubKey(subKeyName)
                 
+                tmpProfile.SignatureKey = tmpKey.Name.Substring(tmpKey.Name.LastIndexOf("\") +1)
                 tmpProfile.ProfileGuid = tmpKey.GetValue("ProfileGuid").ToString
                 
                 If tmpKey.GetValue("DefaultGatewayMac") IsNot Nothing Then tmpProfile.SignatureDefaultGatewayMac = DirectCast(tmpKey.GetValue("DefaultGatewayMac"), Byte())
