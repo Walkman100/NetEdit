@@ -93,6 +93,115 @@ Public Partial Class NetEdit
     
     ' ------------------- Read -------------------
     
+    Function GetNativeKey() As Win32.RegistryKey
+        ' thanks to https://stackoverflow.com/a/13232372/2999220
+        Dim localKey As Win32.RegistryKey
+        
+        If Environment.Is64BitOperatingSystem Then
+            localKey = Win32.RegistryKey.OpenBaseKey(Win32.RegistryHive.LocalMachine, Win32.RegistryView.Registry64)
+        Else
+            localKey = Win32.RegistryKey.OpenBaseKey(Win32.RegistryHive.LocalMachine, Win32.RegistryView.Registry32)
+        End If
+        
+        Return localKey
+    End Function
+    
+    Const ProfileRegPath As String = "SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkList\Profiles\"
+    Const SignatureRegPath As String = "SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkList\Signatures\"
+    
+    Function GetProfiles() As List(Of NetworkProfile)
+        Dim localKey = GetNativeKey()
+        
+        ' this fails if not running as admin... not sure how best to handle that
+        localKey = localKey.OpenSubKey(ProfileRegPath)
+        
+        If localKey Is Nothing Then
+            MsgBox("Error loading registry key!", MsgBoxStyle.Critical)
+            Return New List(Of NetworkProfile)
+        End If
+        
+        Dim returnProfiles As New List(Of NetworkProfile)
+        Dim tmpProfile As NetworkProfile = New NetworkProfile
+        
+        Try
+            For Each subKeyName As String In localKey.GetSubKeyNames
+                Dim tmpKey = localKey.OpenSubKey(subKeyName)
+                
+                tmpProfile.ProfileGuid = tmpKey.Name.Substring(tmpKey.Name.LastIndexOf("\") +1)
+                
+                If tmpKey.GetValue("ProfileName")  IsNot Nothing Then tmpProfile.ProfileName =             tmpKey.GetValue("ProfileName").ToString
+                If tmpKey.GetValue("Category")     IsNot Nothing Then tmpProfile.Category =     DirectCast(tmpKey.GetValue("Category"), Integer)
+                If tmpKey.GetValue("Description")  IsNot Nothing Then tmpProfile.Description =             tmpKey.GetValue("Description").ToString
+                If tmpKey.GetValue("Managed")      IsNot Nothing Then tmpProfile.Managed =      DirectCast(tmpKey.GetValue("Managed"), Integer)
+                If tmpKey.GetValue("NameType")     IsNot Nothing Then tmpProfile.NameType =     DirectCast(tmpKey.GetValue("NameType"), Integer)
+                If tmpKey.GetValue("CategoryType") IsNot Nothing Then tmpProfile.CategoryType = DirectCast(tmpKey.GetValue("CategoryType"), Integer) Else tmpProfile.CategoryType = -1
+                
+                returnProfiles.Add(tmpProfile)
+                tmpProfile = New NetworkProfile
+            Next
+        Catch ex As Exception
+            WalkmanLib.ErrorDialog(ex)
+        End Try
+        
+        Return returnProfiles
+    End Function
+    
+    Function GetProfileSignatures() As List(Of NetworkProfile)
+        Dim localKeyRoot = GetNativeKey()
+        
+        localKeyRoot = localKeyRoot.OpenSubKey(SignatureRegPath)
+        
+        If localKeyRoot Is Nothing Then
+            MsgBox("Error loading registry key!", MsgBoxStyle.Critical)
+            Return New List(Of NetworkProfile)
+        End If
+        
+        Dim returnProfiles As New List(Of NetworkProfile)
+        Dim tmpProfile As NetworkProfile = New NetworkProfile
+        
+        Try
+            Dim localKey As Win32.RegistryKey = localKeyRoot.OpenSubKey("Unmanaged")
+            
+            For Each subKeyName As String In localKey.GetSubKeyNames
+                Dim tmpKey = localKey.OpenSubKey(subKeyName)
+                
+                tmpProfile.SignatureKey = tmpKey.Name.Substring(tmpKey.Name.LastIndexOf("\") +1)
+                tmpProfile.ProfileGuid = tmpKey.GetValue("ProfileGuid").ToString
+                
+                If tmpKey.GetValue("DefaultGatewayMac") IsNot Nothing Then tmpProfile.SignatureDefaultGatewayMac = DirectCast(tmpKey.GetValue("DefaultGatewayMac"), Byte())
+                If tmpKey.GetValue("Description")       IsNot Nothing Then tmpProfile.SignatureDescription =       tmpKey.GetValue("Description").ToString
+                If tmpKey.GetValue("DnsSuffix")         IsNot Nothing Then tmpProfile.SignatureDNSSuffix =         tmpKey.GetValue("DnsSuffix").ToString
+                If tmpKey.GetValue("FirstNetwork")      IsNot Nothing Then tmpProfile.SignatureFirstNetwork =      tmpKey.GetValue("FirstNetwork").ToString
+                If tmpKey.GetValue("Source")            IsNot Nothing Then tmpProfile.SignatureSource = DirectCast(tmpKey.GetValue("Source"), Integer)
+                
+                returnProfiles.Add(tmpProfile)
+                tmpProfile = New NetworkProfile
+            Next
+            
+            localKey = localKeyRoot.OpenSubKey("Managed")
+            
+            For Each subKeyName As String In localKey.GetSubKeyNames
+                Dim tmpKey = localKey.OpenSubKey(subKeyName)
+                
+                tmpProfile.SignatureKey = tmpKey.Name.Substring(tmpKey.Name.LastIndexOf("\") +1)
+                tmpProfile.ProfileGuid = tmpKey.GetValue("ProfileGuid").ToString
+                
+                If tmpKey.GetValue("DefaultGatewayMac") IsNot Nothing Then tmpProfile.SignatureDefaultGatewayMac = DirectCast(tmpKey.GetValue("DefaultGatewayMac"), Byte())
+                If tmpKey.GetValue("Description")       IsNot Nothing Then tmpProfile.SignatureDescription =       tmpKey.GetValue("Description").ToString
+                If tmpKey.GetValue("DnsSuffix")         IsNot Nothing Then tmpProfile.SignatureDNSSuffix =         tmpKey.GetValue("DnsSuffix").ToString
+                If tmpKey.GetValue("FirstNetwork")      IsNot Nothing Then tmpProfile.SignatureFirstNetwork =      tmpKey.GetValue("FirstNetwork").ToString
+                If tmpKey.GetValue("Source")            IsNot Nothing Then tmpProfile.SignatureSource = DirectCast(tmpKey.GetValue("Source"), Integer)
+                
+                returnProfiles.Add(tmpProfile)
+                tmpProfile = New NetworkProfile
+            Next
+        Catch ex As Exception
+            WalkmanLib.ErrorDialog(ex)
+        End Try
+        
+        Return returnProfiles
+    End Function
+    
     Sub PopulateProfileList()
         
         lstAll.Items.Clear()
@@ -170,130 +279,12 @@ Public Partial Class NetEdit
         lstAllSelectionUpdated()
     End Sub
     
-    Const ProfileRegPath As String = "SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkList\Profiles\"
-    
-    Function GetProfiles() As List(Of NetworkProfile)
-        ' thanks to https://stackoverflow.com/a/13232372/2999220
-        Dim localKey As Win32.RegistryKey
-        
-        If Environment.Is64BitOperatingSystem Then
-            localKey = Win32.RegistryKey.OpenBaseKey(Win32.RegistryHive.LocalMachine, Win32.RegistryView.Registry64)
-        Else
-            localKey = Win32.RegistryKey.OpenBaseKey(Win32.RegistryHive.LocalMachine, Win32.RegistryView.Registry32)
-        End If
-        
-        ' this fails if not running as admin... not sure how best to handle that
-        localKey = localKey.OpenSubKey(ProfileRegPath)
-        
-        If localKey Is Nothing Then
-            MsgBox("Error loading registry key!", MsgBoxStyle.Critical)
-            Return New List(Of NetworkProfile)
-        End If
-        
-        Dim returnProfiles As New List(Of NetworkProfile)
-        Dim tmpProfile As NetworkProfile = New NetworkProfile
-        
-        Try
-            For Each subKeyName As String In localKey.GetSubKeyNames
-                Dim tmpKey = localKey.OpenSubKey(subKeyName)
-                
-                tmpProfile.ProfileGuid = tmpKey.Name.Substring(tmpKey.Name.LastIndexOf("\") +1)
-                
-                If tmpKey.GetValue("ProfileName")  IsNot Nothing Then tmpProfile.ProfileName =             tmpKey.GetValue("ProfileName").ToString
-                If tmpKey.GetValue("Category")     IsNot Nothing Then tmpProfile.Category =     DirectCast(tmpKey.GetValue("Category"), Integer)
-                If tmpKey.GetValue("Description")  IsNot Nothing Then tmpProfile.Description =             tmpKey.GetValue("Description").ToString
-                If tmpKey.GetValue("Managed")      IsNot Nothing Then tmpProfile.Managed =      DirectCast(tmpKey.GetValue("Managed"), Integer)
-                If tmpKey.GetValue("NameType")     IsNot Nothing Then tmpProfile.NameType =     DirectCast(tmpKey.GetValue("NameType"), Integer)
-                If tmpKey.GetValue("CategoryType") IsNot Nothing Then tmpProfile.CategoryType = DirectCast(tmpKey.GetValue("CategoryType"), Integer) Else tmpProfile.CategoryType = -1
-                
-                returnProfiles.Add(tmpProfile)
-                tmpProfile = New NetworkProfile
-            Next
-        Catch ex As Exception
-            WalkmanLib.ErrorDialog(ex)
-        End Try
-        
-        Return returnProfiles
-    End Function
-    
-    Const SignatureRegPath As String = "SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkList\Signatures\"
-    
-    Function GetProfileSignatures() As List(Of NetworkProfile)
-        Dim localKeyRoot As Win32.RegistryKey
-        
-        If Environment.Is64BitOperatingSystem Then
-            localKeyRoot = Win32.RegistryKey.OpenBaseKey(Win32.RegistryHive.LocalMachine, Win32.RegistryView.Registry64)
-        Else
-            localKeyRoot = Win32.RegistryKey.OpenBaseKey(Win32.RegistryHive.LocalMachine, Win32.RegistryView.Registry32)
-        End If
-        
-        localKeyRoot = localKeyRoot.OpenSubKey(SignatureRegPath)
-        
-        If localKeyRoot Is Nothing Then
-            MsgBox("Error loading registry key!", MsgBoxStyle.Critical)
-            Return New List(Of NetworkProfile)
-        End If
-        
-        Dim returnProfiles As New List(Of NetworkProfile)
-        Dim tmpProfile As NetworkProfile = New NetworkProfile
-        
-        Try
-            Dim localKey As Win32.RegistryKey = localKeyRoot.OpenSubKey("Unmanaged")
-            
-            For Each subKeyName As String In localKey.GetSubKeyNames
-                Dim tmpKey = localKey.OpenSubKey(subKeyName)
-                
-                tmpProfile.SignatureKey = tmpKey.Name.Substring(tmpKey.Name.LastIndexOf("\") +1)
-                tmpProfile.ProfileGuid = tmpKey.GetValue("ProfileGuid").ToString
-                
-                If tmpKey.GetValue("DefaultGatewayMac") IsNot Nothing Then tmpProfile.SignatureDefaultGatewayMac = DirectCast(tmpKey.GetValue("DefaultGatewayMac"), Byte())
-                If tmpKey.GetValue("Description")       IsNot Nothing Then tmpProfile.SignatureDescription =       tmpKey.GetValue("Description").ToString
-                If tmpKey.GetValue("DnsSuffix")         IsNot Nothing Then tmpProfile.SignatureDNSSuffix =         tmpKey.GetValue("DnsSuffix").ToString
-                If tmpKey.GetValue("FirstNetwork")      IsNot Nothing Then tmpProfile.SignatureFirstNetwork =      tmpKey.GetValue("FirstNetwork").ToString
-                If tmpKey.GetValue("Source")            IsNot Nothing Then tmpProfile.SignatureSource = DirectCast(tmpKey.GetValue("Source"), Integer)
-                
-                returnProfiles.Add(tmpProfile)
-                tmpProfile = New NetworkProfile
-            Next
-            
-            localKey = localKeyRoot.OpenSubKey("Managed")
-            
-            For Each subKeyName As String In localKey.GetSubKeyNames
-                Dim tmpKey = localKey.OpenSubKey(subKeyName)
-                
-                tmpProfile.SignatureKey = tmpKey.Name.Substring(tmpKey.Name.LastIndexOf("\") +1)
-                tmpProfile.ProfileGuid = tmpKey.GetValue("ProfileGuid").ToString
-                
-                If tmpKey.GetValue("DefaultGatewayMac") IsNot Nothing Then tmpProfile.SignatureDefaultGatewayMac = DirectCast(tmpKey.GetValue("DefaultGatewayMac"), Byte())
-                If tmpKey.GetValue("Description")       IsNot Nothing Then tmpProfile.SignatureDescription =       tmpKey.GetValue("Description").ToString
-                If tmpKey.GetValue("DnsSuffix")         IsNot Nothing Then tmpProfile.SignatureDNSSuffix =         tmpKey.GetValue("DnsSuffix").ToString
-                If tmpKey.GetValue("FirstNetwork")      IsNot Nothing Then tmpProfile.SignatureFirstNetwork =      tmpKey.GetValue("FirstNetwork").ToString
-                If tmpKey.GetValue("Source")            IsNot Nothing Then tmpProfile.SignatureSource = DirectCast(tmpKey.GetValue("Source"), Integer)
-                
-                returnProfiles.Add(tmpProfile)
-                tmpProfile = New NetworkProfile
-            Next
-        Catch ex As Exception
-            WalkmanLib.ErrorDialog(ex)
-        End Try
-        
-        Return returnProfiles
-    End Function
-    
     ' ------------------- Write -------------------
     
     Sub SetKey(keyPath As String, value As String, data As Object)
         Try
-            Dim localKey As Win32.RegistryKey
-            
-            If Environment.Is64BitOperatingSystem Then
-                localKey = Win32.RegistryKey.OpenBaseKey(Win32.RegistryHive.LocalMachine, Win32.RegistryView.Registry64)
-            Else
-                localKey = Win32.RegistryKey.OpenBaseKey(Win32.RegistryHive.LocalMachine, Win32.RegistryView.Registry32)
-            End If
-            
+            Dim localKey = GetNativeKey()
             localKey = localKey.OpenSubKey(keyPath, True)
-            
             localKey.SetValue(value, data)
             
             ' this uses 32-bit registry on 64-bit windows, we need 64-bit registry on 64-bit windows
@@ -315,13 +306,7 @@ Public Partial Class NetEdit
     End Sub
     
     Sub DeleteKey(keyPath As String)
-        Dim localKey As Win32.RegistryKey
-        
-        If Environment.Is64BitOperatingSystem Then
-            localKey = Win32.RegistryKey.OpenBaseKey(Win32.RegistryHive.LocalMachine, Win32.RegistryView.Registry64)
-        Else
-            localKey = Win32.RegistryKey.OpenBaseKey(Win32.RegistryHive.LocalMachine, Win32.RegistryView.Registry32)
-        End If
+        Dim localKey = GetNativeKey()
         
         localKey.DeleteSubKey(keyPath)
         
@@ -383,14 +368,13 @@ Public Partial Class NetEdit
         
     End Sub
     
-    Sub btnAllDeleteNetwork_Click() Handles btnAllDeleteNetwork.Click
-        If lstAll.SelectedIndices.Count <> 0 Then
-            If MsgBox("Are you sure you want to delete network """ & lstAll.SelectedItems.Item(0).Text & """? This cannot be undone, but if it matches a signature then Windows will re-create it.", _
-              MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, "Deleting a Network Profile") = MsgBoxResult.Yes Then
-                DeleteKey(ProfileRegPath & lstAll.SelectedItems.Item(0).Tag.ToString)
-            End If
+    Function GetSignatureManagedString(inputString As String) As String
+        If inputString = "Yes" Then
+            Return "Managed\"
+        Else
+            Return "Unmanaged\"
         End If
-    End Sub
+    End Function
     
     Sub btnAllSignatureGateway_Click() Handles btnAllSignatureGateway.Click
         
@@ -398,12 +382,7 @@ Public Partial Class NetEdit
     
     Sub btnAllSignatureDNS_Click() Handles btnAllSignatureDNS.Click
         If lstAll.SelectedIndices.Count <> 0 Then
-            Dim signatureManagedString As String
-            If lstAll.SelectedItems.Item(0).SubItems.Item(3).Text = "Yes" Then
-                signatureManagedString = "Managed\"
-            Else
-                signatureManagedString = "Unmanaged\"
-            End If
+            Dim signatureManagedString As String = GetSignatureManagedString(lstAll.SelectedItems.Item(0).SubItems.Item(3).Text)
             
             Dim response = InputBox("Enter DNS suffix:", "Set Signature's DNS Suffix", lstAll.SelectedItems.Item(0).SubItems.Item(7).Text)
             If response <> "" Then
@@ -414,12 +393,7 @@ Public Partial Class NetEdit
     
     Sub btnAllSignatureDescription_Click() Handles btnAllSignatureDescription.Click
         If lstAll.SelectedIndices.Count <> 0 Then
-            Dim signatureManagedString As String
-            If lstAll.SelectedItems.Item(0).SubItems.Item(3).Text = "Yes" Then
-                signatureManagedString = "Managed\"
-            Else
-                signatureManagedString = "Unmanaged\"
-            End If
+            Dim signatureManagedString As String = GetSignatureManagedString(lstAll.SelectedItems.Item(0).SubItems.Item(3).Text)
             
             Dim response = InputBox("Enter Description:", "Set Signature's Description", lstAll.SelectedItems.Item(0).SubItems.Item(8).Text)
             If response <> "" Then
@@ -430,12 +404,7 @@ Public Partial Class NetEdit
     
     Sub btnAllSignatureFirstNetwork_Click() Handles btnAllSignatureFirstNetwork.Click
         If lstAll.SelectedIndices.Count <> 0 Then
-            Dim signatureManagedString As String
-            If lstAll.SelectedItems.Item(0).SubItems.Item(3).Text = "Yes" Then
-                signatureManagedString = "Managed\"
-            Else
-                signatureManagedString = "Unmanaged\"
-            End If
+            Dim signatureManagedString As String = GetSignatureManagedString(lstAll.SelectedItems.Item(0).SubItems.Item(3).Text)
             
             Dim response = InputBox("Enter FirstNetwork name:", "Set Signature's FirstNetwork name", lstAll.SelectedItems.Item(0).SubItems.Item(9).Text)
             If response <> "" Then
@@ -453,14 +422,18 @@ Public Partial Class NetEdit
             If MsgBox("Are you sure you want to delete the selected signature? This cannot be undone, and if a profile was assigned to it it will not be reassigned if it is detected again.", _
               MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, "Deleting a Network Signature") = MsgBoxResult.Yes Then
                 
-                Dim signatureManagedString As String
-                If lstAll.SelectedItems.Item(0).SubItems.Item(3).Text = "Yes" Then
-                    signatureManagedString = "Managed\"
-                Else
-                    signatureManagedString = "Unmanaged\"
-                End If
+                Dim signatureManagedString As String = GetSignatureManagedString(lstAll.SelectedItems.Item(0).SubItems.Item(3).Text)
                 
                 DeleteKey(SignatureRegPath & signatureManagedString & lstAll.SelectedItems.Item(0).SubItems.Item(11).Text)
+            End If
+        End If
+    End Sub
+    
+    Sub btnAllDeleteNetwork_Click() Handles btnAllDeleteNetwork.Click
+        If lstAll.SelectedIndices.Count <> 0 Then
+            If MsgBox("Are you sure you want to delete network """ & lstAll.SelectedItems.Item(0).Text & """? This cannot be undone, but if it matches a signature then Windows will re-create it.", _
+              MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, "Deleting a Network Profile") = MsgBoxResult.Yes Then
+                DeleteKey(ProfileRegPath & lstAll.SelectedItems.Item(0).Tag.ToString)
             End If
         End If
     End Sub
@@ -470,12 +443,7 @@ Public Partial Class NetEdit
             If MsgBox("Are you sure you want to delete network """ & lstAll.SelectedItems.Item(0).Text & """ and it's signature? This cannot be undone, but both will be re-created by Windows if encountered again.", _
               MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, "Deleting a Network Profile & Signature") = MsgBoxResult.Yes Then
                 
-                Dim signatureManagedString As String
-                If lstAll.SelectedItems.Item(0).SubItems.Item(3).Text = "Yes" Then
-                    signatureManagedString = "Managed\"
-                Else
-                    signatureManagedString = "Unmanaged\"
-                End If
+                Dim signatureManagedString As String = GetSignatureManagedString(lstAll.SelectedItems.Item(0).SubItems.Item(3).Text)
                 
                 DeleteKey(SignatureRegPath & signatureManagedString & lstAll.SelectedItems.Item(0).SubItems.Item(11).Text)
                 DeleteKey(ProfileRegPath & lstAll.SelectedItems.Item(0).Tag.ToString)
@@ -504,30 +472,23 @@ Public Partial Class NetEdit
     
     ' ------------------- Read -------------------
     
-    Sub PopulateNetworkList() Handles btnConnRefresh.Click
-        
-        lstConnected.Items.Clear()
-        
-        Dim tmpListViewItem As ListViewItem
-        For Each connectedNetwork In GetNetworks()
-            tmpListViewItem = New ListViewItem(New String() {connectedNetwork.Name, connectedNetwork.InterfaceAlias, _
-                connectedNetwork.IPv4Connectivity, connectedNetwork.IPv6Connectivity, connectedNetwork.NetworkCategory})
-            
-            tmpListViewItem.Tag = connectedNetwork.InterfaceIndex
-            
-            lstConnected.Items.Add(tmpListViewItem)
-        Next
-        
-        lstConnected.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize)
-        
-        lstConnectedSelectionUpdated()
-    End Sub
-    
     Function PowerShellPath() As String
         If Environment.Is64BitOperatingSystem And Not Environment.Is64BitProcess Then
             Return "C:\Windows\Sysnative\WindowsPowerShell\v1.0\powershell.exe"
         Else
             Return "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"
+        End If
+    End Function
+    
+    Function ProcessLineContents(line As String) As String
+        If line.Contains(":") Then
+            Dim seperatorIndex = line.IndexOf(":") + 1
+            
+            line = line.Substring(seperatorIndex)
+            line = line.Trim()
+            Return line
+        Else
+            Return "Error: Line doesn't contain seperator!"
         End If
     End Function
     
@@ -573,17 +534,24 @@ Public Partial Class NetEdit
         End Try
     End Function
     
-    Function ProcessLineContents(line As String) As String
-        If line.Contains(":") Then
-            Dim seperatorIndex = line.IndexOf(":") + 1
+    Sub PopulateNetworkList() Handles btnConnRefresh.Click
+        
+        lstConnected.Items.Clear()
+        
+        Dim tmpListViewItem As ListViewItem
+        For Each connectedNetwork In GetNetworks()
+            tmpListViewItem = New ListViewItem(New String() {connectedNetwork.Name, connectedNetwork.InterfaceAlias, _
+                connectedNetwork.IPv4Connectivity, connectedNetwork.IPv6Connectivity, connectedNetwork.NetworkCategory})
             
-            line = line.Substring(seperatorIndex)
-            line = line.Trim()
-            Return line
-        Else
-            Return "Error: Line doesn't contain seperator!"
-        End If
-    End Function
+            tmpListViewItem.Tag = connectedNetwork.InterfaceIndex
+            
+            lstConnected.Items.Add(tmpListViewItem)
+        Next
+        
+        lstConnected.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize)
+        
+        lstConnectedSelectionUpdated()
+    End Sub
     
     ' ------------------- Write -------------------
     
