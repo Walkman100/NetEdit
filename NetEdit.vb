@@ -314,6 +314,20 @@ Public Partial Class NetEdit
         PopulateProfileList()
     End Sub
     
+    Sub DeleteKey(keyPath As String)
+        Dim localKey As Win32.RegistryKey
+        
+        If Environment.Is64BitOperatingSystem Then
+            localKey = Win32.RegistryKey.OpenBaseKey(Win32.RegistryHive.LocalMachine, Win32.RegistryView.Registry64)
+        Else
+            localKey = Win32.RegistryKey.OpenBaseKey(Win32.RegistryHive.LocalMachine, Win32.RegistryView.Registry32)
+        End If
+        
+        localKey.DeleteSubKey(keyPath)
+        
+        PopulateProfileList()
+    End Sub
+    
     Sub lstAll_AfterLabelEdit(sender As Object, e As LabelEditEventArgs) Handles lstAll.AfterLabelEdit
         SetKey(ProfileRegPath & lstAll.Items.Item(e.Item).Tag.ToString, "ProfileName", e.Label)
     End Sub
@@ -370,7 +384,12 @@ Public Partial Class NetEdit
     End Sub
     
     Sub btnAllDeleteNetwork_Click() Handles btnAllDeleteNetwork.Click
-        
+        If lstAll.SelectedIndices.Count <> 0 Then
+            If MsgBox("Are you sure you want to delete network """ & lstAll.SelectedItems.Item(0).Text & """? This cannot be undone, but if it matches a signature then Windows will re-create it.", _
+              MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, "Deleting a Network Profile") = MsgBoxResult.Yes Then
+                DeleteKey(ProfileRegPath & lstAll.SelectedItems.Item(0).Tag.ToString)
+            End If
+        End If
     End Sub
     
     Sub btnAllSignatureGateway_Click() Handles btnAllSignatureGateway.Click
@@ -430,11 +449,38 @@ Public Partial Class NetEdit
     End Sub
     
     Sub btnAllSignatureDelete_Click() Handles btnAllSignatureDelete.Click
-        
+        If lstAll.SelectedIndices.Count <> 0 Then
+            If MsgBox("Are you sure you want to delete the selected signature? This cannot be undone, and if a profile was assigned to it it will not be reassigned if it is detected again.", _
+              MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, "Deleting a Network Signature") = MsgBoxResult.Yes Then
+                
+                Dim signatureManagedString As String
+                If lstAll.SelectedItems.Item(0).SubItems.Item(3).Text = "Yes" Then
+                    signatureManagedString = "Managed\"
+                Else
+                    signatureManagedString = "Unmanaged\"
+                End If
+                
+                DeleteKey(SignatureRegPath & signatureManagedString & lstAll.SelectedItems.Item(0).SubItems.Item(11).Text)
+            End If
+        End If
     End Sub
     
     Sub btnAllDeleteBoth_Click() Handles btnAllDeleteBoth.Click
-        
+        If lstAll.SelectedIndices.Count <> 0 Then
+            If MsgBox("Are you sure you want to delete network """ & lstAll.SelectedItems.Item(0).Text & """ and it's signature? This cannot be undone, but both will be re-created by Windows if encountered again.", _
+              MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, "Deleting a Network Profile & Signature") = MsgBoxResult.Yes Then
+                
+                Dim signatureManagedString As String
+                If lstAll.SelectedItems.Item(0).SubItems.Item(3).Text = "Yes" Then
+                    signatureManagedString = "Managed\"
+                Else
+                    signatureManagedString = "Unmanaged\"
+                End If
+                
+                DeleteKey(SignatureRegPath & signatureManagedString & lstAll.SelectedItems.Item(0).SubItems.Item(11).Text)
+                DeleteKey(ProfileRegPath & lstAll.SelectedItems.Item(0).Tag.ToString)
+            End If
+        End If
     End Sub
     
     ' =================== Connected Networks ===================
