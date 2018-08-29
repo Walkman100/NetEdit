@@ -368,11 +368,36 @@ Public Partial Class NetEdit
         
     End Sub
     
-    Function GetSignatureManagedString(inputString As String) As String
-        If inputString = "Yes" Then
+    
+    Function GetSignatureManagedString(inputItem As ListViewItem) As String
+        If inputItem.SubItems.Item(3).Text = "Yes" Then
             Return "Managed\"
-        Else
+        ElseIf inputItem.SubItems.Item(3).Text = "No" Then
             Return "Unmanaged\"
+        Else ' no network associated with signature, have to search for signature
+            
+            Dim localKeyRoot = GetNativeKey()
+            localKeyRoot = localKeyRoot.OpenSubKey(SignatureRegPath)
+            
+            Dim localKey As Win32.RegistryKey = localKeyRoot.OpenSubKey("Unmanaged")
+            For Each subKeyName As String In localKey.GetSubKeyNames
+                Dim tmpKey = localKey.OpenSubKey(subKeyName)
+                
+                If tmpKey.Name.Substring(tmpKey.Name.LastIndexOf("\") +1) = inputItem.SubItems.Item(11).Text Then
+                    Return "Unmanaged\"   ' found the SignatureKey in the Unmanaged signatures list
+                End If
+            Next
+            
+            localKey = localKeyRoot.OpenSubKey("Managed")
+            For Each subKeyName As String In localKey.GetSubKeyNames
+                Dim tmpKey = localKey.OpenSubKey(subKeyName)
+                
+                If tmpKey.Name.Substring(tmpKey.Name.LastIndexOf("\") +1) = inputItem.SubItems.Item(11).Text Then
+                    Return "Managed\"   ' found the SignatureKey in the Managed signatures list
+                End If
+            Next
+            
+            Throw New Exception("Signature not found in either of the Unmanaged or Managed signatures!")
         End If
     End Function
     
@@ -382,33 +407,27 @@ Public Partial Class NetEdit
     
     Sub btnAllSignatureDNS_Click() Handles btnAllSignatureDNS.Click
         If lstAll.SelectedIndices.Count <> 0 Then
-            Dim signatureManagedString As String = GetSignatureManagedString(lstAll.SelectedItems.Item(0).SubItems.Item(3).Text)
-            
             Dim response = InputBox("Enter DNS suffix:", "Set Signature's DNS Suffix", lstAll.SelectedItems.Item(0).SubItems.Item(7).Text)
             If response <> "" Then
-                SetKey(SignatureRegPath & signatureManagedString & lstAll.SelectedItems.Item(0).SubItems.Item(11).Text, "DnsSuffix", response)
+                SetKey(SignatureRegPath & GetSignatureManagedString(lstAll.SelectedItems.Item(0)) & lstAll.SelectedItems.Item(0).SubItems.Item(11).Text, "DnsSuffix", response)
             End If
         End If
     End Sub
     
     Sub btnAllSignatureDescription_Click() Handles btnAllSignatureDescription.Click
         If lstAll.SelectedIndices.Count <> 0 Then
-            Dim signatureManagedString As String = GetSignatureManagedString(lstAll.SelectedItems.Item(0).SubItems.Item(3).Text)
-            
             Dim response = InputBox("Enter Description:", "Set Signature's Description", lstAll.SelectedItems.Item(0).SubItems.Item(8).Text)
             If response <> "" Then
-                SetKey(SignatureRegPath & signatureManagedString & lstAll.SelectedItems.Item(0).SubItems.Item(11).Text, "Description", response)
+                SetKey(SignatureRegPath & GetSignatureManagedString(lstAll.SelectedItems.Item(0)) & lstAll.SelectedItems.Item(0).SubItems.Item(11).Text, "Description", response)
             End If
         End If
     End Sub
     
     Sub btnAllSignatureFirstNetwork_Click() Handles btnAllSignatureFirstNetwork.Click
         If lstAll.SelectedIndices.Count <> 0 Then
-            Dim signatureManagedString As String = GetSignatureManagedString(lstAll.SelectedItems.Item(0).SubItems.Item(3).Text)
-            
             Dim response = InputBox("Enter FirstNetwork name:", "Set Signature's FirstNetwork name", lstAll.SelectedItems.Item(0).SubItems.Item(9).Text)
             If response <> "" Then
-                SetKey(SignatureRegPath & signatureManagedString & lstAll.SelectedItems.Item(0).SubItems.Item(11).Text, "FirstNetwork", response)
+                SetKey(SignatureRegPath & GetSignatureManagedString(lstAll.SelectedItems.Item(0)) & lstAll.SelectedItems.Item(0).SubItems.Item(11).Text, "FirstNetwork", response)
             End If
         End If
     End Sub
@@ -417,14 +436,13 @@ Public Partial Class NetEdit
         
     End Sub
     
+    
     Sub btnAllSignatureDelete_Click() Handles btnAllSignatureDelete.Click
         If lstAll.SelectedIndices.Count <> 0 Then
             If MsgBox("Are you sure you want to delete the selected signature? This cannot be undone, and if a profile was assigned to it that profile will not be reassigned if it is detected again.", _
               MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, "Deleting a Network Signature") = MsgBoxResult.Yes Then
                 
-                Dim signatureManagedString As String = GetSignatureManagedString(lstAll.SelectedItems.Item(0).SubItems.Item(3).Text)
-                
-                DeleteKey(SignatureRegPath & signatureManagedString & lstAll.SelectedItems.Item(0).SubItems.Item(11).Text)
+                DeleteKey(SignatureRegPath & GetSignatureManagedString(lstAll.SelectedItems.Item(0)) & lstAll.SelectedItems.Item(0).SubItems.Item(11).Text)
             End If
         End If
     End Sub
@@ -443,11 +461,11 @@ Public Partial Class NetEdit
             If MsgBox("Are you sure you want to delete network """ & lstAll.SelectedItems.Item(0).Text & """ and it's signature? This cannot be undone, but both will be re-created by Windows if encountered again.", _
               MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, "Deleting a Network Profile & Signature") = MsgBoxResult.Yes Then
                 
-                Dim signatureManagedString As String = GetSignatureManagedString(lstAll.SelectedItems.Item(0).SubItems.Item(3).Text) & lstAll.SelectedItems.Item(0).SubItems.Item(11).Text
+                Dim signatureFullPath As String = GetSignatureManagedString(lstAll.SelectedItems.Item(0)) & lstAll.SelectedItems.Item(0).SubItems.Item(11).Text
                 ' have to get the signature path before deleting the profile as DeleteKey() refreshes the list
                 
                 DeleteKey(ProfileRegPath & lstAll.SelectedItems.Item(0).Tag.ToString)
-                DeleteKey(SignatureRegPath & signatureManagedString)
+                DeleteKey(SignatureRegPath & signatureFullPath)
             End If
         End If
     End Sub
