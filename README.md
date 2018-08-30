@@ -2,6 +2,11 @@
 
 A Windows Network Profile manager/editor
 
+## Screenshot
+[![NetEdit Main Window][Main Window]][Main Window]
+
+  [Main Window]: http://walkman100.github.io/images/Screenshots/My_Projects/NetEdit/MainWindow.png
+
 ## Download
 Get the latest version [here](https://github.com/Walkman100/NetEdit/releases), and the latest build from commit
 [here](https://ci.appveyor.com/project/Walkman100/NetEdit/build/artifacts)
