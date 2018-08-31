@@ -1,5 +1,4 @@
-﻿
-Partial Class NetEdit
+﻿Partial Class NetEdit
     Inherits System.Windows.Forms.Form
     
     ''' <summary>

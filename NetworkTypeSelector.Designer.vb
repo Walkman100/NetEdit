@@ -1,5 +1,4 @@
-﻿
-Partial Class NetworkTypeSelector
+﻿Partial Class NetworkTypeSelector
     Inherits System.Windows.Forms.Form
     
     ''' <summary>

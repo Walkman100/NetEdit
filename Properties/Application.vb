@@ -1,5 +1,4 @@
-﻿
-Imports Microsoft.VisualBasic.ApplicationServices
+﻿Imports Microsoft.VisualBasic.ApplicationServices
 
 Namespace My
     ' This file controls the behaviour of the application.
