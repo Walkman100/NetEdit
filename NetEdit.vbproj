@@ -65,9 +65,6 @@
       <DependentUpon>NetEdit.vb</DependentUpon>
     </Compile>
     <Compile Include="NetEdit.vb" />
-    <Compile Include="NetworkTypeSelector.Designer.vb">
-      <DependentUpon>NetworkTypeSelector.vb</DependentUpon>
-    </Compile>
     <Compile Include="NetworkTypeSelector.vb" />
     <Compile Include="Properties\Application.vb" />
     <Compile Include="Properties\AssemblyInfo.vb" />
