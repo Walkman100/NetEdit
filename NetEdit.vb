@@ -11,17 +11,22 @@ Public Partial Class NetEdit
             Me.Text = "[Admin] " & Me.Text
         End If
         
+        If Environment.OSVersion.Version.Major >= 6 And Environment.OSVersion.Version.Minor >= 2 Then
+            ' hide wizard buttons on Win8+
+            btnAllLocationWizard.Visible = False
+            btnAllNetworkWizard.Visible = False
+        End If
+        
         timerDelayedScan.Start()
     End Sub
     
     Sub timerDelayedScan_Tick() Handles timerDelayedScan.Tick
         timerDelayedScan.Stop()
         
-        lstAllSelectionUpdated()  ' These make sure the buttons start disabled
-        lstConnectedSelectionUpdated()
+        lstConnectedSelectionUpdated()  ' These make sure the buttons start disabled
+        lstAllSelectionUpdated()
         
         PopulateNetworkList()
-        ' load active networks first because if that fails it just gives an empty list back
         PopulateProfileList()
         
     End Sub
@@ -213,17 +218,17 @@ Public Partial Class NetEdit
         btnAllName.Enabled = enableButtons
         btnAllCategory.Enabled = enableButtons
         btnAllDescription.Enabled = enableButtons
-        btnAllManaged.Enabled = enableButtons
-        btnAllNameType.Enabled = enableButtons
-        btnAllCategoryType.Enabled = enableButtons
+        btnAllManaged.Enabled = False 'enableButtons
+        btnAllNameType.Enabled = False 'enableButtons
+        btnAllCategoryType.Enabled = False 'enableButtons
         btnAllDeleteNetwork.Enabled = enableButtons
         btnAllLocationWizard.Enabled = enableButtons
         btnAllNetworkWizard.Enabled = enableButtons
-        btnAllSignatureGateway.Enabled = enableButtons
+        btnAllSignatureGateway.Enabled = False 'enableButtons
         btnAllSignatureDNS.Enabled = enableButtons
         btnAllSignatureDescription.Enabled = enableButtons
         btnAllSignatureFirstNetwork.Enabled = enableButtons
-        btnAllSignatureSource.Enabled = enableButtons
+        btnAllSignatureSource.Enabled = False 'enableButtons
         btnAllSignatureDelete.Enabled = enableButtons
         btnAllDeleteBoth.Enabled = enableButtons
     End Sub
