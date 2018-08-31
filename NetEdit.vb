@@ -202,7 +202,7 @@ Public Partial Class NetEdit
         Return returnProfiles
     End Function
     
-    Sub PopulateProfileList()
+    Sub PopulateProfileList() Handles btnAllRefresh.Click
         
         lstAll.Items.Clear()
         
@@ -468,6 +468,22 @@ Public Partial Class NetEdit
                 DeleteKey(SignatureRegPath & signatureFullPath)
             End If
         End If
+    End Sub
+    
+    Sub btnAllLocationWizard_Click() Handles btnAllLocationWizard.Click
+        If lstAll.SelectedIndices.Count <> 0 Then
+            Process.Start("C:\Windows\system32\rundll32.exe", "pnidui.dll,NwCategoryWiz " & lstAll.SelectedItems.Item(0).Tag.ToString())
+        End If
+    End Sub
+    
+    Sub btnAllNetworkWizard_Click() Handles btnAllNetworkWizard.Click
+        If lstAll.SelectedIndices.Count <> 0 Then
+            Process.Start("C:\Windows\system32\rundll32.exe", "pnidui.dll,NwCategoryWiz " & lstAll.SelectedItems.Item(0).Tag.ToString() & " 1")
+        End If
+    End Sub
+    
+    Sub btnExit_Click() Handles btnExit.Click
+        Application.Exit()
     End Sub
     
     ' =================== Connected Networks ===================

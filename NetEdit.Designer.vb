@@ -30,6 +30,8 @@ Partial Class NetEdit
         Dim listViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("Loading...")
         Dim listViewItem2 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("Loading...")
         Me.grpAll = New System.Windows.Forms.GroupBox()
+        Me.btnAllNetworkWizard = New System.Windows.Forms.Button()
+        Me.btnAllLocationWizard = New System.Windows.Forms.Button()
         Me.btnAllDeleteNetwork = New System.Windows.Forms.Button()
         Me.grpAllSignature = New System.Windows.Forms.GroupBox()
         Me.btnAllDeleteBoth = New System.Windows.Forms.Button()
@@ -67,6 +69,8 @@ Partial Class NetEdit
         Me.headConnV6Status = New System.Windows.Forms.ColumnHeader()
         Me.headConnType = New System.Windows.Forms.ColumnHeader()
         Me.timerDelayedScan = New System.Windows.Forms.Timer(Me.components)
+        Me.btnAllRefresh = New System.Windows.Forms.Button()
+        Me.btnExit = New System.Windows.Forms.Button()
         Me.grpAll.SuspendLayout
         Me.grpAllSignature.SuspendLayout
         Me.grpConnected.SuspendLayout
@@ -77,6 +81,10 @@ Partial Class NetEdit
         Me.grpAll.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
                         Or System.Windows.Forms.AnchorStyles.Left)  _
                         Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.grpAll.Controls.Add(Me.btnExit)
+        Me.grpAll.Controls.Add(Me.btnAllRefresh)
+        Me.grpAll.Controls.Add(Me.btnAllNetworkWizard)
+        Me.grpAll.Controls.Add(Me.btnAllLocationWizard)
         Me.grpAll.Controls.Add(Me.btnAllDeleteNetwork)
         Me.grpAll.Controls.Add(Me.grpAllSignature)
         Me.grpAll.Controls.Add(Me.btnAllCategoryType)
@@ -88,10 +96,32 @@ Partial Class NetEdit
         Me.grpAll.Controls.Add(Me.lstAll)
         Me.grpAll.Location = New System.Drawing.Point(12, 12)
         Me.grpAll.Name = "grpAll"
-        Me.grpAll.Size = New System.Drawing.Size(1065, 300)
+        Me.grpAll.Size = New System.Drawing.Size(1112, 300)
         Me.grpAll.TabIndex = 0
         Me.grpAll.TabStop = false
         Me.grpAll.Text = "All Profiles:"
+        '
+        'btnAllNetworkWizard
+        '
+        Me.btnAllNetworkWizard.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
+        Me.btnAllNetworkWizard.Location = New System.Drawing.Point(915, 217)
+        Me.btnAllNetworkWizard.Name = "btnAllNetworkWizard"
+        Me.btnAllNetworkWizard.Size = New System.Drawing.Size(192, 23)
+        Me.btnAllNetworkWizard.TabIndex = 10
+        Me.btnAllNetworkWizard.Text = "Network Name & Properties Wizard..."
+        Me.btnAllNetworkWizard.UseMnemonic = false
+        Me.btnAllNetworkWizard.UseVisualStyleBackColor = true
+        '
+        'btnAllLocationWizard
+        '
+        Me.btnAllLocationWizard.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
+        Me.btnAllLocationWizard.BackColor = System.Drawing.SystemColors.Control
+        Me.btnAllLocationWizard.Location = New System.Drawing.Point(763, 217)
+        Me.btnAllLocationWizard.Name = "btnAllLocationWizard"
+        Me.btnAllLocationWizard.Size = New System.Drawing.Size(146, 23)
+        Me.btnAllLocationWizard.TabIndex = 9
+        Me.btnAllLocationWizard.Text = "Network Location Wizard..."
+        Me.btnAllLocationWizard.UseVisualStyleBackColor = true
         '
         'btnAllDeleteNetwork
         '
@@ -115,7 +145,7 @@ Partial Class NetEdit
         Me.grpAllSignature.Controls.Add(Me.btnAllSignatureGateway)
         Me.grpAllSignature.Location = New System.Drawing.Point(6, 246)
         Me.grpAllSignature.Name = "grpAllSignature"
-        Me.grpAllSignature.Size = New System.Drawing.Size(1053, 48)
+        Me.grpAllSignature.Size = New System.Drawing.Size(817, 48)
         Me.grpAllSignature.TabIndex = 8
         Me.grpAllSignature.TabStop = false
         Me.grpAllSignature.Text = "Signature:"
@@ -263,7 +293,7 @@ Partial Class NetEdit
         Me.lstAll.Location = New System.Drawing.Point(6, 19)
         Me.lstAll.MultiSelect = false
         Me.lstAll.Name = "lstAll"
-        Me.lstAll.Size = New System.Drawing.Size(1053, 192)
+        Me.lstAll.Size = New System.Drawing.Size(1100, 192)
         Me.lstAll.TabIndex = 0
         Me.lstAll.UseCompatibleStateImageBehavior = false
         Me.lstAll.View = System.Windows.Forms.View.Details
@@ -330,7 +360,7 @@ Partial Class NetEdit
         Me.grpConnected.Controls.Add(Me.lstConnected)
         Me.grpConnected.Location = New System.Drawing.Point(12, 318)
         Me.grpConnected.Name = "grpConnected"
-        Me.grpConnected.Size = New System.Drawing.Size(1065, 300)
+        Me.grpConnected.Size = New System.Drawing.Size(1112, 300)
         Me.grpConnected.TabIndex = 1
         Me.grpConnected.TabStop = false
         Me.grpConnected.Text = "Connected Networks:"
@@ -338,7 +368,7 @@ Partial Class NetEdit
         'btnConnRefresh
         '
         Me.btnConnRefresh.Anchor = System.Windows.Forms.AnchorStyles.Bottom
-        Me.btnConnRefresh.Location = New System.Drawing.Point(454, 271)
+        Me.btnConnRefresh.Location = New System.Drawing.Point(478, 271)
         Me.btnConnRefresh.Name = "btnConnRefresh"
         Me.btnConnRefresh.Size = New System.Drawing.Size(75, 23)
         Me.btnConnRefresh.TabIndex = 1
@@ -348,7 +378,7 @@ Partial Class NetEdit
         'btnConnChangeType
         '
         Me.btnConnChangeType.Anchor = System.Windows.Forms.AnchorStyles.Bottom
-        Me.btnConnChangeType.Location = New System.Drawing.Point(536, 271)
+        Me.btnConnChangeType.Location = New System.Drawing.Point(560, 271)
         Me.btnConnChangeType.Name = "btnConnChangeType"
         Me.btnConnChangeType.Size = New System.Drawing.Size(81, 23)
         Me.btnConnChangeType.TabIndex = 2
@@ -369,7 +399,7 @@ Partial Class NetEdit
         Me.lstConnected.Location = New System.Drawing.Point(6, 19)
         Me.lstConnected.MultiSelect = false
         Me.lstConnected.Name = "lstConnected"
-        Me.lstConnected.Size = New System.Drawing.Size(1053, 246)
+        Me.lstConnected.Size = New System.Drawing.Size(1100, 246)
         Me.lstConnected.TabIndex = 0
         Me.lstConnected.UseCompatibleStateImageBehavior = false
         Me.lstConnected.View = System.Windows.Forms.View.Details
@@ -403,11 +433,33 @@ Partial Class NetEdit
         '
         Me.timerDelayedScan.Interval = 50
         '
+        'btnAllRefresh
+        '
+        Me.btnAllRefresh.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
+        Me.btnAllRefresh.Location = New System.Drawing.Point(829, 265)
+        Me.btnAllRefresh.Name = "btnAllRefresh"
+        Me.btnAllRefresh.Size = New System.Drawing.Size(75, 23)
+        Me.btnAllRefresh.TabIndex = 11
+        Me.btnAllRefresh.Text = "Refresh"
+        Me.btnAllRefresh.UseVisualStyleBackColor = true
+        '
+        'btnExit
+        '
+        Me.btnExit.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
+        Me.btnExit.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.btnExit.Location = New System.Drawing.Point(910, 265)
+        Me.btnExit.Name = "btnExit"
+        Me.btnExit.Size = New System.Drawing.Size(75, 23)
+        Me.btnExit.TabIndex = 12
+        Me.btnExit.Text = "Exit"
+        Me.btnExit.UseVisualStyleBackColor = true
+        '
         'NetEdit
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1089, 630)
+        Me.CancelButton = Me.btnExit
+        Me.ClientSize = New System.Drawing.Size(1136, 630)
         Me.Controls.Add(Me.grpConnected)
         Me.Controls.Add(Me.grpAll)
         Me.Icon = Global.NetEdit.Resources.NetEdit
@@ -420,6 +472,10 @@ Partial Class NetEdit
         Me.grpConnected.ResumeLayout(false)
         Me.ResumeLayout(false)
     End Sub
+    Private WithEvents btnAllRefresh As System.Windows.Forms.Button
+    Private WithEvents btnExit As System.Windows.Forms.Button
+    Private WithEvents btnAllLocationWizard As System.Windows.Forms.Button
+    Private WithEvents btnAllNetworkWizard As System.Windows.Forms.Button
     Private WithEvents btnConnRefresh As System.Windows.Forms.Button
     Private WithEvents timerDelayedScan As System.Windows.Forms.Timer
     Private WithEvents headConnType As System.Windows.Forms.ColumnHeader
