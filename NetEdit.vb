@@ -219,7 +219,7 @@ Public Partial Class NetEdit
         btnAllCategory.Enabled = enableButtons
         btnAllDescription.Enabled = enableButtons
         btnAllManaged.Enabled = False 'enableButtons
-        btnAllNameType.Enabled = False 'enableButtons
+        btnAllNameType.Enabled = enableButtons
         btnAllCategoryType.Enabled = False 'enableButtons
         btnAllDeleteNetwork.Enabled = enableButtons
         btnAllLocationWizard.Enabled = enableButtons
@@ -503,7 +503,24 @@ Public Partial Class NetEdit
     End Sub
     
     Sub btnAllNameType_Click() Handles btnAllNameType.Click
-        
+        If lstAll.SelectedIndices.Count <> 0 Then
+            Select Case lstAll.SelectedItems.Item(0).SubItems.Item(4).Text
+                Case "Wired Network"
+                    NameTypeSelector.SelectedNameType = 6
+                Case "VPN"
+                    NameTypeSelector.SelectedNameType = 23
+                Case "Wireless Network"
+                    NameTypeSelector.SelectedNameType = 71
+                Case "Mobile Broadband"
+                    NameTypeSelector.SelectedNameType = 243
+                Case Else
+                    NameTypeSelector.SelectedNameType = CType(lstAll.SelectedItems.Item(0).SubItems.Item(4).Text, Integer)
+            End Select
+            
+            If NameTypeSelector.ShowDialog() = DialogResult.OK Then
+                SetKey(ProfileRegPath & lstAll.SelectedItems.Item(0).Tag.ToString, "NameType", NameTypeSelector.SelectedNameType)
+            End If
+        End If
     End Sub
     
     Sub btnAllCategoryType_Click() Handles btnAllCategoryType.Click

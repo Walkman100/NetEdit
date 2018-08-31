@@ -61,6 +61,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NameTypeSelector.vb" />
     <Compile Include="NetEdit.Designer.vb">
       <DependentUpon>NetEdit.vb</DependentUpon>
     </Compile>
