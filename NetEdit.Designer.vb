@@ -30,6 +30,8 @@ Partial Class NetEdit
         Dim listViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("Loading...")
         Dim listViewItem2 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("Loading...")
         Me.grpAll = New System.Windows.Forms.GroupBox()
+        Me.btnExit = New System.Windows.Forms.Button()
+        Me.btnAllRefresh = New System.Windows.Forms.Button()
         Me.btnAllNetworkWizard = New System.Windows.Forms.Button()
         Me.btnAllLocationWizard = New System.Windows.Forms.Button()
         Me.btnAllDeleteNetwork = New System.Windows.Forms.Button()
@@ -69,8 +71,6 @@ Partial Class NetEdit
         Me.headConnV6Status = New System.Windows.Forms.ColumnHeader()
         Me.headConnType = New System.Windows.Forms.ColumnHeader()
         Me.timerDelayedScan = New System.Windows.Forms.Timer(Me.components)
-        Me.btnAllRefresh = New System.Windows.Forms.Button()
-        Me.btnExit = New System.Windows.Forms.Button()
         Me.grpAll.SuspendLayout
         Me.grpAllSignature.SuspendLayout
         Me.grpConnected.SuspendLayout
@@ -94,12 +94,33 @@ Partial Class NetEdit
         Me.grpAll.Controls.Add(Me.btnAllCategory)
         Me.grpAll.Controls.Add(Me.btnAllName)
         Me.grpAll.Controls.Add(Me.lstAll)
-        Me.grpAll.Location = New System.Drawing.Point(12, 12)
+        Me.grpAll.Location = New System.Drawing.Point(12, 318)
         Me.grpAll.Name = "grpAll"
         Me.grpAll.Size = New System.Drawing.Size(1112, 300)
         Me.grpAll.TabIndex = 0
         Me.grpAll.TabStop = false
         Me.grpAll.Text = "All Profiles:"
+        '
+        'btnExit
+        '
+        Me.btnExit.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
+        Me.btnExit.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.btnExit.Location = New System.Drawing.Point(910, 265)
+        Me.btnExit.Name = "btnExit"
+        Me.btnExit.Size = New System.Drawing.Size(75, 23)
+        Me.btnExit.TabIndex = 12
+        Me.btnExit.Text = "Exit"
+        Me.btnExit.UseVisualStyleBackColor = true
+        '
+        'btnAllRefresh
+        '
+        Me.btnAllRefresh.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
+        Me.btnAllRefresh.Location = New System.Drawing.Point(829, 265)
+        Me.btnAllRefresh.Name = "btnAllRefresh"
+        Me.btnAllRefresh.Size = New System.Drawing.Size(75, 23)
+        Me.btnAllRefresh.TabIndex = 11
+        Me.btnAllRefresh.Text = "Refresh"
+        Me.btnAllRefresh.UseVisualStyleBackColor = true
         '
         'btnAllNetworkWizard
         '
@@ -354,12 +375,12 @@ Partial Class NetEdit
         '
         'grpConnected
         '
-        Me.grpConnected.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left)  _
+        Me.grpConnected.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left)  _
                         Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
         Me.grpConnected.Controls.Add(Me.btnConnRefresh)
         Me.grpConnected.Controls.Add(Me.btnConnChangeType)
         Me.grpConnected.Controls.Add(Me.lstConnected)
-        Me.grpConnected.Location = New System.Drawing.Point(12, 318)
+        Me.grpConnected.Location = New System.Drawing.Point(12, 12)
         Me.grpConnected.Name = "grpConnected"
         Me.grpConnected.Size = New System.Drawing.Size(1112, 300)
         Me.grpConnected.TabIndex = 1
@@ -434,27 +455,6 @@ Partial Class NetEdit
         'timerDelayedScan
         '
         Me.timerDelayedScan.Interval = 50
-        '
-        'btnAllRefresh
-        '
-        Me.btnAllRefresh.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
-        Me.btnAllRefresh.Location = New System.Drawing.Point(829, 265)
-        Me.btnAllRefresh.Name = "btnAllRefresh"
-        Me.btnAllRefresh.Size = New System.Drawing.Size(75, 23)
-        Me.btnAllRefresh.TabIndex = 11
-        Me.btnAllRefresh.Text = "Refresh"
-        Me.btnAllRefresh.UseVisualStyleBackColor = true
-        '
-        'btnExit
-        '
-        Me.btnExit.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
-        Me.btnExit.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.btnExit.Location = New System.Drawing.Point(910, 265)
-        Me.btnExit.Name = "btnExit"
-        Me.btnExit.Size = New System.Drawing.Size(75, 23)
-        Me.btnExit.TabIndex = 12
-        Me.btnExit.Text = "Exit"
-        Me.btnExit.UseVisualStyleBackColor = true
         '
         'NetEdit
         '
