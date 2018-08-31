@@ -286,6 +286,7 @@ Partial Class NetEdit
         Me.lstAll.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.headAllNetworkName, Me.headAllNetworkCategory, Me.headAllNetworkDesc, Me.headAllNetworkManaged, Me.headAllNetworkNameType, Me.headAllNetworkCategoryType, Me.headAllSignatureMac, Me.headAllSignatureDNS, Me.headAllSignatureDesc, Me.headAllSignatureFirstNetwork, Me.headAllSignatureSource})
         Me.lstAll.FullRowSelect = true
         Me.lstAll.GridLines = true
+        Me.lstAll.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
         Me.lstAll.HideSelection = false
         listViewItem1.StateImageIndex = 0
         Me.lstAll.Items.AddRange(New System.Windows.Forms.ListViewItem() {listViewItem1})
@@ -301,7 +302,7 @@ Partial Class NetEdit
         'headAllNetworkName
         '
         Me.headAllNetworkName.Text = "Profile Name"
-        Me.headAllNetworkName.Width = 100
+        Me.headAllNetworkName.Width = 118
         '
         'headAllNetworkCategory
         '
@@ -310,7 +311,7 @@ Partial Class NetEdit
         'headAllNetworkDesc
         '
         Me.headAllNetworkDesc.Text = "Description"
-        Me.headAllNetworkDesc.Width = 70
+        Me.headAllNetworkDesc.Width = 96
         '
         'headAllNetworkManaged
         '
@@ -329,7 +330,7 @@ Partial Class NetEdit
         'headAllSignatureMac
         '
         Me.headAllSignatureMac.Text = "Signature Gateway Mac"
-        Me.headAllSignatureMac.Width = 115
+        Me.headAllSignatureMac.Width = 146
         '
         'headAllSignatureDNS
         '
@@ -394,6 +395,7 @@ Partial Class NetEdit
         Me.lstConnected.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.headConnName, Me.headConnInterface, Me.headConnV4Status, Me.headConnV6Status, Me.headConnType})
         Me.lstConnected.FullRowSelect = true
         Me.lstConnected.GridLines = true
+        Me.lstConnected.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable
         Me.lstConnected.HideSelection = false
         Me.lstConnected.Items.AddRange(New System.Windows.Forms.ListViewItem() {listViewItem2})
         Me.lstConnected.Location = New System.Drawing.Point(6, 19)

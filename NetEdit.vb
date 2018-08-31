@@ -58,37 +58,24 @@ Public Partial Class NetEdit
     End Structure
     
     Sub lstAllSelectionUpdated() Handles lstAll.SelectedIndexChanged
-        If lstAll.SelectedIndices.Count = 0 Then
-            btnAllName.Enabled = False
-            btnAllCategory.Enabled = False
-            btnAllDescription.Enabled = False
-            btnAllManaged.Enabled = False
-            btnAllNameType.Enabled = False
-            btnAllCategoryType.Enabled = False
-            btnAllDeleteNetwork.Enabled = False
-            btnAllSignatureGateway.Enabled = False
-            btnAllSignatureDNS.Enabled = False
-            btnAllSignatureDescription.Enabled = False
-            btnAllSignatureFirstNetwork.Enabled = False
-            btnAllSignatureSource.Enabled = False
-            btnAllSignatureDelete.Enabled = False
-            btnAllDeleteBoth.Enabled = False
-        Else
-            btnAllName.Enabled = True
-            btnAllCategory.Enabled = True
-            btnAllDescription.Enabled = True
-            btnAllManaged.Enabled = True
-            btnAllNameType.Enabled = True
-            btnAllCategoryType.Enabled = True
-            btnAllDeleteNetwork.Enabled = True
-            btnAllSignatureGateway.Enabled = True
-            btnAllSignatureDNS.Enabled = True
-            btnAllSignatureDescription.Enabled = True
-            btnAllSignatureFirstNetwork.Enabled = True
-            btnAllSignatureSource.Enabled = True
-            btnAllSignatureDelete.Enabled = True
-            btnAllDeleteBoth.Enabled = True
-        End If
+        Dim enableButtons As Boolean = (lstAll.SelectedIndices.Count <> 0)
+        
+        btnAllName.Enabled = enableButtons
+        btnAllCategory.Enabled = enableButtons
+        btnAllDescription.Enabled = enableButtons
+        btnAllManaged.Enabled = enableButtons
+        btnAllNameType.Enabled = enableButtons
+        btnAllCategoryType.Enabled = enableButtons
+        btnAllDeleteNetwork.Enabled = enableButtons
+        btnAllLocationWizard.Enabled = enableButtons
+        btnAllNetworkWizard.Enabled = enableButtons
+        btnAllSignatureGateway.Enabled = enableButtons
+        btnAllSignatureDNS.Enabled = enableButtons
+        btnAllSignatureDescription.Enabled = enableButtons
+        btnAllSignatureFirstNetwork.Enabled = enableButtons
+        btnAllSignatureSource.Enabled = enableButtons
+        btnAllSignatureDelete.Enabled = enableButtons
+        btnAllDeleteBoth.Enabled = enableButtons
     End Sub
     
     ' ------------------- Read -------------------
