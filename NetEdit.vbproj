@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IntegerSelector.vb" />
+    <Compile Include="MacAddressSelector.vb" />
     <Compile Include="NameTypeSelector.vb" />
     <Compile Include="NetEdit.Designer.vb">
       <DependentUpon>NetEdit.vb</DependentUpon>

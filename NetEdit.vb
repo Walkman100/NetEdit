@@ -224,7 +224,7 @@ Public Partial Class NetEdit
         btnAllDeleteNetwork.Enabled = enableButtons
         btnAllLocationWizard.Enabled = enableButtons
         btnAllNetworkWizard.Enabled = enableButtons
-        btnAllSignatureGateway.Enabled = False 'enableButtons
+        btnAllSignatureGateway.Enabled = enableButtons
         btnAllSignatureDNS.Enabled = enableButtons
         btnAllSignatureDescription.Enabled = enableButtons
         btnAllSignatureFirstNetwork.Enabled = enableButtons
@@ -573,7 +573,20 @@ Public Partial Class NetEdit
     End Function
     
     Sub btnAllSignatureGateway_Click() Handles btnAllSignatureGateway.Click
-        
+        If lstAll.SelectedIndices.Count <> 0 Then
+            MacAddressSelector.MacAddress = lstAll.SelectedItems.Item(0).SubItems.Item(6).Text
+            If MacAddressSelector.ShowDialog() = DialogResult.OK Then
+                Dim macAddressToSet(5) As Byte
+                
+                Dim counter As Integer = 0                   ' the property below replaces - with : for us
+                For Each byteNibbles As String In MacAddressSelector.MacAddress.Split(":".ToCharArray)
+                    macAddressToSet(counter) = Convert.ToByte(byteNibbles, 16)
+                    counter += 1
+                Next
+                
+                SetKey(SignatureRegPath & GetSignatureManagedString(lstAll.SelectedItems.Item(0)) & lstAll.SelectedItems.Item(0).SubItems.Item(11).Text, "DefaultGatewayMac", macAddressToSet)
+            End If
+        End If
     End Sub
     
     Sub btnAllSignatureDNS_Click() Handles btnAllSignatureDNS.Click
