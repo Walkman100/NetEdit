@@ -76,6 +76,7 @@ Public Class NetworkTypeSelector
         Me.Controls.Add(Me.optPrivate)
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnSave)
+        ' Comment this out to get code auto-complete
         Me.Icon = Global.NetEdit.Resources.NetEdit
         Me.MaximizeBox = false
         Me.MinimizeBox = false

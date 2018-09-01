@@ -132,7 +132,8 @@ Public Class NameTypeSelector
         Me.Controls.Add(Me.optWired)
         Me.Controls.Add(Me.btnCancel)
         Me.Controls.Add(Me.btnSave)
-        Me.Icon = Resources.NetEdit
+        ' Comment this out to get code auto-complete
+        Me.Icon = Global.NetEdit.Resources.NetEdit
         Me.MaximizeBox = false
         Me.MinimizeBox = false
         Me.Name = "NameTypeSelector"
