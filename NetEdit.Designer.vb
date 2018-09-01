@@ -96,7 +96,7 @@
         Me.grpAll.Location = New System.Drawing.Point(12, 318)
         Me.grpAll.Name = "grpAll"
         Me.grpAll.Size = New System.Drawing.Size(1112, 300)
-        Me.grpAll.TabIndex = 0
+        Me.grpAll.TabIndex = 1
         Me.grpAll.TabStop = false
         Me.grpAll.Text = "All Profiles:"
         '
@@ -127,7 +127,7 @@
         Me.btnAllNetworkWizard.Location = New System.Drawing.Point(915, 217)
         Me.btnAllNetworkWizard.Name = "btnAllNetworkWizard"
         Me.btnAllNetworkWizard.Size = New System.Drawing.Size(192, 23)
-        Me.btnAllNetworkWizard.TabIndex = 10
+        Me.btnAllNetworkWizard.TabIndex = 9
         Me.btnAllNetworkWizard.Text = "Network Name & Properties Wizard..."
         Me.btnAllNetworkWizard.UseMnemonic = false
         Me.btnAllNetworkWizard.UseVisualStyleBackColor = true
@@ -139,7 +139,7 @@
         Me.btnAllLocationWizard.Location = New System.Drawing.Point(763, 217)
         Me.btnAllLocationWizard.Name = "btnAllLocationWizard"
         Me.btnAllLocationWizard.Size = New System.Drawing.Size(146, 23)
-        Me.btnAllLocationWizard.TabIndex = 9
+        Me.btnAllLocationWizard.TabIndex = 8
         Me.btnAllLocationWizard.Text = "Network Location Wizard..."
         Me.btnAllLocationWizard.UseVisualStyleBackColor = true
         '
@@ -166,7 +166,7 @@
         Me.grpAllSignature.Location = New System.Drawing.Point(6, 246)
         Me.grpAllSignature.Name = "grpAllSignature"
         Me.grpAllSignature.Size = New System.Drawing.Size(817, 48)
-        Me.grpAllSignature.TabIndex = 8
+        Me.grpAllSignature.TabIndex = 10
         Me.grpAllSignature.TabStop = false
         Me.grpAllSignature.Text = "Signature:"
         '
@@ -382,7 +382,7 @@
         Me.grpConnected.Location = New System.Drawing.Point(12, 12)
         Me.grpConnected.Name = "grpConnected"
         Me.grpConnected.Size = New System.Drawing.Size(1112, 300)
-        Me.grpConnected.TabIndex = 1
+        Me.grpConnected.TabIndex = 0
         Me.grpConnected.TabStop = false
         Me.grpConnected.Text = "Connected Networks:"
         '

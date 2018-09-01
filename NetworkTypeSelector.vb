@@ -3,11 +3,6 @@ Option Strict On
 Option Compare Binary
 Option Infer On
 
-Public Enum NetworkCategory
-    [Private]
-    [Public]
-End Enum
-
 Public Class NetworkTypeSelector
     Inherits System.Windows.Forms.Form
     Private components As System.ComponentModel.IContainer
@@ -32,7 +27,7 @@ Public Class NetworkTypeSelector
         Me.btnSave.Location = New System.Drawing.Point(12, 85)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(75, 23)
-        Me.btnSave.TabIndex = 1
+        Me.btnSave.TabIndex = 3
         Me.btnSave.Text = "Save"
         Me.btnSave.UseVisualStyleBackColor = true
         'btnCancel
@@ -41,7 +36,7 @@ Public Class NetworkTypeSelector
         Me.btnCancel.Location = New System.Drawing.Point(93, 85)
         Me.btnCancel.Name = "btnCancel"
         Me.btnCancel.Size = New System.Drawing.Size(75, 23)
-        Me.btnCancel.TabIndex = 2
+        Me.btnCancel.TabIndex = 4
         Me.btnCancel.Text = "Cancel"
         Me.btnCancel.UseVisualStyleBackColor = true
         'optPrivate
@@ -49,7 +44,7 @@ Public Class NetworkTypeSelector
         Me.optPrivate.Location = New System.Drawing.Point(12, 25)
         Me.optPrivate.Name = "optPrivate"
         Me.optPrivate.Size = New System.Drawing.Size(156, 24)
-        Me.optPrivate.TabIndex = 3
+        Me.optPrivate.TabIndex = 1
         Me.optPrivate.TabStop = true
         Me.optPrivate.Text = "Private Network"
         Me.optPrivate.UseVisualStyleBackColor = true
@@ -58,7 +53,7 @@ Public Class NetworkTypeSelector
         Me.optPublic.Location = New System.Drawing.Point(12, 55)
         Me.optPublic.Name = "optPublic"
         Me.optPublic.Size = New System.Drawing.Size(156, 24)
-        Me.optPublic.TabIndex = 4
+        Me.optPublic.TabIndex = 2
         Me.optPublic.TabStop = true
         Me.optPublic.Text = "Public Network"
         Me.optPublic.UseVisualStyleBackColor = true
@@ -68,7 +63,7 @@ Public Class NetworkTypeSelector
         Me.lblInfo.Location = New System.Drawing.Point(12, 9)
         Me.lblInfo.Name = "lblInfo"
         Me.lblInfo.Size = New System.Drawing.Size(145, 13)
-        Me.lblInfo.TabIndex = 5
+        Me.lblInfo.TabIndex = 0
         Me.lblInfo.Text = "Select type to set network to:"
         'NetworkTypeSelector
         Me.AcceptButton = Me.btnSave
@@ -123,3 +118,8 @@ Public Class NetworkTypeSelector
         End Set
     End Property
 End Class
+
+Public Enum NetworkCategory
+    [Private]
+    [Public]
+End Enum
