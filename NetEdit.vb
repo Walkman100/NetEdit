@@ -220,7 +220,7 @@ Public Partial Class NetEdit
         btnAllDescription.Enabled = enableButtons
         btnAllManaged.Enabled = False 'enableButtons
         btnAllNameType.Enabled = enableButtons
-        btnAllCategoryType.Enabled = False 'enableButtons
+        btnAllCategoryType.Enabled = enableButtons
         btnAllDeleteNetwork.Enabled = enableButtons
         btnAllLocationWizard.Enabled = enableButtons
         btnAllNetworkWizard.Enabled = enableButtons
@@ -228,7 +228,7 @@ Public Partial Class NetEdit
         btnAllSignatureDNS.Enabled = enableButtons
         btnAllSignatureDescription.Enabled = enableButtons
         btnAllSignatureFirstNetwork.Enabled = enableButtons
-        btnAllSignatureSource.Enabled = False 'enableButtons
+        btnAllSignatureSource.Enabled = enableButtons
         btnAllSignatureDelete.Enabled = enableButtons
         btnAllDeleteBoth.Enabled = enableButtons
     End Sub
@@ -524,7 +524,19 @@ Public Partial Class NetEdit
     End Sub
     
     Sub btnAllCategoryType_Click() Handles btnAllCategoryType.Click
-        
+        If lstAll.SelectedIndices.Count <> 0 Then
+            Dim inputInteger As Integer
+            If Not Integer.TryParse(lstAll.SelectedItems.Item(0).SubItems.Item(5).Text, inputInteger) Then
+                inputInteger = 0
+            End If
+            
+            IntegerSelector.SelectedInteger = inputInteger
+            IntegerSelector.IntegerDescription = "CategoryType"
+            
+            If IntegerSelector.ShowDialog() = DialogResult.OK Then
+                SetKey(ProfileRegPath & lstAll.SelectedItems.Item(0).Tag.ToString, "CategoryType", IntegerSelector.SelectedInteger)
+            End If
+        End If
     End Sub
     
     
@@ -592,7 +604,19 @@ Public Partial Class NetEdit
     End Sub
     
     Sub btnAllSignatureSource_Click() Handles btnAllSignatureSource.Click
-        
+        If lstAll.SelectedIndices.Count <> 0 Then
+            Dim inputInteger As Integer
+            If Not Integer.TryParse(lstAll.SelectedItems.Item(0).SubItems.Item(10).Text, inputInteger) Then
+                inputInteger = 0
+            End If
+            
+            IntegerSelector.SelectedInteger = inputInteger
+            IntegerSelector.IntegerDescription = "Signature Source"
+            
+            If IntegerSelector.ShowDialog() = DialogResult.OK Then
+                SetKey(SignatureRegPath & GetSignatureManagedString(lstAll.SelectedItems.Item(0)) & lstAll.SelectedItems.Item(0).SubItems.Item(11).Text, "Source", IntegerSelector.SelectedInteger)
+            End If
+        End If
     End Sub
     
     
