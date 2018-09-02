@@ -218,7 +218,7 @@ Public Partial Class NetEdit
         btnAllName.Enabled = enableButtons
         btnAllCategory.Enabled = enableButtons
         btnAllDescription.Enabled = enableButtons
-        btnAllManaged.Enabled = False 'enableButtons
+        btnAllManaged.Enabled = enableButtons
         btnAllNameType.Enabled = enableButtons
         btnAllCategoryType.Enabled = enableButtons
         btnAllDeleteNetwork.Enabled = enableButtons
@@ -499,7 +499,39 @@ Public Partial Class NetEdit
     End Sub
     
     Sub btnAllManaged_Click() Handles btnAllManaged.Click
-        
+        If lstAll.SelectedIndices.Count <> 0 AndAlso MsgBox("Are you sure you want to change this profile's managed status? This will also move the signature to the appropriate type", _
+          MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, "Toggle Managed") = DialogResult.Yes Then
+            Dim lstAllSelectedItem = lstAll.SelectedItems.Item(0)
+            
+            Dim parentKey As Win32.RegistryKey = GetNativeKey()
+            parentKey = parentKey.OpenSubKey(SignatureRegPath, True)   ' "SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkList\Signatures\"
+            
+            Dim sourceKey As Win32.RegistryKey = parentKey.OpenSubKey(GetSignatureManagedString(lstAllSelectedItem) & lstAllSelectedItem.SubItems.Item(11).Text)
+            
+            Dim newManagedString As String
+            If GetSignatureManagedString(lstAllSelectedItem) = "Managed\" Then newManagedString = "Unmanaged\" Else newManagedString = "Managed\"
+            
+            ' Move signature - credits to https://www.codeproject.com/Articles/16343/Copy-and-Rename-Registry-Keys
+            Dim destinationKey As Win32.RegistryKey = parentKey.CreateSubKey(newManagedString & lstAllSelectedItem.SubItems.Item(11).Text)
+            
+            'copy all the values
+            For Each valueName As String In sourceKey.GetValueNames()
+                Dim objValue As Object = sourceKey.GetValue(valueName)
+                Dim valKind As Win32.RegistryValueKind = sourceKey.GetValueKind(valueName)
+                
+                destinationKey.SetValue(valueName, objValue, valKind)
+            Next
+            
+            ' Delete old signature
+            DeleteKey(SignatureRegPath & GetSignatureManagedString(lstAllSelectedItem) & lstAllSelectedItem.SubItems.Item(11).Text)
+            
+            ' Toggle profile managed setting in profile
+            If lstAllSelectedItem.SubItems.Item(3).Text = "No" Then      ' Currently 0
+                SetKey(ProfileRegPath & lstAllSelectedItem.Tag.ToString, "Managed", 1)
+            ElseIf lstAllSelectedItem.SubItems.Item(3).Text = "Yes" Then ' Currently 1
+                SetKey(ProfileRegPath & lstAllSelectedItem.Tag.ToString, "Managed", 0)
+            End If
+        End If
     End Sub
     
     Sub btnAllNameType_Click() Handles btnAllNameType.Click
