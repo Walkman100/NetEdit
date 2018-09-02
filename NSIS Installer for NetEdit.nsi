@@ -59,14 +59,24 @@ Section "Start Menu Shortcuts"
   CreateShortCut "$SMPROGRAMS\WalkmanOSS\${ProgramName}.lnk" "$INSTDIR\${ProgramName}.exe" "" "$INSTDIR\${ProgramName}.exe" "" "" "" "${ProgramName}"
   CreateShortCut "$SMPROGRAMS\WalkmanOSS\Uninstall ${ProgramName}.lnk" "$INSTDIR\${ProgramName}-Uninst.exe" "" "" "" "" "" "Uninstall ${ProgramName}"
   ;Syntax for CreateShortCut: link.lnk target.file [parameters [icon.file [icon_index_number [start_options [keyboard_shortcut [description]]]]]]
+  
+  ; http://nsis.sourceforge.net/ShellLink_plug-in#Set_Shortcut_to_Run_As_Administrator
+  ShellLink::SetRunAsAdministrator "$SMPROGRAMS\WalkmanOSS\${ProgramName}.lnk"
+  Pop $0
 SectionEnd
 
 Section "Desktop Shortcut"
   CreateShortCut "$DESKTOP\${ProgramName}.lnk" "$INSTDIR\${ProgramName}.exe" "" "$INSTDIR\${ProgramName}.exe" "" "" "" "${ProgramName}"
+  
+  ShellLink::SetRunAsAdministrator "$DESKTOP\${ProgramName}.lnk"
+  Pop $0
 SectionEnd
 
 Section "Quick Launch Shortcut"
   CreateShortCut "$QUICKLAUNCH\${ProgramName}.lnk" "$INSTDIR\${ProgramName}.exe" "" "$INSTDIR\${ProgramName}.exe" "" "" "" "${ProgramName}"
+  
+  ShellLink::SetRunAsAdministrator "$QUICKLAUNCH\${ProgramName}.lnk"
+  Pop $0
 SectionEnd
 
 ; Functions
