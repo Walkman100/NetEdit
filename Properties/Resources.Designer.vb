@@ -64,12 +64,32 @@ Friend Class Resources
     End Property
     
     '''<summary>
+    '''  Looks up a localized resource of type System.Drawing.Bitmap.
+    '''</summary>
+    Friend Shared ReadOnly Property accept() As System.Drawing.Bitmap
+        Get
+            Dim obj As Object = ResourceManager.GetObject("accept", resourceCulture)
+            Return CType(obj,System.Drawing.Bitmap)
+        End Get
+    End Property
+    
+    '''<summary>
     '''  Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
     '''</summary>
     Friend Shared ReadOnly Property NetEdit() As System.Drawing.Icon
         Get
             Dim obj As Object = ResourceManager.GetObject("NetEdit", resourceCulture)
             Return CType(obj,System.Drawing.Icon)
+        End Get
+    End Property
+    
+    '''<summary>
+    '''  Looks up a localized resource of type System.Drawing.Bitmap.
+    '''</summary>
+    Friend Shared ReadOnly Property warning() As System.Drawing.Bitmap
+        Get
+            Dim obj As Object = ResourceManager.GetObject("warning", resourceCulture)
+            Return CType(obj,System.Drawing.Bitmap)
         End Get
     End Property
 End Class

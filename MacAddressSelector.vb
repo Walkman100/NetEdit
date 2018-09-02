@@ -65,7 +65,7 @@ Public Class MacAddressSelector
         'lblStatus
         Me.lblStatus.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.lblStatus.AutoSize = true
-        Me.lblStatus.Location = New System.Drawing.Point(34, 54)
+        Me.lblStatus.Location = New System.Drawing.Point(28, 52)
         Me.lblStatus.Name = "lblStatus"
         Me.lblStatus.Size = New System.Drawing.Size(65, 13)
         Me.lblStatus.TabIndex = 2
@@ -121,16 +121,16 @@ Public Class MacAddressSelector
             If IsConvertable(txtMacAddress.Text) Then
                 btnSave.Enabled = True
                 lblStatus.Text = "Valid Mac Address"
-                'pbxStatus.Image = Resources.NetEdit
+                pbxStatus.Image = Resources.accept
             Else
                 btnSave.Enabled = False
                 lblStatus.Text = "Invalid Mac Address"
-                'pbxStatus.Image = Resources.NetEdit
+                pbxStatus.Image = Resources.warning
             End If
         Else
             btnSave.Enabled = False
             lblStatus.Text = "Invalid Mac Address (Needs 6 sections)"
-            'pbxStatus.Image = Resources.NetEdit
+            pbxStatus.Image = Resources.warning
         End If
     End Sub
     
