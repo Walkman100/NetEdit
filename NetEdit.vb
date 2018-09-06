@@ -588,7 +588,11 @@ Public Partial Class NetEdit
                 Case "Mobile Broadband"
                     NameTypeSelector.SelectedNameType = 243
                 Case Else
-                    NameTypeSelector.SelectedNameType = CType(lstAll.SelectedItems.Item(0).SubItems.Item(4).Text, Integer)
+                    If IsNumeric(lstAll.SelectedItems.Item(0).SubItems.Item(4).Text) Then
+                        NameTypeSelector.SelectedNameType = CType(lstAll.SelectedItems.Item(0).SubItems.Item(4).Text, Integer)
+                    Else
+                        NameTypeSelector.SelectedNameType = 1
+                    End If
             End Select
             
             If NameTypeSelector.ShowDialog() = DialogResult.OK Then
