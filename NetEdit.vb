@@ -492,7 +492,9 @@ Public Partial Class NetEdit
     ' - - - - - - - - - - Profile Editing - - - - - - - - - -
     
     Sub lstAll_AfterLabelEdit(sender As Object, e As LabelEditEventArgs) Handles lstAll.AfterLabelEdit
-        SetKey(ProfileRegPath & lstAll.Items.Item(e.Item).Tag.ToString, "ProfileName", e.Label)
+        If Not IsNothing(e.Label) Then
+            SetKey(ProfileRegPath & lstAll.Items.Item(e.Item).Tag.ToString, "ProfileName", e.Label)
+        End If
     End Sub
     
     Sub btnAllName_Click() Handles btnAllName.Click
