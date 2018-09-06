@@ -224,7 +224,7 @@ Public Partial Class NetEdit
             btnAllManaged.Enabled = False
             btnAllNameType.Enabled = False
             btnAllCategoryType.Enabled = False
-            btnAllDeleteNetwork.Enabled = False
+            btnAllDeleteProfile.Enabled = False
             btnAllLocationWizard.Enabled = False
             btnAllNetworkWizard.Enabled = False
             btnAllSignatureGateway.Enabled = False
@@ -252,7 +252,7 @@ Public Partial Class NetEdit
                 lstAll.SelectedItems.Item(0).SubItems.Item(3).Text = "" And lstAll.SelectedItems.Item(0).SubItems.Item(4).Text = "" And lstAll.SelectedItems.Item(0).SubItems.Item(5).Text = "" _
                 )
             
-            btnAllDeleteNetwork.Enabled = enableProfiles
+            btnAllDeleteProfile.Enabled = enableProfiles
             btnAllLocationWizard.Enabled = enableProfiles
             btnAllNetworkWizard.Enabled = enableProfiles
             
@@ -628,7 +628,7 @@ Public Partial Class NetEdit
             Return "Managed\"
         ElseIf inputItem.SubItems.Item(3).Text = "No" Then
             Return "Unmanaged\"
-        Else ' no network associated with signature, have to search for signature
+        Else ' no profile associated with signature, have to search for signature
             
             Dim localKeyRoot = GetNativeKey()
             localKeyRoot = localKeyRoot.OpenSubKey(SignatureRegPath)
@@ -727,9 +727,9 @@ Public Partial Class NetEdit
         End If
     End Sub
     
-    Sub btnAllDeleteNetwork_Click() Handles btnAllDeleteNetwork.Click
+    Sub btnAllDeleteProfile_Click() Handles btnAllDeleteProfile.Click
         If lstAll.SelectedIndices.Count <> 0 Then
-            If MsgBox("Are you sure you want to delete network """ & lstAll.SelectedItems.Item(0).Text & """? This cannot be undone, but if it matches a signature then Windows will re-create it.", _
+            If MsgBox("Are you sure you want to delete profile """ & lstAll.SelectedItems.Item(0).Text & """? This cannot be undone, but if it matches a signature then Windows will re-create it.", _
               MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, "Deleting a Network Profile") = MsgBoxResult.Yes Then
                 DeleteKey(ProfileRegPath & lstAll.SelectedItems.Item(0).Tag.ToString)
             End If
@@ -738,7 +738,7 @@ Public Partial Class NetEdit
     
     Sub btnAllDeleteBoth_Click() Handles btnAllDeleteBoth.Click
         If lstAll.SelectedIndices.Count <> 0 Then
-            If MsgBox("Are you sure you want to delete network """ & lstAll.SelectedItems.Item(0).Text & """ and it's signature? This cannot be undone, but both will be re-created by Windows if encountered again.", _
+            If MsgBox("Are you sure you want to delete profile """ & lstAll.SelectedItems.Item(0).Text & """ and it's signature? This cannot be undone, but both will be re-created by Windows if encountered again.", _
               MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, "Deleting a Network Profile & Signature") = MsgBoxResult.Yes Then
                 
                 Dim signatureFullPath As String = GetSignatureManagedString(lstAll.SelectedItems.Item(0)) & lstAll.SelectedItems.Item(0).SubItems.Item(11).Text
@@ -764,7 +764,7 @@ Public Partial Class NetEdit
         End If
     End Sub
     
-    Sub toolStripBackupAllNetworks_Click() Handles toolStripBackupAllNetworks.Click
+    Sub toolStripBackupAllProfiles_Click() Handles toolStripBackupAllProfiles.Click
         
     End Sub
     

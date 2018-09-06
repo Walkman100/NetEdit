@@ -31,7 +31,7 @@
         Me.grpAll = New System.Windows.Forms.GroupBox()
         Me.toolStripBackup = New System.Windows.Forms.ToolStrip()
         Me.toolStripBtnBackup = New System.Windows.Forms.ToolStripDropDownButton()
-        Me.toolStripBackupAllNetworks = New System.Windows.Forms.ToolStripMenuItem()
+        Me.toolStripBackupAllProfiles = New System.Windows.Forms.ToolStripMenuItem()
         Me.toolStripBackupAllSignatures = New System.Windows.Forms.ToolStripMenuItem()
         Me.toolStripBackupAllBoth = New System.Windows.Forms.ToolStripMenuItem()
         Me.toolStripBackupSelected = New System.Windows.Forms.ToolStripMenuItem()
@@ -39,7 +39,7 @@
         Me.btnAllRefresh = New System.Windows.Forms.Button()
         Me.btnAllNetworkWizard = New System.Windows.Forms.Button()
         Me.btnAllLocationWizard = New System.Windows.Forms.Button()
-        Me.btnAllDeleteNetwork = New System.Windows.Forms.Button()
+        Me.btnAllDeleteProfile = New System.Windows.Forms.Button()
         Me.grpAllSignature = New System.Windows.Forms.GroupBox()
         Me.btnAllDeleteBoth = New System.Windows.Forms.Button()
         Me.btnAllSignatureDelete = New System.Windows.Forms.Button()
@@ -93,7 +93,7 @@
         Me.grpAll.Controls.Add(Me.btnAllRefresh)
         Me.grpAll.Controls.Add(Me.btnAllNetworkWizard)
         Me.grpAll.Controls.Add(Me.btnAllLocationWizard)
-        Me.grpAll.Controls.Add(Me.btnAllDeleteNetwork)
+        Me.grpAll.Controls.Add(Me.btnAllDeleteProfile)
         Me.grpAll.Controls.Add(Me.grpAllSignature)
         Me.grpAll.Controls.Add(Me.btnAllCategoryType)
         Me.grpAll.Controls.Add(Me.btnAllNameType)
@@ -126,38 +126,38 @@
         '
         Me.toolStripBtnBackup.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
         Me.toolStripBtnBackup.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        Me.toolStripBtnBackup.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.toolStripBackupAllNetworks, Me.toolStripBackupAllSignatures, Me.toolStripBackupAllBoth, Me.toolStripBackupSelected})
+        Me.toolStripBtnBackup.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.toolStripBackupAllProfiles, Me.toolStripBackupAllSignatures, Me.toolStripBackupAllBoth, Me.toolStripBackupSelected})
         Me.toolStripBtnBackup.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.toolStripBtnBackup.Name = "toolStripBtnBackup"
         Me.toolStripBtnBackup.Size = New System.Drawing.Size(59, 22)
         Me.toolStripBtnBackup.Text = "Backup"
         '
-        'toolStripBackupAllNetworks
+        'toolStripBackupAllProfiles
         '
-        Me.toolStripBackupAllNetworks.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        Me.toolStripBackupAllNetworks.Name = "toolStripBackupAllNetworks"
-        Me.toolStripBackupAllNetworks.Size = New System.Drawing.Size(254, 22)
-        Me.toolStripBackupAllNetworks.Text = "Backup All Networks"
+        Me.toolStripBackupAllProfiles.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.toolStripBackupAllProfiles.Name = "toolStripBackupAllProfiles"
+        Me.toolStripBackupAllProfiles.Size = New System.Drawing.Size(243, 22)
+        Me.toolStripBackupAllProfiles.Text = "Backup All Profiles"
         '
         'toolStripBackupAllSignatures
         '
         Me.toolStripBackupAllSignatures.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
         Me.toolStripBackupAllSignatures.Name = "toolStripBackupAllSignatures"
-        Me.toolStripBackupAllSignatures.Size = New System.Drawing.Size(254, 22)
+        Me.toolStripBackupAllSignatures.Size = New System.Drawing.Size(243, 22)
         Me.toolStripBackupAllSignatures.Text = "Backup All Signatures"
         '
         'toolStripBackupAllBoth
         '
         Me.toolStripBackupAllBoth.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
         Me.toolStripBackupAllBoth.Name = "toolStripBackupAllBoth"
-        Me.toolStripBackupAllBoth.Size = New System.Drawing.Size(254, 22)
-        Me.toolStripBackupAllBoth.Text = "Backup All Networks && Signatures"
+        Me.toolStripBackupAllBoth.Size = New System.Drawing.Size(243, 22)
+        Me.toolStripBackupAllBoth.Text = "Backup All Profiles && Signatures"
         '
         'toolStripBackupSelected
         '
         Me.toolStripBackupSelected.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
         Me.toolStripBackupSelected.Name = "toolStripBackupSelected"
-        Me.toolStripBackupSelected.Size = New System.Drawing.Size(254, 22)
+        Me.toolStripBackupSelected.Size = New System.Drawing.Size(243, 22)
         Me.toolStripBackupSelected.Text = "Backup Selected"
         '
         'btnExit
@@ -203,15 +203,15 @@
         Me.btnAllLocationWizard.Text = "Network Location Wizard..."
         Me.btnAllLocationWizard.UseVisualStyleBackColor = true
         '
-        'btnAllDeleteNetwork
+        'btnAllDeleteProfile
         '
-        Me.btnAllDeleteNetwork.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
-        Me.btnAllDeleteNetwork.Location = New System.Drawing.Point(666, 217)
-        Me.btnAllDeleteNetwork.Name = "btnAllDeleteNetwork"
-        Me.btnAllDeleteNetwork.Size = New System.Drawing.Size(91, 23)
-        Me.btnAllDeleteNetwork.TabIndex = 7
-        Me.btnAllDeleteNetwork.Text = "Delete Network"
-        Me.btnAllDeleteNetwork.UseVisualStyleBackColor = true
+        Me.btnAllDeleteProfile.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
+        Me.btnAllDeleteProfile.Location = New System.Drawing.Point(666, 217)
+        Me.btnAllDeleteProfile.Name = "btnAllDeleteProfile"
+        Me.btnAllDeleteProfile.Size = New System.Drawing.Size(91, 23)
+        Me.btnAllDeleteProfile.TabIndex = 7
+        Me.btnAllDeleteProfile.Text = "Delete Profile"
+        Me.btnAllDeleteProfile.UseVisualStyleBackColor = true
         '
         'grpAllSignature
         '
@@ -238,7 +238,7 @@
         Me.btnAllDeleteBoth.Name = "btnAllDeleteBoth"
         Me.btnAllDeleteBoth.Size = New System.Drawing.Size(148, 23)
         Me.btnAllDeleteBoth.TabIndex = 6
-        Me.btnAllDeleteBoth.Text = "Delete Network & Signature"
+        Me.btnAllDeleteBoth.Text = "Delete Profile & Signature"
         Me.btnAllDeleteBoth.UseMnemonic = false
         Me.btnAllDeleteBoth.UseVisualStyleBackColor = false
         '
@@ -545,7 +545,7 @@
     Private WithEvents toolStripBackupSelected As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents toolStripBackupAllBoth As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents toolStripBackupAllSignatures As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents toolStripBackupAllNetworks As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents toolStripBackupAllProfiles As System.Windows.Forms.ToolStripMenuItem
     Private toolStripBtnBackup As System.Windows.Forms.ToolStripDropDownButton
     Private toolStripBackup As System.Windows.Forms.ToolStrip
     Private WithEvents btnAllRefresh As System.Windows.Forms.Button
@@ -588,6 +588,6 @@
     Private WithEvents btnAllSignatureDelete As System.Windows.Forms.Button
     Private WithEvents btnAllDeleteBoth As System.Windows.Forms.Button
     Private grpAllSignature As System.Windows.Forms.GroupBox
-    Private WithEvents btnAllDeleteNetwork As System.Windows.Forms.Button
+    Private WithEvents btnAllDeleteProfile As System.Windows.Forms.Button
     Private grpAll As System.Windows.Forms.GroupBox
 End Class

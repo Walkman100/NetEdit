@@ -140,7 +140,7 @@ Public Class NameTypeSelector
         Me.ShowInTaskbar = false
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
-        Me.Text = "Select Network NameType"
+        Me.Text = "Select Profile NameType"
         CType(Me.numOther,System.ComponentModel.ISupportInitialize).EndInit
         Me.grpOther.ResumeLayout(false)
         Me.ResumeLayout(false)
