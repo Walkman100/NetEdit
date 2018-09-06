@@ -213,24 +213,58 @@ Public Partial Class NetEdit
     End Structure
     
     Sub lstAllSelectionUpdated() Handles lstAll.SelectedIndexChanged
-        Dim enableButtons As Boolean = (lstAll.SelectedIndices.Count <> 0)
-        
-        btnAllName.Enabled = enableButtons
-        btnAllCategory.Enabled = enableButtons
-        btnAllDescription.Enabled = enableButtons
-        btnAllManaged.Enabled = enableButtons
-        btnAllNameType.Enabled = enableButtons
-        btnAllCategoryType.Enabled = enableButtons
-        btnAllDeleteNetwork.Enabled = enableButtons
-        btnAllLocationWizard.Enabled = enableButtons
-        btnAllNetworkWizard.Enabled = enableButtons
-        btnAllSignatureGateway.Enabled = enableButtons
-        btnAllSignatureDNS.Enabled = enableButtons
-        btnAllSignatureDescription.Enabled = enableButtons
-        btnAllSignatureFirstNetwork.Enabled = enableButtons
-        btnAllSignatureSource.Enabled = enableButtons
-        btnAllSignatureDelete.Enabled = enableButtons
-        btnAllDeleteBoth.Enabled = enableButtons
+        If lstAll.SelectedIndices.Count = 0 Then
+            btnAllName.Enabled = False
+            btnAllCategory.Enabled = False
+            btnAllDescription.Enabled = False
+            btnAllManaged.Enabled = False
+            btnAllNameType.Enabled = False
+            btnAllCategoryType.Enabled = False
+            btnAllDeleteNetwork.Enabled = False
+            btnAllLocationWizard.Enabled = False
+            btnAllNetworkWizard.Enabled = False
+            btnAllSignatureGateway.Enabled = False
+            btnAllSignatureDNS.Enabled = False
+            btnAllSignatureDescription.Enabled = False
+            btnAllSignatureFirstNetwork.Enabled = False
+            btnAllSignatureSource.Enabled = False
+            btnAllSignatureDelete.Enabled = False
+            btnAllDeleteBoth.Enabled = False
+            toolStripBackupSelected.Enabled = False
+        Else
+            Dim enableProfiles As Boolean
+            enableProfiles = lstAll.SelectedItems.Item(0).Tag.ToString.StartsWith("{") ' if we have a GUID we can create a profile
+            
+            btnAllName.Enabled = enableProfiles
+            btnAllCategory.Enabled = enableProfiles
+            btnAllDescription.Enabled = enableProfiles
+            btnAllManaged.Enabled = enableProfiles
+            btnAllNameType.Enabled = enableProfiles
+            btnAllCategoryType.Enabled = enableProfiles
+            
+            ' only enable delete and wizard buttons if the profile exists
+            enableProfiles = Not ( _
+                lstAll.SelectedItems.Item(0).Text = "" And lstAll.SelectedItems.Item(0).SubItems.Item(1).Text = "" And lstAll.SelectedItems.Item(0).SubItems.Item(2).Text = "" And _
+                lstAll.SelectedItems.Item(0).SubItems.Item(3).Text = "" And lstAll.SelectedItems.Item(0).SubItems.Item(4).Text = "" And lstAll.SelectedItems.Item(0).SubItems.Item(5).Text = "" _
+                )
+            
+            btnAllDeleteNetwork.Enabled = enableProfiles
+            btnAllLocationWizard.Enabled = enableProfiles
+            btnAllNetworkWizard.Enabled = enableProfiles
+            
+            Dim enableSignatures As Boolean    ' enable signature buttons if we have a signature key
+            enableSignatures = lstAll.SelectedItems.Item(0).SubItems.Item(11).Text <> ""
+            
+            btnAllSignatureGateway.Enabled = enableSignatures
+            btnAllSignatureDNS.Enabled = enableSignatures
+            btnAllSignatureDescription.Enabled = enableSignatures
+            btnAllSignatureFirstNetwork.Enabled = enableSignatures
+            btnAllSignatureSource.Enabled = enableSignatures
+            btnAllSignatureDelete.Enabled = enableSignatures
+            
+            btnAllDeleteBoth.Enabled = enableSignatures And enableProfiles ' only enable DeleteBoth if we have both
+            toolStripBackupSelected.Enabled = enableSignatures Or enableProfiles ' enable BackupSelected if we have either
+        End If
     End Sub
     
     ' ------------------- Read -------------------
