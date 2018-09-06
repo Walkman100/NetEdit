@@ -29,6 +29,12 @@
         Dim listViewItem1 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("Loading...")
         Dim listViewItem2 As System.Windows.Forms.ListViewItem = New System.Windows.Forms.ListViewItem("Loading...")
         Me.grpAll = New System.Windows.Forms.GroupBox()
+        Me.toolStripBackup = New System.Windows.Forms.ToolStrip()
+        Me.toolStripBtnBackup = New System.Windows.Forms.ToolStripDropDownButton()
+        Me.toolStripBackupAllNetworks = New System.Windows.Forms.ToolStripMenuItem()
+        Me.toolStripBackupAllSignatures = New System.Windows.Forms.ToolStripMenuItem()
+        Me.toolStripBackupAllBoth = New System.Windows.Forms.ToolStripMenuItem()
+        Me.toolStripBackupSelected = New System.Windows.Forms.ToolStripMenuItem()
         Me.btnExit = New System.Windows.Forms.Button()
         Me.btnAllRefresh = New System.Windows.Forms.Button()
         Me.btnAllNetworkWizard = New System.Windows.Forms.Button()
@@ -70,7 +76,9 @@
         Me.headConnV6Status = New System.Windows.Forms.ColumnHeader()
         Me.headConnType = New System.Windows.Forms.ColumnHeader()
         Me.timerDelayedScan = New System.Windows.Forms.Timer(Me.components)
+        Me.sfdBackup = New System.Windows.Forms.SaveFileDialog()
         Me.grpAll.SuspendLayout
+        Me.toolStripBackup.SuspendLayout
         Me.grpAllSignature.SuspendLayout
         Me.grpConnected.SuspendLayout
         Me.SuspendLayout
@@ -80,6 +88,7 @@
         Me.grpAll.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom)  _
                         Or System.Windows.Forms.AnchorStyles.Left)  _
                         Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.grpAll.Controls.Add(Me.toolStripBackup)
         Me.grpAll.Controls.Add(Me.btnExit)
         Me.grpAll.Controls.Add(Me.btnAllRefresh)
         Me.grpAll.Controls.Add(Me.btnAllNetworkWizard)
@@ -100,11 +109,62 @@
         Me.grpAll.TabStop = false
         Me.grpAll.Text = "All Profiles:"
         '
+        'toolStripBackup
+        '
+        Me.toolStripBackup.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
+        Me.toolStripBackup.CanOverflow = false
+        Me.toolStripBackup.Dock = System.Windows.Forms.DockStyle.None
+        Me.toolStripBackup.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+        Me.toolStripBackup.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.toolStripBtnBackup})
+        Me.toolStripBackup.Location = New System.Drawing.Point(830, 264)
+        Me.toolStripBackup.Name = "toolStripBackup"
+        Me.toolStripBackup.Size = New System.Drawing.Size(62, 25)
+        Me.toolStripBackup.TabIndex = 13
+        Me.toolStripBackup.Text = "toolStripBackup"
+        '
+        'toolStripBtnBackup
+        '
+        Me.toolStripBtnBackup.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None
+        Me.toolStripBtnBackup.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.toolStripBtnBackup.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.toolStripBackupAllNetworks, Me.toolStripBackupAllSignatures, Me.toolStripBackupAllBoth, Me.toolStripBackupSelected})
+        Me.toolStripBtnBackup.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.toolStripBtnBackup.Name = "toolStripBtnBackup"
+        Me.toolStripBtnBackup.Size = New System.Drawing.Size(59, 22)
+        Me.toolStripBtnBackup.Text = "Backup"
+        '
+        'toolStripBackupAllNetworks
+        '
+        Me.toolStripBackupAllNetworks.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.toolStripBackupAllNetworks.Name = "toolStripBackupAllNetworks"
+        Me.toolStripBackupAllNetworks.Size = New System.Drawing.Size(254, 22)
+        Me.toolStripBackupAllNetworks.Text = "Backup All Networks"
+        '
+        'toolStripBackupAllSignatures
+        '
+        Me.toolStripBackupAllSignatures.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.toolStripBackupAllSignatures.Name = "toolStripBackupAllSignatures"
+        Me.toolStripBackupAllSignatures.Size = New System.Drawing.Size(254, 22)
+        Me.toolStripBackupAllSignatures.Text = "Backup All Signatures"
+        '
+        'toolStripBackupAllBoth
+        '
+        Me.toolStripBackupAllBoth.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.toolStripBackupAllBoth.Name = "toolStripBackupAllBoth"
+        Me.toolStripBackupAllBoth.Size = New System.Drawing.Size(254, 22)
+        Me.toolStripBackupAllBoth.Text = "Backup All Networks && Signatures"
+        '
+        'toolStripBackupSelected
+        '
+        Me.toolStripBackupSelected.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.toolStripBackupSelected.Name = "toolStripBackupSelected"
+        Me.toolStripBackupSelected.Size = New System.Drawing.Size(254, 22)
+        Me.toolStripBackupSelected.Text = "Backup Selected"
+        '
         'btnExit
         '
         Me.btnExit.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
         Me.btnExit.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.btnExit.Location = New System.Drawing.Point(910, 265)
+        Me.btnExit.Location = New System.Drawing.Point(979, 265)
         Me.btnExit.Name = "btnExit"
         Me.btnExit.Size = New System.Drawing.Size(75, 23)
         Me.btnExit.TabIndex = 12
@@ -114,7 +174,7 @@
         'btnAllRefresh
         '
         Me.btnAllRefresh.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
-        Me.btnAllRefresh.Location = New System.Drawing.Point(829, 265)
+        Me.btnAllRefresh.Location = New System.Drawing.Point(898, 265)
         Me.btnAllRefresh.Name = "btnAllRefresh"
         Me.btnAllRefresh.Size = New System.Drawing.Size(75, 23)
         Me.btnAllRefresh.TabIndex = 11
@@ -455,6 +515,11 @@
         '
         Me.timerDelayedScan.Interval = 50
         '
+        'sfdBackup
+        '
+        Me.sfdBackup.DefaultExt = "reg"
+        Me.sfdBackup.Filter = "Registry Entries|*.reg|All Files|*.*"
+        '
         'NetEdit
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
@@ -468,11 +533,21 @@
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "NetEdit"
         Me.grpAll.ResumeLayout(false)
+        Me.grpAll.PerformLayout
+        Me.toolStripBackup.ResumeLayout(false)
+        Me.toolStripBackup.PerformLayout
         Me.grpAllSignature.ResumeLayout(false)
         Me.grpAllSignature.PerformLayout
         Me.grpConnected.ResumeLayout(false)
         Me.ResumeLayout(false)
     End Sub
+    Private sfdBackup As System.Windows.Forms.SaveFileDialog
+    Private WithEvents toolStripBackupSelected As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents toolStripBackupAllBoth As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents toolStripBackupAllSignatures As System.Windows.Forms.ToolStripMenuItem
+    Private WithEvents toolStripBackupAllNetworks As System.Windows.Forms.ToolStripMenuItem
+    Private toolStripBtnBackup As System.Windows.Forms.ToolStripDropDownButton
+    Private toolStripBackup As System.Windows.Forms.ToolStrip
     Private WithEvents btnAllRefresh As System.Windows.Forms.Button
     Private WithEvents btnExit As System.Windows.Forms.Button
     Private WithEvents btnAllLocationWizard As System.Windows.Forms.Button

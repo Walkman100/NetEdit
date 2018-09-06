@@ -455,6 +455,8 @@ Public Partial Class NetEdit
         PopulateProfileList()
     End Sub
     
+    ' - - - - - - - - - - Profile Editing - - - - - - - - - -
+    
     Sub lstAll_AfterLabelEdit(sender As Object, e As LabelEditEventArgs) Handles lstAll.AfterLabelEdit
         SetKey(ProfileRegPath & lstAll.Items.Item(e.Item).Tag.ToString, "ProfileName", e.Label)
     End Sub
@@ -571,6 +573,7 @@ Public Partial Class NetEdit
         End If
     End Sub
     
+    ' - - - - - - - - - - Signature Editing - - - - - - - - - -
     
     Function GetSignatureManagedString(inputItem As ListViewItem) As String
         If inputItem.SubItems.Item(3).Text = "Yes" Then
@@ -664,6 +667,7 @@ Public Partial Class NetEdit
         End If
     End Sub
     
+    ' - - - - - - - - - - Deleting - - - - - - - - - -
     
     Sub btnAllSignatureDelete_Click() Handles btnAllSignatureDelete.Click
         If lstAll.SelectedIndices.Count <> 0 Then
@@ -698,6 +702,8 @@ Public Partial Class NetEdit
         End If
     End Sub
     
+    ' - - - - - - - - - - Other - - - - - - - - - -
+    
     Sub btnAllLocationWizard_Click() Handles btnAllLocationWizard.Click
         If lstAll.SelectedIndices.Count <> 0 Then
             Process.Start("C:\Windows\system32\rundll32.exe", "pnidui.dll,NwCategoryWiz " & lstAll.SelectedItems.Item(0).Tag.ToString())
@@ -708,6 +714,22 @@ Public Partial Class NetEdit
         If lstAll.SelectedIndices.Count <> 0 Then
             Process.Start("C:\Windows\system32\rundll32.exe", "pnidui.dll,NwCategoryWiz " & lstAll.SelectedItems.Item(0).Tag.ToString() & " 1")
         End If
+    End Sub
+    
+    Sub toolStripBackupAllNetworks_Click() Handles toolStripBackupAllNetworks.Click
+        
+    End Sub
+    
+    Sub toolStripBackupAllSignatures_Click() Handles toolStripBackupAllSignatures.Click
+        
+    End Sub
+    
+    Sub toolStripBackupAllBoth_Click() Handles toolStripBackupAllBoth.Click
+        
+    End Sub
+    
+    Sub toolStripBackupSelected_Click() Handles toolStripBackupSelected.Click
+        
     End Sub
     
     Sub btnExit_Click() Handles btnExit.Click
