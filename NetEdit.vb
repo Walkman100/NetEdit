@@ -108,7 +108,9 @@ Public Partial Class NetEdit
             
             Return returnProfiles
         Catch ex As Exception
-            WalkmanLib.ErrorDialog(ex)
+            If MsgBox("Error getting active networks from PowerShell! Show full error?", MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, "Error getting active networks") = MsgBoxResult.Yes Then
+                WalkmanLib.ErrorDialog(ex, , False)
+            End If
             
             Return New List(Of ActiveNetworkProfile)
         End Try
@@ -173,7 +175,9 @@ Public Partial Class NetEdit
                         End If
                     End If
                 Catch ex As Exception
-                    WalkmanLib.ErrorDialog(ex)
+                    If MsgBox("Error setting active network type with PowerShell! Show full error?", MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, "Error setting active network type") = MsgBoxResult.Yes Then
+                        WalkmanLib.ErrorDialog(ex, , False)
+                    End If
                 End Try
                 
                 PopulateNetworkList()
@@ -316,7 +320,7 @@ Public Partial Class NetEdit
                 tmpProfile = New NetworkProfile
             Next
         Catch ex As Exception
-            WalkmanLib.ErrorDialog(ex)
+            WalkmanLib.ErrorDialog(ex, "Error reading profiles from the registry: ")
         End Try
         
         Return returnProfiles
@@ -372,7 +376,7 @@ Public Partial Class NetEdit
                 tmpProfile = New NetworkProfile
             Next
         Catch ex As Exception
-            WalkmanLib.ErrorDialog(ex)
+            WalkmanLib.ErrorDialog(ex, "Error reading profile signatures from the registry: ")
         End Try
         
         Return returnProfiles
@@ -479,7 +483,7 @@ Public Partial Class NetEdit
                 Threading.Thread.Sleep(100)
             End If
         Catch ex As Exception
-            WalkmanLib.ErrorDialog(ex)
+            WalkmanLib.ErrorDialog(ex, "Error setting registry key: ")
         End Try
         
         PopulateProfileList()
