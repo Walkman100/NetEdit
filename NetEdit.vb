@@ -460,7 +460,11 @@ Public Partial Class NetEdit
     Sub SetKey(keyPath As String, value As String, data As Object)
         Try
             Dim localKey = GetNativeKey()
-            localKey = localKey.OpenSubKey(keyPath, True)
+            
+            ' create instead of just open in case the key doesn't exist. create returns the same key as open
+            localKey = localKey.CreateSubKey(keyPath, Win32.RegistryKeyPermissionCheck.ReadWriteSubTree)
+            'localKey = localKey.OpenSubKey(keyPath, True)
+            
             localKey.SetValue(value, data)
             
             ' this uses 32-bit registry on 64-bit windows, we need 64-bit registry on 64-bit windows
