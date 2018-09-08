@@ -764,20 +764,90 @@ Public Partial Class NetEdit
         End If
     End Sub
     
-    Sub toolStripBackupAllProfiles_Click() Handles toolStripBackupAllProfiles.Click
+    Sub RegistryBackup(sourceKey As String, outputPath As String)
+        Dim RegExeFunctionError As String = ""
+        Dim RegExeFunctionExitCode As Integer
+        Dim RegExeFunctionOutput As String
+        Dim RegExePath As String
         
+        If Environment.Is64BitOperatingSystem And Not Environment.Is64BitProcess Then
+            RegExePath = "C:\Windows\Sysnative\reg.exe"
+        Else
+            RegExePath = "C:\Windows\System32\reg.exe"
+        End If
+        
+        sourceKey = "HKLM\" & sourceKey
+        If sourceKey.EndsWith("\") Then sourceKey = sourceKey.Remove(sourceKey.Length -1)
+        
+        Try
+            RegExeFunctionOutput = WalkmanLib.RunAndGetOutput(RegExePath, "EXPORT """ & sourceKey & """ """ & outputPath & """ /y", False, RegExeFunctionError, RegExeFunctionExitCode)
+            
+            If RegExeFunctionExitCode <> 0 Then Throw New Exception("reg.exe: " & RegExeFunctionError)
+            
+            MsgBox("Backup of """ & sourceKey & """ Succesful!", MsgBoxStyle.Information)
+        Catch ex As Exception
+            WalkmanLib.ErrorDialog(ex, "Error saving backup of """ & sourceKey & """: ")
+        End Try
+    End Sub
+    
+    Sub toolStripBackupAllProfiles_Click() Handles toolStripBackupAllProfiles.Click
+        sfdBackup.FileName = "All Profiles Backup"
+        
+        If sfdBackup.ShowDialog() = DialogResult.OK Then
+            RegistryBackup(ProfileRegPath, sfdBackup.FileName)
+        End If
     End Sub
     
     Sub toolStripBackupAllSignatures_Click() Handles toolStripBackupAllSignatures.Click
+        sfdBackup.FileName = "All Profile Signatures Backup"
         
+        If sfdBackup.ShowDialog() = DialogResult.OK Then
+            RegistryBackup(SignatureRegPath, sfdBackup.FileName)
+        End If
+    End Sub
+    
+    Sub CombineRegistryBackups(mainFile As String, fileToCombine As String)
+        Dim combineFileContents = IO.File.ReadAllLines(fileToCombine)
+        
+        Array.Reverse(combineFileContents) ' so we can remove the first two lines with Array.Resize
+        
+        Array.Resize(combineFileContents, combineFileContents.Length -2)
+        
+        Array.Reverse(combineFileContents)
+        
+        IO.File.AppendAllLines(mainFile, combineFileContents, System.Text.Encoding.Unicode)
+        
+        MsgBox("Combining Backups Succesful!", MsgBoxStyle.Information)
     End Sub
     
     Sub toolStripBackupAllBoth_Click() Handles toolStripBackupAllBoth.Click
+        sfdBackup.FileName = "All Profiles & Signatures Backup"
         
+        If sfdBackup.ShowDialog() = DialogResult.OK Then
+            RegistryBackup(ProfileRegPath, sfdBackup.FileName)
+            RegistryBackup(SignatureRegPath, sfdBackup.FileName & "_signature")
+            
+            CombineRegistryBackups(sfdBackup.FileName, sfdBackup.FileName & "_signature")
+            
+            IO.File.Delete(sfdBackup.FileName & "_signature")
+        End If
     End Sub
     
     Sub toolStripBackupSelected_Click() Handles toolStripBackupSelected.Click
+        If lstAll.SelectedItems.Item(0).Text <> "" Then
+            sfdBackup.FileName = "Profile Backup - " & lstAll.SelectedItems.Item(0).Text
+        Else
+            sfdBackup.FileName = "Profile Backup"
+        End If
         
+        If sfdBackup.ShowDialog() = DialogResult.OK Then
+            RegistryBackup(ProfileRegPath & lstAll.SelectedItems.Item(0).Tag.ToString, sfdBackup.FileName)
+            RegistryBackup(SignatureRegPath & GetSignatureManagedString(lstAll.SelectedItems.Item(0)) & lstAll.SelectedItems.Item(0).SubItems.Item(11).Text, sfdBackup.FileName & "_signature")
+            
+            CombineRegistryBackups(sfdBackup.FileName, sfdBackup.FileName & "_signature")
+            
+            IO.File.Delete(sfdBackup.FileName & "_signature")
+        End If
     End Sub
     
     Sub btnExit_Click() Handles btnExit.Click
