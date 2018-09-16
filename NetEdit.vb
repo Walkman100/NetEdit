@@ -461,40 +461,97 @@ Public Partial Class NetEdit
     
     ' ------------------- Write -------------------
     
+    Dim writeToRegFile As Boolean = False
     Sub SetKey(keyPath As String, value As String, data As Object)
-        Try
-            Dim localKey = GetNativeKey()
-            
-            ' create instead of just open in case the key doesn't exist. create returns the same key as open
-            localKey = localKey.CreateSubKey(keyPath, Win32.RegistryKeyPermissionCheck.ReadWriteSubTree)
-            'localKey = localKey.OpenSubKey(keyPath, True)
-            
-            localKey.SetValue(value, data)
-            
-            ' this uses 32-bit registry on 64-bit windows, we need 64-bit registry on 64-bit windows
-            'Win32.Registry.SetValue(keyPath, value, data)
-        Catch ex As UnauthorizedAccessException
-            If MsgBox("Permission Denied! Either run " & My.Application.Info.AssemblyName & " as an administrator or run the system registry editor." & vbNewLine & vbNewLine & _
-                "Attempt to launch a system tool as administrator?", MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, "Permission Denied") = MsgBoxResult.Yes Then
+        If writeToRegFile = False Then
+            Try
+                Dim localKey = GetNativeKey()
                 
-                WalkmanLib.RunAsAdmin("reg.exe", "ADD """ & keyPath & """ /v """ & value & """ /d """ & data.ToString() & """ /f ")
+                ' create instead of just open in case the key doesn't exist. create returns the same key as open
+                localKey = localKey.CreateSubKey(keyPath, Win32.RegistryKeyPermissionCheck.ReadWriteSubTree)
+                'localKey = localKey.OpenSubKey(keyPath, True)
                 
-                ' sleep the thread to delay a list update
-                Threading.Thread.Sleep(100)
+                localKey.SetValue(value, data)
+                
+                ' this uses 32-bit registry on 64-bit windows, we need 64-bit registry on 64-bit windows
+                'Win32.Registry.SetValue(keyPath, value, data)
+            Catch ex As UnauthorizedAccessException
+                If MsgBox("Permission Denied! Either run " & My.Application.Info.AssemblyName & " as an administrator or run the system registry editor." & vbNewLine & vbNewLine & _
+                    "Attempt to launch a system tool as administrator?", MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, "Permission Denied") = MsgBoxResult.Yes Then
+                    
+                    WalkmanLib.RunAsAdmin("reg.exe", "ADD """ & keyPath & """ /v """ & value & """ /d """ & data.ToString() & """ /f ")
+                    
+                    ' sleep the thread to delay a list update
+                    Threading.Thread.Sleep(100)
+                End If
+            Catch ex As Exception
+                WalkmanLib.ErrorDialog(ex, "Error setting registry key: ")
+            End Try
+            
+            PopulateProfileList()
+            
+        ElseIf writeToRegFile = True
+            writeToRegFile = False
+            sfdBackup.FileName = "Network Profile Change - " & value & ".reg"
+            
+            If sfdBackup.ShowDialog = DialogResult.OK Then
+                
+                Dim regBackupContents(4) As String
+                
+                regBackupContents(0) = "Windows Registry Editor Version 5.00"
+                regBackupContents(2) = "[HKEY_LOCAL_MACHINE\" & keyPath & "]"
+                regBackupContents(3) = """" & value & """="
+                'regBackupContents(3) = """" & value & """=""" & data & """"
+                
+                If TypeOf(data) Is String Then
+                    regBackupContents(3) &= """" & data.ToString() & """"
+                    
+                ElseIf TypeOf(data) Is Integer Then
+                    Dim dataInt = DirectCast(data, Integer)
+                    
+                    regBackupContents(3) &= "dword:" & dataInt.ToString("D8") 'dword:00000001
+                    
+                ElseIf TypeOf(data) Is Byte() Then
+                    Dim dataByte = DirectCast(data, Byte())
+                    Dim dataString = BitConverter.ToString(dataByte).Replace("-", ",")
+                    
+                    regBackupContents(3) &= "hex:" & dataString 'hex:c4,e9,84,33,ff,5d
+                    
+                Else
+                    MsgBox("Error! Unknown datatype to backup: " & data.GetType.ToString(), MsgBoxStyle.Critical)
+                    MsgBox(New System.Byte().GetType().ToString)
+                    
+                End If
+                
+                IO.File.WriteAllLines(sfdBackup.FileName, regBackupContents, System.Text.Encoding.Unicode)
+                
             End If
-        Catch ex As Exception
-            WalkmanLib.ErrorDialog(ex, "Error setting registry key: ")
-        End Try
-        
-        PopulateProfileList()
+        End If
     End Sub
     
     Sub DeleteKey(keyPath As String)
-        Dim localKey = GetNativeKey()
-        
-        localKey.DeleteSubKey(keyPath)
-        
-        PopulateProfileList()
+        If writeToRegFile = False
+            Dim localKey = GetNativeKey()
+            
+            localKey.DeleteSubKey(keyPath)
+            
+            PopulateProfileList()
+        ElseIf writeToRegFile = True
+            writeToRegFile = False
+            
+            sfdBackup.FileName = "Delete Network Path.reg"
+            
+            If sfdBackup.ShowDialog = DialogResult.OK Then
+                
+                Dim regBackupContents(3) As String
+                
+                regBackupContents(0) = "Windows Registry Editor Version 5.00"
+                regBackupContents(2) = "[-HKEY_LOCAL_MACHINE\" & keyPath & "]"
+                
+                IO.File.WriteAllLines(sfdBackup.FileName, regBackupContents, System.Text.Encoding.Unicode)
+                
+            End If
+        End If
     End Sub
     
     ' - - - - - - - - - - Profile Editing - - - - - - - - - -
@@ -719,7 +776,7 @@ Public Partial Class NetEdit
     
     Sub btnAllSignatureDelete_Click() Handles btnAllSignatureDelete.Click
         If lstAll.SelectedIndices.Count <> 0 Then
-            If MsgBox("Are you sure you want to delete the selected signature? This cannot be undone, and if a profile was assigned to it that profile will not be reassigned if it is detected again.", _
+            If writeToRegFile = True OrElse MsgBox("Are you sure you want to delete the selected signature? This cannot be undone, and if a profile was assigned to it that profile will not be reassigned if it is detected again.", _
               MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, "Deleting a Network Signature") = MsgBoxResult.Yes Then
                 
                 DeleteKey(SignatureRegPath & GetSignatureManagedString(lstAll.SelectedItems.Item(0)) & lstAll.SelectedItems.Item(0).SubItems.Item(11).Text)
@@ -729,7 +786,7 @@ Public Partial Class NetEdit
     
     Sub btnAllDeleteProfile_Click() Handles btnAllDeleteProfile.Click
         If lstAll.SelectedIndices.Count <> 0 Then
-            If MsgBox("Are you sure you want to delete profile """ & lstAll.SelectedItems.Item(0).Text & """? This cannot be undone, but if it matches a signature then Windows will re-create it.", _
+            If writeToRegFile = True OrElse MsgBox("Are you sure you want to delete profile """ & lstAll.SelectedItems.Item(0).Text & """? This cannot be undone, but if it matches a signature then Windows will re-create it.", _
               MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, "Deleting a Network Profile") = MsgBoxResult.Yes Then
                 DeleteKey(ProfileRegPath & lstAll.SelectedItems.Item(0).Tag.ToString)
             End If
@@ -738,19 +795,60 @@ Public Partial Class NetEdit
     
     Sub btnAllDeleteBoth_Click() Handles btnAllDeleteBoth.Click
         If lstAll.SelectedIndices.Count <> 0 Then
-            If MsgBox("Are you sure you want to delete profile """ & lstAll.SelectedItems.Item(0).Text & """ and it's signature? This cannot be undone, but both will be re-created by Windows if encountered again.", _
+            If writeToRegFile = True OrElse MsgBox("Are you sure you want to delete profile """ & lstAll.SelectedItems.Item(0).Text & """ and it's signature? This cannot be undone, but both will be re-created by Windows if encountered again.", _
               MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, "Deleting a Network Profile & Signature") = MsgBoxResult.Yes Then
                 
                 Dim signatureFullPath As String = GetSignatureManagedString(lstAll.SelectedItems.Item(0)) & lstAll.SelectedItems.Item(0).SubItems.Item(11).Text
                 ' have to get the signature path before deleting the profile as DeleteKey() refreshes the list
                 
-                DeleteKey(ProfileRegPath & lstAll.SelectedItems.Item(0).Tag.ToString)
-                DeleteKey(SignatureRegPath & signatureFullPath)
+                If writeToRegFile = True Then
+                    DeleteKey(ProfileRegPath & lstAll.SelectedItems.Item(0).Tag.ToString)
+                    writeToRegFile = True ' because DeleteKey resets it to false
+                    DeleteKey(SignatureRegPath & signatureFullPath)
+                Else
+                    DeleteKey(ProfileRegPath & lstAll.SelectedItems.Item(0).Tag.ToString)
+                    DeleteKey(SignatureRegPath & signatureFullPath)
+                End If
             End If
         End If
     End Sub
     
     ' - - - - - - - - - - Other - - - - - - - - - -
+    
+    Dim contextMenuStripOpenedOn As String
+    Sub btnAll_AllButtons_MouseUp(sender As Object, e As MouseEventArgs) Handles btnAllName.MouseUp, btnAllCategory.MouseUp, btnAllDescription.MouseUp, btnAllManaged.MouseUp, _
+            btnAllNameType.MouseUp, btnAllCategoryType.MouseUp, btnAllDeleteProfile.MouseUp, btnAllSignatureGateway.MouseUp, btnAllSignatureDNS.MouseUp, btnAllDescription.MouseUp, _
+            btnAllSignatureFirstNetwork.MouseUp, btnAllSignatureSource.MouseUp, btnAllSignatureDelete.MouseUp, btnAllDeleteBoth.MouseUp
+        Dim senderBtn As Button = DirectCast(sender, Button)
+        contextMenuStripOpenedOn = senderBtn.Name
+    End Sub
+    Sub btnAll_AllButtons_KeyDown(sender As Object, e As KeyEventArgs) Handles btnAllName.KeyDown, btnAllCategory.KeyDown, btnAllDescription.KeyDown, btnAllManaged.KeyDown, _
+            btnAllNameType.KeyDown, btnAllCategoryType.KeyDown, btnAllDeleteProfile.KeyDown, btnAllSignatureGateway.KeyDown, btnAllSignatureDNS.KeyDown, btnAllDescription.KeyDown, _
+            btnAllSignatureFirstNetwork.KeyDown, btnAllSignatureSource.KeyDown, btnAllSignatureDelete.KeyDown, btnAllDeleteBoth.KeyDown
+        Dim senderBtn As Button = DirectCast(sender, Button)
+        contextMenuStripOpenedOn = senderBtn.Name
+    End Sub
+    
+    Sub ContextMenuStripSaveReg_Click(sender As Object, e As EventArgs) Handles contextMenuStripSaveReg.Click
+        writeToRegFile = True
+        
+        Select Case contextMenuStripOpenedOn
+            Case "btnAllName": btnAllName_Click
+            Case "btnAllCategory": btnAllCategory_Click
+            Case "btnAllDescription": btnAllDescription_Click
+            Case "btnAllManaged": btnAllManaged_Click
+            Case "btnAllNameType": btnAllNameType_Click
+            Case "btnAllCategoryType": btnAllCategoryType_Click
+            Case "btnAllDeleteProfile": btnAllDeleteProfile_Click
+            Case "btnAllSignatureGateway": btnAllSignatureGateway_Click
+            Case "btnAllSignatureDNS": btnAllSignatureDNS_Click
+            Case "btnAllSignatureDescription": btnAllDescription_Click
+            Case "btnAllSignatureFirstNetwork": btnAllSignatureFirstNetwork_Click
+            Case "btnAllSignatureSource": btnAllSignatureSource_Click
+            Case "btnAllSignatureDelete": btnAllSignatureDelete_Click
+            Case "btnAllDeleteBoth": btnAllDeleteBoth_Click
+        End Select
+    End Sub
     
     Sub btnAllLocationWizard_Click() Handles btnAllLocationWizard.Click
         If lstAll.SelectedIndices.Count <> 0 Then
