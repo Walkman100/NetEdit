@@ -7,6 +7,7 @@ Public Partial Class NetEdit
     Public Sub New()
         Me.InitializeComponent()
         
+        lblVersion.Text = My.Application.Info.Version.Major & "." & My.Application.Info.Version.Minor & "." & My.Application.Info.Version.Build
         If WalkmanLib.IsAdmin Then
             Me.Text = "[Admin] " & Me.Text
         End If

@@ -79,6 +79,7 @@
         Me.headConnType = New System.Windows.Forms.ColumnHeader()
         Me.timerDelayedScan = New System.Windows.Forms.Timer(Me.components)
         Me.sfdBackup = New System.Windows.Forms.SaveFileDialog()
+        Me.lblVersion = New System.Windows.Forms.Label()
         Me.grpAll.SuspendLayout
         Me.toolStripBackup.SuspendLayout
         Me.contextMenuStripSave.SuspendLayout
@@ -551,12 +552,24 @@
         Me.sfdBackup.DefaultExt = "reg"
         Me.sfdBackup.Filter = "Registry Entries|*.reg|All Files|*.*"
         '
+        'lblVersion
+        '
+        Me.lblVersion.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.lblVersion.AutoSize = true
+        Me.lblVersion.Font = New System.Drawing.Font("Microsoft Sans Serif", 6!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
+        Me.lblVersion.Location = New System.Drawing.Point(1112, 621)
+        Me.lblVersion.Name = "lblVersion"
+        Me.lblVersion.Size = New System.Drawing.Size(21, 9)
+        Me.lblVersion.TabIndex = 2
+        Me.lblVersion.Text = "1.0.0"
+        '
         'NetEdit
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnExit
         Me.ClientSize = New System.Drawing.Size(1136, 630)
+        Me.Controls.Add(Me.lblVersion)
         Me.Controls.Add(Me.grpConnected)
         Me.Controls.Add(Me.grpAll)
         Me.Icon = Global.NetEdit.Resources.NetEdit
@@ -572,7 +585,9 @@
         Me.grpAllSignature.PerformLayout
         Me.grpConnected.ResumeLayout(false)
         Me.ResumeLayout(false)
+        Me.PerformLayout
     End Sub
+    Private lblVersion As System.Windows.Forms.Label
     Private WithEvents contextMenuStripSaveReg As System.Windows.Forms.ToolStripMenuItem
     Private contextMenuStripSave As System.Windows.Forms.ContextMenuStrip
     Private WithEvents btnAllDeleteProfile As System.Windows.Forms.Button
