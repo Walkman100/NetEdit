@@ -221,11 +221,12 @@
         '
         Me.contextMenuStripSave.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.contextMenuStripSaveReg})
         Me.contextMenuStripSave.Name = "contextMenuStripSave"
-        Me.contextMenuStripSave.Size = New System.Drawing.Size(188, 26)
+        Me.contextMenuStripSave.Size = New System.Drawing.Size(188, 48)
         Me.contextMenuStripSave.Text = "text?"
         '
         'contextMenuStripSaveReg
         '
+        Me.contextMenuStripSaveReg.Image = Global.NetEdit.Resources.RegFile
         Me.contextMenuStripSaveReg.Name = "contextMenuStripSaveReg"
         Me.contextMenuStripSaveReg.Size = New System.Drawing.Size(187, 22)
         Me.contextMenuStripSaveReg.Text = "Save to Registry File..."
