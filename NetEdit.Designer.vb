@@ -40,6 +40,8 @@
         Me.btnAllNetworkWizard = New System.Windows.Forms.Button()
         Me.btnAllLocationWizard = New System.Windows.Forms.Button()
         Me.btnAllDeleteProfile = New System.Windows.Forms.Button()
+        Me.contextMenuStripSave = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.contextMenuStripSaveReg = New System.Windows.Forms.ToolStripMenuItem()
         Me.grpAllSignature = New System.Windows.Forms.GroupBox()
         Me.btnAllDeleteBoth = New System.Windows.Forms.Button()
         Me.btnAllSignatureDelete = New System.Windows.Forms.Button()
@@ -79,6 +81,7 @@
         Me.sfdBackup = New System.Windows.Forms.SaveFileDialog()
         Me.grpAll.SuspendLayout
         Me.toolStripBackup.SuspendLayout
+        Me.contextMenuStripSave.SuspendLayout
         Me.grpAllSignature.SuspendLayout
         Me.grpConnected.SuspendLayout
         Me.SuspendLayout
@@ -206,12 +209,26 @@
         'btnAllDeleteProfile
         '
         Me.btnAllDeleteProfile.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
+        Me.btnAllDeleteProfile.ContextMenuStrip = Me.contextMenuStripSave
         Me.btnAllDeleteProfile.Location = New System.Drawing.Point(666, 217)
         Me.btnAllDeleteProfile.Name = "btnAllDeleteProfile"
         Me.btnAllDeleteProfile.Size = New System.Drawing.Size(91, 23)
         Me.btnAllDeleteProfile.TabIndex = 7
         Me.btnAllDeleteProfile.Text = "Delete Profile"
         Me.btnAllDeleteProfile.UseVisualStyleBackColor = true
+        '
+        'contextMenuStripSave
+        '
+        Me.contextMenuStripSave.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.contextMenuStripSaveReg})
+        Me.contextMenuStripSave.Name = "contextMenuStripSave"
+        Me.contextMenuStripSave.Size = New System.Drawing.Size(188, 26)
+        Me.contextMenuStripSave.Text = "text?"
+        '
+        'contextMenuStripSaveReg
+        '
+        Me.contextMenuStripSaveReg.Name = "contextMenuStripSaveReg"
+        Me.contextMenuStripSaveReg.Size = New System.Drawing.Size(187, 22)
+        Me.contextMenuStripSaveReg.Text = "Save to Registry File..."
         '
         'grpAllSignature
         '
@@ -233,6 +250,7 @@
         'btnAllDeleteBoth
         '
         Me.btnAllDeleteBoth.BackColor = System.Drawing.SystemColors.Control
+        Me.btnAllDeleteBoth.ContextMenuStrip = Me.contextMenuStripSave
         Me.btnAllDeleteBoth.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnAllDeleteBoth.Location = New System.Drawing.Point(663, 19)
         Me.btnAllDeleteBoth.Name = "btnAllDeleteBoth"
@@ -245,6 +263,7 @@
         'btnAllSignatureDelete
         '
         Me.btnAllSignatureDelete.AutoSize = true
+        Me.btnAllSignatureDelete.ContextMenuStrip = Me.contextMenuStripSave
         Me.btnAllSignatureDelete.Location = New System.Drawing.Point(561, 19)
         Me.btnAllSignatureDelete.Name = "btnAllSignatureDelete"
         Me.btnAllSignatureDelete.Size = New System.Drawing.Size(96, 23)
@@ -254,6 +273,7 @@
         '
         'btnAllSignatureSource
         '
+        Me.btnAllSignatureSource.ContextMenuStrip = Me.contextMenuStripSave
         Me.btnAllSignatureSource.Location = New System.Drawing.Point(464, 19)
         Me.btnAllSignatureSource.Name = "btnAllSignatureSource"
         Me.btnAllSignatureSource.Size = New System.Drawing.Size(91, 23)
@@ -263,6 +283,7 @@
         '
         'btnAllSignatureFirstNetwork
         '
+        Me.btnAllSignatureFirstNetwork.ContextMenuStrip = Me.contextMenuStripSave
         Me.btnAllSignatureFirstNetwork.Location = New System.Drawing.Point(342, 19)
         Me.btnAllSignatureFirstNetwork.Name = "btnAllSignatureFirstNetwork"
         Me.btnAllSignatureFirstNetwork.Size = New System.Drawing.Size(116, 23)
@@ -272,6 +293,7 @@
         '
         'btnAllSignatureDescription
         '
+        Me.btnAllSignatureDescription.ContextMenuStrip = Me.contextMenuStripSave
         Me.btnAllSignatureDescription.Location = New System.Drawing.Point(226, 19)
         Me.btnAllSignatureDescription.Name = "btnAllSignatureDescription"
         Me.btnAllSignatureDescription.Size = New System.Drawing.Size(110, 23)
@@ -281,6 +303,7 @@
         '
         'btnAllSignatureDNS
         '
+        Me.btnAllSignatureDNS.ContextMenuStrip = Me.contextMenuStripSave
         Me.btnAllSignatureDNS.Location = New System.Drawing.Point(111, 19)
         Me.btnAllSignatureDNS.Name = "btnAllSignatureDNS"
         Me.btnAllSignatureDNS.Size = New System.Drawing.Size(109, 23)
@@ -290,6 +313,7 @@
         '
         'btnAllSignatureGateway
         '
+        Me.btnAllSignatureGateway.ContextMenuStrip = Me.contextMenuStripSave
         Me.btnAllSignatureGateway.Location = New System.Drawing.Point(6, 19)
         Me.btnAllSignatureGateway.Name = "btnAllSignatureGateway"
         Me.btnAllSignatureGateway.Size = New System.Drawing.Size(99, 23)
@@ -300,6 +324,7 @@
         'btnAllCategoryType
         '
         Me.btnAllCategoryType.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
+        Me.btnAllCategoryType.ContextMenuStrip = Me.contextMenuStripSave
         Me.btnAllCategoryType.Location = New System.Drawing.Point(537, 217)
         Me.btnAllCategoryType.Name = "btnAllCategoryType"
         Me.btnAllCategoryType.Size = New System.Drawing.Size(123, 23)
@@ -310,6 +335,7 @@
         'btnAllNameType
         '
         Me.btnAllNameType.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
+        Me.btnAllNameType.ContextMenuStrip = Me.contextMenuStripSave
         Me.btnAllNameType.Location = New System.Drawing.Point(422, 217)
         Me.btnAllNameType.Name = "btnAllNameType"
         Me.btnAllNameType.Size = New System.Drawing.Size(109, 23)
@@ -320,6 +346,7 @@
         'btnAllManaged
         '
         Me.btnAllManaged.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
+        Me.btnAllManaged.ContextMenuStrip = Me.contextMenuStripSave
         Me.btnAllManaged.Location = New System.Drawing.Point(318, 217)
         Me.btnAllManaged.Name = "btnAllManaged"
         Me.btnAllManaged.Size = New System.Drawing.Size(98, 23)
@@ -330,6 +357,7 @@
         'btnAllDescription
         '
         Me.btnAllDescription.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
+        Me.btnAllDescription.ContextMenuStrip = Me.contextMenuStripSave
         Me.btnAllDescription.Location = New System.Drawing.Point(202, 217)
         Me.btnAllDescription.Name = "btnAllDescription"
         Me.btnAllDescription.Size = New System.Drawing.Size(110, 23)
@@ -340,6 +368,7 @@
         'btnAllCategory
         '
         Me.btnAllCategory.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
+        Me.btnAllCategory.ContextMenuStrip = Me.contextMenuStripSave
         Me.btnAllCategory.Location = New System.Drawing.Point(97, 217)
         Me.btnAllCategory.Name = "btnAllCategory"
         Me.btnAllCategory.Size = New System.Drawing.Size(99, 23)
@@ -350,6 +379,7 @@
         'btnAllName
         '
         Me.btnAllName.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
+        Me.btnAllName.ContextMenuStrip = Me.contextMenuStripSave
         Me.btnAllName.Location = New System.Drawing.Point(6, 217)
         Me.btnAllName.Name = "btnAllName"
         Me.btnAllName.Size = New System.Drawing.Size(85, 23)
@@ -536,16 +566,20 @@
         Me.grpAll.PerformLayout
         Me.toolStripBackup.ResumeLayout(false)
         Me.toolStripBackup.PerformLayout
+        Me.contextMenuStripSave.ResumeLayout(false)
         Me.grpAllSignature.ResumeLayout(false)
         Me.grpAllSignature.PerformLayout
         Me.grpConnected.ResumeLayout(false)
         Me.ResumeLayout(false)
     End Sub
+    Private WithEvents contextMenuStripSaveReg As System.Windows.Forms.ToolStripMenuItem
+    Private contextMenuStripSave As System.Windows.Forms.ContextMenuStrip
+    Private WithEvents btnAllDeleteProfile As System.Windows.Forms.Button
+    Private WithEvents toolStripBackupAllProfiles As System.Windows.Forms.ToolStripMenuItem
     Private sfdBackup As System.Windows.Forms.SaveFileDialog
     Private WithEvents toolStripBackupSelected As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents toolStripBackupAllBoth As System.Windows.Forms.ToolStripMenuItem
     Private WithEvents toolStripBackupAllSignatures As System.Windows.Forms.ToolStripMenuItem
-    Private WithEvents toolStripBackupAllProfiles As System.Windows.Forms.ToolStripMenuItem
     Private toolStripBtnBackup As System.Windows.Forms.ToolStripDropDownButton
     Private toolStripBackup As System.Windows.Forms.ToolStrip
     Private WithEvents btnAllRefresh As System.Windows.Forms.Button
@@ -588,6 +622,5 @@
     Private WithEvents btnAllSignatureDelete As System.Windows.Forms.Button
     Private WithEvents btnAllDeleteBoth As System.Windows.Forms.Button
     Private grpAllSignature As System.Windows.Forms.GroupBox
-    Private WithEvents btnAllDeleteProfile As System.Windows.Forms.Button
     Private grpAll As System.Windows.Forms.GroupBox
 End Class
