@@ -148,6 +148,7 @@ Section "Uninstall"
   DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${ProgramName}" ; Remove Windows Programs & Features integration (uninstall info)
   
   Delete "$SMPROGRAMS\WalkmanOSS\${ProgramName}.lnk"   ; Remove Start Menu Shortcuts & Folder
+  Delete "$SMPROGRAMS\WalkmanOSS\${ProgramName} (Admin).lnk"
   Delete "$SMPROGRAMS\WalkmanOSS\Uninstall ${ProgramName}.lnk"
   RMDir "$SMPROGRAMS\WalkmanOSS"
   
