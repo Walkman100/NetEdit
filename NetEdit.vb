@@ -539,8 +539,7 @@ Public Partial Class NetEdit
                     regBackupContents(3) &= "hex:" & dataString 'hex:c4,e9,84,33,ff,5d
                     
                 Else
-                    MsgBox("Error! Unknown datatype to backup: " & data.GetType.ToString(), MsgBoxStyle.Critical)
-                    MsgBox(New System.Byte().GetType().ToString)
+                    MsgBox("Error! Unknown datatype to backup: " & data.GetType.FullName, MsgBoxStyle.Critical)
                     
                 End If
                 
@@ -836,39 +835,26 @@ Public Partial Class NetEdit
     
     ' - - - - - - - - - - Other - - - - - - - - - -
     
-    Dim contextMenuStripOpenedOn As String
+    Dim contextMenuStripOpenedOn As Button
     Sub btnAll_AllButtons_MouseUp(sender As Object, e As MouseEventArgs) Handles btnAllName.MouseUp, btnAllCategory.MouseUp, btnAllDescription.MouseUp, btnAllManaged.MouseUp, _
             btnAllNameType.MouseUp, btnAllCategoryType.MouseUp, btnAllDeleteProfile.MouseUp, btnAllSignatureGateway.MouseUp, btnAllSignatureDNS.MouseUp, btnAllDescription.MouseUp, _
             btnAllSignatureFirstNetwork.MouseUp, btnAllSignatureSource.MouseUp, btnAllSignatureDelete.MouseUp, btnAllDeleteBoth.MouseUp
         Dim senderBtn As Button = DirectCast(sender, Button)
-        contextMenuStripOpenedOn = senderBtn.Name
+        contextMenuStripOpenedOn = senderBtn
     End Sub
     Sub btnAll_AllButtons_KeyDown(sender As Object, e As KeyEventArgs) Handles btnAllName.KeyDown, btnAllCategory.KeyDown, btnAllDescription.KeyDown, btnAllManaged.KeyDown, _
             btnAllNameType.KeyDown, btnAllCategoryType.KeyDown, btnAllDeleteProfile.KeyDown, btnAllSignatureGateway.KeyDown, btnAllSignatureDNS.KeyDown, btnAllDescription.KeyDown, _
             btnAllSignatureFirstNetwork.KeyDown, btnAllSignatureSource.KeyDown, btnAllSignatureDelete.KeyDown, btnAllDeleteBoth.KeyDown
         Dim senderBtn As Button = DirectCast(sender, Button)
-        contextMenuStripOpenedOn = senderBtn.Name
+        contextMenuStripOpenedOn = senderBtn
     End Sub
     
     Sub ContextMenuStripSaveReg_Click(sender As Object, e As EventArgs) Handles contextMenuStripSaveReg.Click
         writeToRegFile = True
         
-        Select Case contextMenuStripOpenedOn
-            Case "btnAllName": btnAllName_Click
-            Case "btnAllCategory": btnAllCategory_Click
-            Case "btnAllDescription": btnAllDescription_Click
-            Case "btnAllManaged": btnAllManaged_Click
-            Case "btnAllNameType": btnAllNameType_Click
-            Case "btnAllCategoryType": btnAllCategoryType_Click
-            Case "btnAllDeleteProfile": btnAllDeleteProfile_Click
-            Case "btnAllSignatureGateway": btnAllSignatureGateway_Click
-            Case "btnAllSignatureDNS": btnAllSignatureDNS_Click
-            Case "btnAllSignatureDescription": btnAllDescription_Click
-            Case "btnAllSignatureFirstNetwork": btnAllSignatureFirstNetwork_Click
-            Case "btnAllSignatureSource": btnAllSignatureSource_Click
-            Case "btnAllSignatureDelete": btnAllSignatureDelete_Click
-            Case "btnAllDeleteBoth": btnAllDeleteBoth_Click
-        End Select
+        If Not IsNothing(contextMenuStripOpenedOn) Then
+            contextMenuStripOpenedOn.PerformClick
+        End If
     End Sub
     
     Sub btnAllLocationWizard_Click() Handles btnAllLocationWizard.Click
