@@ -79,7 +79,7 @@ Public Partial Class NetEdit
         Dim PowerShellFunctionOutput As String
         
         Try
-            PowerShellFunctionOutput = WalkmanLib.RunAndGetOutput(PowerShellPath, "Get-NetConnectionProfile", False, PowerShellFunctionError, PowerShellFunctionExitCode)
+            PowerShellFunctionOutput = WalkmanLib.RunAndGetOutput(PowerShellPath, "Get-NetConnectionProfile", "", False, PowerShellFunctionError, PowerShellFunctionExitCode)
             
             If PowerShellFunctionExitCode <> 0 Then Throw New Exception("powershell.exe: " & PowerShellFunctionError)
             
@@ -157,7 +157,7 @@ Public Partial Class NetEdit
                 Try
                     Dim PowerShellArgs = "Set-NetConnectionProfile -InterfaceIndex " & currentNetworkIndex & " -NetworkCategory " & NetworkTypeSelector.SelectedNetworkType.ToString
                     
-                    PowerShellFunctionOutput = WalkmanLib.RunAndGetOutput(PowerShellPath, PowerShellArgs, False, PowerShellFunctionError, PowerShellFunctionExitCode)
+                    PowerShellFunctionOutput = WalkmanLib.RunAndGetOutput(PowerShellPath, PowerShellArgs, "", False, PowerShellFunctionError, PowerShellFunctionExitCode)
                     
                     If PowerShellFunctionExitCode <> 0 Then
                         If PowerShellFunctionError.Contains("PermissionDenied") Then
@@ -879,7 +879,7 @@ Public Partial Class NetEdit
         If sourceKey.EndsWith("\") Then sourceKey = sourceKey.Remove(sourceKey.Length -1)
         
         Try
-            RegExeFunctionOutput = WalkmanLib.RunAndGetOutput(RegExePath, "EXPORT """ & sourceKey & """ """ & outputPath & """ /y", False, RegExeFunctionError, RegExeFunctionExitCode)
+            RegExeFunctionOutput = WalkmanLib.RunAndGetOutput(RegExePath, "EXPORT """ & sourceKey & """ """ & outputPath & """ /y", "", False, RegExeFunctionError, RegExeFunctionExitCode)
             
             If RegExeFunctionExitCode <> 0 Then Throw New Exception("reg.exe: " & RegExeFunctionError)
             
