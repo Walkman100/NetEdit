@@ -118,6 +118,10 @@ Public Partial Class NetEdit
     End Function
     
     Sub PopulateNetworkList() Handles btnConnRefresh.Click
+        Dim selectedIndex As Integer = -1 ' lstConnected only allows one selected item
+        If lstConnected.SelectedIndices.Count = 1 Then
+            selectedIndex = lstConnected.SelectedIndices.Item(0)
+        End If
         
         lstConnected.Items.Clear()
         
@@ -132,6 +136,10 @@ Public Partial Class NetEdit
         Next
         
         lstConnected.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize)
+        
+        If selectedIndex <> -1 AndAlso lstConnected.Items.Count > selectedIndex Then
+            lstConnected.Items.Item(selectedIndex).Selected = True
+        End If
         
         lstConnectedSelectionUpdated()
     End Sub
@@ -384,6 +392,10 @@ Public Partial Class NetEdit
     End Function
     
     Sub PopulateProfileList() Handles btnAllRefresh.Click
+        Dim selectedIndex As Integer = -1 ' lstAll only allows one selected item
+        If lstAll.SelectedIndices.Count = 1 Then
+            selectedIndex = lstAll.SelectedIndices.Item(0)
+        End If
         
         lstAll.Items.Clear()
         
@@ -423,6 +435,10 @@ Public Partial Class NetEdit
         
         lstAll.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize)
         
+        If selectedIndex <> -1 AndAlso lstAll.Items.Count > selectedIndex Then
+            lstAll.Items.Item(selectedIndex).Selected = True
+        End If
+        
         lstAllSelectionUpdated()
         
         Dim assignedSignature As Boolean
@@ -456,6 +472,10 @@ Public Partial Class NetEdit
         Next
         
         lstAll.AutoResizeColumns(ColumnHeaderAutoResizeStyle.HeaderSize)
+        
+        If selectedIndex <> -1 AndAlso lstAll.Items.Count > selectedIndex Then
+            lstAll.Items.Item(selectedIndex).Selected = True
+        End If
         
         lstAllSelectionUpdated()
     End Sub
@@ -505,7 +525,7 @@ Public Partial Class NetEdit
                 'regBackupContents(3) = """" & value & """=""" & data & """"
                 
                 If TypeOf(data) Is String Then
-                    regBackupContents(3) &= """" & data.ToString() & """"
+                    regBackupContents(3) &= """" & DirectCast(data, String) & """"
                     
                 ElseIf TypeOf(data) Is Integer Then
                     Dim dataInt = DirectCast(data, Integer)
