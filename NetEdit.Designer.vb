@@ -211,6 +211,8 @@
         '
         Me.btnAllDeleteProfile.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
         Me.btnAllDeleteProfile.ContextMenuStrip = Me.contextMenuStripSave
+        Me.btnAllDeleteProfile.Image = Global.NetEdit.Resources.mouse_right_click_8x
+        Me.btnAllDeleteProfile.ImageAlign = System.Drawing.ContentAlignment.TopRight
         Me.btnAllDeleteProfile.Location = New System.Drawing.Point(666, 217)
         Me.btnAllDeleteProfile.Name = "btnAllDeleteProfile"
         Me.btnAllDeleteProfile.Size = New System.Drawing.Size(91, 23)
@@ -222,7 +224,7 @@
         '
         Me.contextMenuStripSave.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.contextMenuStripSaveReg})
         Me.contextMenuStripSave.Name = "contextMenuStripSave"
-        Me.contextMenuStripSave.Size = New System.Drawing.Size(188, 48)
+        Me.contextMenuStripSave.Size = New System.Drawing.Size(188, 26)
         Me.contextMenuStripSave.Text = "text?"
         '
         'contextMenuStripSaveReg
@@ -254,6 +256,8 @@
         Me.btnAllDeleteBoth.BackColor = System.Drawing.SystemColors.Control
         Me.btnAllDeleteBoth.ContextMenuStrip = Me.contextMenuStripSave
         Me.btnAllDeleteBoth.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnAllDeleteBoth.Image = Global.NetEdit.Resources.mouse_right_click_8x
+        Me.btnAllDeleteBoth.ImageAlign = System.Drawing.ContentAlignment.TopRight
         Me.btnAllDeleteBoth.Location = New System.Drawing.Point(663, 19)
         Me.btnAllDeleteBoth.Name = "btnAllDeleteBoth"
         Me.btnAllDeleteBoth.Size = New System.Drawing.Size(148, 23)
@@ -266,6 +270,8 @@
         '
         Me.btnAllSignatureDelete.AutoSize = true
         Me.btnAllSignatureDelete.ContextMenuStrip = Me.contextMenuStripSave
+        Me.btnAllSignatureDelete.Image = Global.NetEdit.Resources.mouse_right_click_8x
+        Me.btnAllSignatureDelete.ImageAlign = System.Drawing.ContentAlignment.TopRight
         Me.btnAllSignatureDelete.Location = New System.Drawing.Point(561, 19)
         Me.btnAllSignatureDelete.Name = "btnAllSignatureDelete"
         Me.btnAllSignatureDelete.Size = New System.Drawing.Size(96, 23)
@@ -276,6 +282,8 @@
         'btnAllSignatureSource
         '
         Me.btnAllSignatureSource.ContextMenuStrip = Me.contextMenuStripSave
+        Me.btnAllSignatureSource.Image = Global.NetEdit.Resources.mouse_right_click_8x
+        Me.btnAllSignatureSource.ImageAlign = System.Drawing.ContentAlignment.TopRight
         Me.btnAllSignatureSource.Location = New System.Drawing.Point(464, 19)
         Me.btnAllSignatureSource.Name = "btnAllSignatureSource"
         Me.btnAllSignatureSource.Size = New System.Drawing.Size(91, 23)
@@ -286,6 +294,8 @@
         'btnAllSignatureFirstNetwork
         '
         Me.btnAllSignatureFirstNetwork.ContextMenuStrip = Me.contextMenuStripSave
+        Me.btnAllSignatureFirstNetwork.Image = Global.NetEdit.Resources.mouse_right_click_8x
+        Me.btnAllSignatureFirstNetwork.ImageAlign = System.Drawing.ContentAlignment.TopRight
         Me.btnAllSignatureFirstNetwork.Location = New System.Drawing.Point(342, 19)
         Me.btnAllSignatureFirstNetwork.Name = "btnAllSignatureFirstNetwork"
         Me.btnAllSignatureFirstNetwork.Size = New System.Drawing.Size(116, 23)
@@ -296,6 +306,8 @@
         'btnAllSignatureDescription
         '
         Me.btnAllSignatureDescription.ContextMenuStrip = Me.contextMenuStripSave
+        Me.btnAllSignatureDescription.Image = Global.NetEdit.Resources.mouse_right_click_8x
+        Me.btnAllSignatureDescription.ImageAlign = System.Drawing.ContentAlignment.TopRight
         Me.btnAllSignatureDescription.Location = New System.Drawing.Point(226, 19)
         Me.btnAllSignatureDescription.Name = "btnAllSignatureDescription"
         Me.btnAllSignatureDescription.Size = New System.Drawing.Size(110, 23)
@@ -306,6 +318,8 @@
         'btnAllSignatureDNS
         '
         Me.btnAllSignatureDNS.ContextMenuStrip = Me.contextMenuStripSave
+        Me.btnAllSignatureDNS.Image = Global.NetEdit.Resources.mouse_right_click_8x
+        Me.btnAllSignatureDNS.ImageAlign = System.Drawing.ContentAlignment.TopRight
         Me.btnAllSignatureDNS.Location = New System.Drawing.Point(111, 19)
         Me.btnAllSignatureDNS.Name = "btnAllSignatureDNS"
         Me.btnAllSignatureDNS.Size = New System.Drawing.Size(109, 23)
@@ -316,6 +330,8 @@
         'btnAllSignatureGateway
         '
         Me.btnAllSignatureGateway.ContextMenuStrip = Me.contextMenuStripSave
+        Me.btnAllSignatureGateway.Image = Global.NetEdit.Resources.mouse_right_click_8x
+        Me.btnAllSignatureGateway.ImageAlign = System.Drawing.ContentAlignment.TopRight
         Me.btnAllSignatureGateway.Location = New System.Drawing.Point(6, 19)
         Me.btnAllSignatureGateway.Name = "btnAllSignatureGateway"
         Me.btnAllSignatureGateway.Size = New System.Drawing.Size(99, 23)
@@ -327,6 +343,8 @@
         '
         Me.btnAllCategoryType.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
         Me.btnAllCategoryType.ContextMenuStrip = Me.contextMenuStripSave
+        Me.btnAllCategoryType.Image = Global.NetEdit.Resources.mouse_right_click_8x
+        Me.btnAllCategoryType.ImageAlign = System.Drawing.ContentAlignment.TopRight
         Me.btnAllCategoryType.Location = New System.Drawing.Point(537, 217)
         Me.btnAllCategoryType.Name = "btnAllCategoryType"
         Me.btnAllCategoryType.Size = New System.Drawing.Size(123, 23)
@@ -338,6 +356,8 @@
         '
         Me.btnAllNameType.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
         Me.btnAllNameType.ContextMenuStrip = Me.contextMenuStripSave
+        Me.btnAllNameType.Image = Global.NetEdit.Resources.mouse_right_click_8x
+        Me.btnAllNameType.ImageAlign = System.Drawing.ContentAlignment.TopRight
         Me.btnAllNameType.Location = New System.Drawing.Point(422, 217)
         Me.btnAllNameType.Name = "btnAllNameType"
         Me.btnAllNameType.Size = New System.Drawing.Size(109, 23)
@@ -349,6 +369,8 @@
         '
         Me.btnAllManaged.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
         Me.btnAllManaged.ContextMenuStrip = Me.contextMenuStripSave
+        Me.btnAllManaged.Image = Global.NetEdit.Resources.mouse_right_click_8x
+        Me.btnAllManaged.ImageAlign = System.Drawing.ContentAlignment.TopRight
         Me.btnAllManaged.Location = New System.Drawing.Point(318, 217)
         Me.btnAllManaged.Name = "btnAllManaged"
         Me.btnAllManaged.Size = New System.Drawing.Size(98, 23)
@@ -360,6 +382,8 @@
         '
         Me.btnAllDescription.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
         Me.btnAllDescription.ContextMenuStrip = Me.contextMenuStripSave
+        Me.btnAllDescription.Image = Global.NetEdit.Resources.mouse_right_click_8x
+        Me.btnAllDescription.ImageAlign = System.Drawing.ContentAlignment.TopRight
         Me.btnAllDescription.Location = New System.Drawing.Point(202, 217)
         Me.btnAllDescription.Name = "btnAllDescription"
         Me.btnAllDescription.Size = New System.Drawing.Size(110, 23)
@@ -371,6 +395,8 @@
         '
         Me.btnAllCategory.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
         Me.btnAllCategory.ContextMenuStrip = Me.contextMenuStripSave
+        Me.btnAllCategory.Image = Global.NetEdit.Resources.mouse_right_click_8x
+        Me.btnAllCategory.ImageAlign = System.Drawing.ContentAlignment.TopRight
         Me.btnAllCategory.Location = New System.Drawing.Point(97, 217)
         Me.btnAllCategory.Name = "btnAllCategory"
         Me.btnAllCategory.Size = New System.Drawing.Size(99, 23)
@@ -382,6 +408,8 @@
         '
         Me.btnAllName.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left),System.Windows.Forms.AnchorStyles)
         Me.btnAllName.ContextMenuStrip = Me.contextMenuStripSave
+        Me.btnAllName.Image = Global.NetEdit.Resources.mouse_right_click_8x
+        Me.btnAllName.ImageAlign = System.Drawing.ContentAlignment.TopRight
         Me.btnAllName.Location = New System.Drawing.Point(6, 217)
         Me.btnAllName.Name = "btnAllName"
         Me.btnAllName.Size = New System.Drawing.Size(85, 23)
