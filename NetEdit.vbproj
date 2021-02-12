@@ -9,6 +9,7 @@
     <RootNamespace>NetEdit</RootNamespace>
     <AssemblyName>NetEdit</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <LangVersion>11</LangVersion>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <OptionInfer>On</OptionInfer>
     <ApplicationManifest>Properties\App.manifest</ApplicationManifest>
