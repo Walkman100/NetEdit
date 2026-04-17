@@ -22,7 +22,7 @@ Public Class NetworkTypeSelector
         Me.optPrivate = New System.Windows.Forms.RadioButton()
         Me.optPublic = New System.Windows.Forms.RadioButton()
         Me.lblInfo = New System.Windows.Forms.Label()
-        Me.SuspendLayout
+        Me.SuspendLayout()
         'btnSave
         Me.btnSave.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.btnSave.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -31,7 +31,7 @@ Public Class NetworkTypeSelector
         Me.btnSave.Size = New System.Drawing.Size(75, 23)
         Me.btnSave.TabIndex = 3
         Me.btnSave.Text = "Save"
-        Me.btnSave.UseVisualStyleBackColor = true
+        Me.btnSave.UseVisualStyleBackColor = True
         'btnCancel
         Me.btnCancel.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
@@ -40,28 +40,28 @@ Public Class NetworkTypeSelector
         Me.btnCancel.Size = New System.Drawing.Size(75, 23)
         Me.btnCancel.TabIndex = 4
         Me.btnCancel.Text = "Cancel"
-        Me.btnCancel.UseVisualStyleBackColor = true
+        Me.btnCancel.UseVisualStyleBackColor = True
         'optPrivate
-        Me.optPrivate.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.optPrivate.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.optPrivate.Location = New System.Drawing.Point(12, 25)
         Me.optPrivate.Name = "optPrivate"
         Me.optPrivate.Size = New System.Drawing.Size(156, 24)
         Me.optPrivate.TabIndex = 1
-        Me.optPrivate.TabStop = true
+        Me.optPrivate.TabStop = True
         Me.optPrivate.Text = "Private Network"
-        Me.optPrivate.UseVisualStyleBackColor = true
+        Me.optPrivate.UseVisualStyleBackColor = True
         'optPublic
-        Me.optPublic.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.optPublic.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.optPublic.Location = New System.Drawing.Point(12, 55)
         Me.optPublic.Name = "optPublic"
         Me.optPublic.Size = New System.Drawing.Size(156, 24)
         Me.optPublic.TabIndex = 2
-        Me.optPublic.TabStop = true
+        Me.optPublic.TabStop = True
         Me.optPublic.Text = "Public Network"
-        Me.optPublic.UseVisualStyleBackColor = true
+        Me.optPublic.UseVisualStyleBackColor = True
         'lblInfo
         Me.lblInfo.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblInfo.AutoSize = true
+        Me.lblInfo.AutoSize = True
         Me.lblInfo.Location = New System.Drawing.Point(12, 9)
         Me.lblInfo.Name = "lblInfo"
         Me.lblInfo.Size = New System.Drawing.Size(145, 13)
@@ -69,7 +69,7 @@ Public Class NetworkTypeSelector
         Me.lblInfo.Text = "Select type to set network to:"
         'NetworkTypeSelector
         Me.AcceptButton = Me.btnSave
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(180, 120)
@@ -80,15 +80,15 @@ Public Class NetworkTypeSelector
         Me.Controls.Add(Me.btnSave)
         ' Comment this out to get code auto-complete
         Me.Icon = Global.NetEdit.Resources.NetEdit
-        Me.MaximizeBox = false
-        Me.MinimizeBox = false
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "NetworkTypeSelector"
-        Me.ShowInTaskbar = false
+        Me.ShowInTaskbar = False
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Select Network Type"
-        Me.ResumeLayout(false)
-        Me.PerformLayout
+        Me.ResumeLayout(False)
+        Me.PerformLayout()
     End Sub
     Private lblInfo As System.Windows.Forms.Label
     Private optPublic As System.Windows.Forms.RadioButton
@@ -99,7 +99,7 @@ Public Class NetworkTypeSelector
     Public Sub New()
         Me.InitializeComponent()
     End Sub
-    
+
     Public Property SelectedNetworkType As NetworkCategory
         Get
             If optPrivate.Checked Then
@@ -110,9 +110,9 @@ Public Class NetworkTypeSelector
                 Throw New Exception("No input selected")
             End If
         End Get
-        
+
         Set
-            Select Case value
+            Select Case Value
                 Case NetworkCategory.Private
                     optPrivate.Checked = True
                 Case NetworkCategory.Public

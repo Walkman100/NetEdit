@@ -23,8 +23,8 @@ Public Class MacAddressSelector
         Me.txtMacAddress = New System.Windows.Forms.TextBox()
         Me.pbxStatus = New System.Windows.Forms.PictureBox()
         Me.lblStatus = New System.Windows.Forms.Label()
-        CType(Me.pbxStatus,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.SuspendLayout
+        CType(Me.pbxStatus, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.SuspendLayout()
         'btnSave
         Me.btnSave.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.btnSave.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -33,7 +33,7 @@ Public Class MacAddressSelector
         Me.btnSave.Size = New System.Drawing.Size(75, 23)
         Me.btnSave.TabIndex = 3
         Me.btnSave.Text = "Save"
-        Me.btnSave.UseVisualStyleBackColor = true
+        Me.btnSave.UseVisualStyleBackColor = True
         'btnCancel
         Me.btnCancel.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
@@ -42,17 +42,17 @@ Public Class MacAddressSelector
         Me.btnCancel.Size = New System.Drawing.Size(75, 23)
         Me.btnCancel.TabIndex = 4
         Me.btnCancel.Text = "Cancel"
-        Me.btnCancel.UseVisualStyleBackColor = true
+        Me.btnCancel.UseVisualStyleBackColor = True
         'lblInfo
         Me.lblInfo.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.lblInfo.AutoSize = true
+        Me.lblInfo.AutoSize = True
         Me.lblInfo.Location = New System.Drawing.Point(12, 9)
         Me.lblInfo.Name = "lblInfo"
         Me.lblInfo.Size = New System.Drawing.Size(102, 13)
         Me.lblInfo.TabIndex = 0
         Me.lblInfo.Text = "Enter MAC Address:"
         'txtMacAddress
-        Me.txtMacAddress.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.txtMacAddress.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.txtMacAddress.Location = New System.Drawing.Point(12, 25)
         Me.txtMacAddress.Name = "txtMacAddress"
         Me.txtMacAddress.Size = New System.Drawing.Size(156, 20)
@@ -63,10 +63,10 @@ Public Class MacAddressSelector
         Me.pbxStatus.Name = "pbxStatus"
         Me.pbxStatus.Size = New System.Drawing.Size(16, 16)
         Me.pbxStatus.TabIndex = 10
-        Me.pbxStatus.TabStop = false
+        Me.pbxStatus.TabStop = False
         'lblStatus
         Me.lblStatus.Anchor = System.Windows.Forms.AnchorStyles.None
-        Me.lblStatus.AutoSize = true
+        Me.lblStatus.AutoSize = True
         Me.lblStatus.Location = New System.Drawing.Point(28, 52)
         Me.lblStatus.Name = "lblStatus"
         Me.lblStatus.Size = New System.Drawing.Size(65, 13)
@@ -74,7 +74,7 @@ Public Class MacAddressSelector
         Me.lblStatus.Text = "Enter Text..."
         'MacAddressSelector
         Me.AcceptButton = Me.btnSave
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(180, 108)
@@ -86,16 +86,16 @@ Public Class MacAddressSelector
         Me.Controls.Add(Me.btnSave)
         ' Comment this out to get code auto-complete
         Me.Icon = Global.NetEdit.Resources.NetEdit
-        Me.MaximizeBox = false
-        Me.MinimizeBox = false
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "MacAddressSelector"
-        Me.ShowInTaskbar = false
+        Me.ShowInTaskbar = False
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Change MAC Address"
-        CType(Me.pbxStatus,System.ComponentModel.ISupportInitialize).EndInit
-        Me.ResumeLayout(false)
-        Me.PerformLayout
+        CType(Me.pbxStatus, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.ResumeLayout(False)
+        Me.PerformLayout()
     End Sub
     Private WithEvents txtMacAddress As System.Windows.Forms.TextBox
     Private pbxStatus As System.Windows.Forms.PictureBox
@@ -107,17 +107,17 @@ Public Class MacAddressSelector
     Public Sub New()
         Me.InitializeComponent()
     End Sub
-    
+
     Public Property MacAddress As String
         Get
             Return txtMacAddress.Text.Replace("-", ":")
         End Get
-        
+
         Set
-            txtMacAddress.Text = value
+            txtMacAddress.Text = Value
         End Set
     End Property
-    
+
     Sub txtMacAddress_TextChanged() Handles txtMacAddress.TextChanged
         If txtMacAddress.Text.Split(":".ToCharArray).Length = 6 Or txtMacAddress.Text.Split("-".ToCharArray).Length = 6 Then
             If IsConvertable(txtMacAddress.Text) Then
@@ -135,10 +135,10 @@ Public Class MacAddressSelector
             pbxStatus.Image = Resources.warning
         End If
     End Sub
-    
+
     Function IsConvertable(inputStr As String) As Boolean
         If inputStr.Contains("-") Then inputStr = inputStr.Replace("-", ":")
-        
+
         Dim finalBytes(5) As Byte
         Dim counter As Integer = 0
         Try
@@ -149,7 +149,7 @@ Public Class MacAddressSelector
         Catch
             Return False
         End Try
-        
+
         Return True
     End Function
 End Class

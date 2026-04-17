@@ -19,8 +19,8 @@ Public Class IntegerSelector
         Me.btnCancel = New System.Windows.Forms.Button()
         Me.lblInfo = New System.Windows.Forms.Label()
         Me.numOther = New System.Windows.Forms.NumericUpDown()
-        CType(Me.numOther,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.SuspendLayout
+        CType(Me.numOther, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.SuspendLayout()
         'btnSave
         Me.btnSave.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.btnSave.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -29,7 +29,7 @@ Public Class IntegerSelector
         Me.btnSave.Size = New System.Drawing.Size(75, 23)
         Me.btnSave.TabIndex = 7
         Me.btnSave.Text = "Save"
-        Me.btnSave.UseVisualStyleBackColor = true
+        Me.btnSave.UseVisualStyleBackColor = True
         'btnCancel
         Me.btnCancel.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
@@ -38,17 +38,17 @@ Public Class IntegerSelector
         Me.btnCancel.Size = New System.Drawing.Size(75, 23)
         Me.btnCancel.TabIndex = 8
         Me.btnCancel.Text = "Cancel"
-        Me.btnCancel.UseVisualStyleBackColor = true
+        Me.btnCancel.UseVisualStyleBackColor = True
         'lblInfo
         Me.lblInfo.Anchor = System.Windows.Forms.AnchorStyles.Left
-        Me.lblInfo.AutoSize = true
+        Me.lblInfo.AutoSize = True
         Me.lblInfo.Location = New System.Drawing.Point(12, 9)
         Me.lblInfo.Name = "lblInfo"
         Me.lblInfo.Size = New System.Drawing.Size(125, 13)
         Me.lblInfo.TabIndex = 0
         Me.lblInfo.Text = "Select number to set -- to:"
         'numOther
-        Me.numOther.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.numOther.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.numOther.Location = New System.Drawing.Point(12, 25)
         Me.numOther.Maximum = System.Int32.MaxValue
         Me.numOther.Name = "numOther"
@@ -56,7 +56,7 @@ Public Class IntegerSelector
         Me.numOther.TabIndex = 0
         'IntegerSelector
         Me.AcceptButton = Me.btnSave
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(180, 86)
@@ -66,16 +66,16 @@ Public Class IntegerSelector
         Me.Controls.Add(Me.btnSave)
         ' Comment this out to get code auto-complete
         Me.Icon = Global.NetEdit.Resources.NetEdit
-        Me.MaximizeBox = false
-        Me.MinimizeBox = false
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "IntegerSelector"
-        Me.ShowInTaskbar = false
+        Me.ShowInTaskbar = False
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Choose Number"
-        CType(Me.numOther,System.ComponentModel.ISupportInitialize).EndInit
-        Me.ResumeLayout(false)
-        Me.PerformLayout
+        CType(Me.numOther, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.ResumeLayout(False)
+        Me.PerformLayout()
     End Sub
     Private numOther As System.Windows.Forms.NumericUpDown
     Private lblInfo As System.Windows.Forms.Label
@@ -85,17 +85,17 @@ Public Class IntegerSelector
     Public Sub New()
         Me.InitializeComponent()
     End Sub
-    
+
     Public Property SelectedInteger As Integer
         Get
             Return Decimal.ToInt32(numOther.Value)
         End Get
-        
+
         Set
-            numOther.Value = value
+            numOther.Value = Value
         End Set
     End Property
-    
+
     Public WriteOnly Property IntegerDescription As String
         Set
             Me.lblInfo.Text = "Select number to set " & value & " to:"

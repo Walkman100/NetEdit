@@ -10,7 +10,7 @@ Namespace My
             Me.SaveMySettingsOnExit = True
             Me.ShutDownStyle = ShutdownMode.AfterMainFormCloses
         End Sub
-        
+
         Protected Overrides Sub OnCreateMainForm()
             Me.MainForm = My.Forms.NetEdit
         End Sub

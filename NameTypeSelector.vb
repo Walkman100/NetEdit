@@ -25,9 +25,9 @@ Public Class NameTypeSelector
         Me.numOther = New System.Windows.Forms.NumericUpDown()
         Me.grpOther = New System.Windows.Forms.GroupBox()
         Me.optOther = New System.Windows.Forms.RadioButton()
-        CType(Me.numOther,System.ComponentModel.ISupportInitialize).BeginInit
-        Me.grpOther.SuspendLayout
-        Me.SuspendLayout
+        CType(Me.numOther, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.grpOther.SuspendLayout()
+        Me.SuspendLayout()
         'btnSave
         Me.btnSave.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.btnSave.DialogResult = System.Windows.Forms.DialogResult.OK
@@ -36,7 +36,7 @@ Public Class NameTypeSelector
         Me.btnSave.Size = New System.Drawing.Size(75, 23)
         Me.btnSave.TabIndex = 7
         Me.btnSave.Text = "Save"
-        Me.btnSave.UseVisualStyleBackColor = true
+        Me.btnSave.UseVisualStyleBackColor = True
         'btnCancel
         Me.btnCancel.Anchor = System.Windows.Forms.AnchorStyles.None
         Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
@@ -45,53 +45,53 @@ Public Class NameTypeSelector
         Me.btnCancel.Size = New System.Drawing.Size(75, 23)
         Me.btnCancel.TabIndex = 8
         Me.btnCancel.Text = "Cancel"
-        Me.btnCancel.UseVisualStyleBackColor = true
+        Me.btnCancel.UseVisualStyleBackColor = True
         'optWired
-        Me.optWired.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.optWired.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.optWired.Location = New System.Drawing.Point(12, 25)
         Me.optWired.Name = "optWired"
         Me.optWired.Size = New System.Drawing.Size(173, 24)
         Me.optWired.TabIndex = 1
-        Me.optWired.TabStop = true
+        Me.optWired.TabStop = True
         Me.optWired.Text = "Wired Network"
-        Me.optWired.UseVisualStyleBackColor = true
+        Me.optWired.UseVisualStyleBackColor = True
         'optVPN
-        Me.optVPN.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.optVPN.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.optVPN.Location = New System.Drawing.Point(12, 55)
         Me.optVPN.Name = "optVPN"
         Me.optVPN.Size = New System.Drawing.Size(173, 24)
         Me.optVPN.TabIndex = 2
-        Me.optVPN.TabStop = true
+        Me.optVPN.TabStop = True
         Me.optVPN.Text = "VPN"
-        Me.optVPN.UseVisualStyleBackColor = true
+        Me.optVPN.UseVisualStyleBackColor = True
         'lblInfo
-        Me.lblInfo.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
-        Me.lblInfo.AutoSize = true
+        Me.lblInfo.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.lblInfo.AutoSize = True
         Me.lblInfo.Location = New System.Drawing.Point(12, 9)
         Me.lblInfo.Name = "lblInfo"
         Me.lblInfo.Size = New System.Drawing.Size(159, 13)
         Me.lblInfo.TabIndex = 0
         Me.lblInfo.Text = "Select type to set NameType to:"
         'optWireless
-        Me.optWireless.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.optWireless.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.optWireless.Location = New System.Drawing.Point(12, 85)
         Me.optWireless.Name = "optWireless"
         Me.optWireless.Size = New System.Drawing.Size(173, 24)
         Me.optWireless.TabIndex = 3
-        Me.optWireless.TabStop = true
+        Me.optWireless.TabStop = True
         Me.optWireless.Text = "Wireless Network"
-        Me.optWireless.UseVisualStyleBackColor = true
+        Me.optWireless.UseVisualStyleBackColor = True
         'optMobile
-        Me.optMobile.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.optMobile.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.optMobile.Location = New System.Drawing.Point(12, 115)
         Me.optMobile.Name = "optMobile"
         Me.optMobile.Size = New System.Drawing.Size(173, 24)
         Me.optMobile.TabIndex = 4
-        Me.optMobile.TabStop = true
+        Me.optMobile.TabStop = True
         Me.optMobile.Text = "Mobile Broadband"
-        Me.optMobile.UseVisualStyleBackColor = true
+        Me.optMobile.UseVisualStyleBackColor = True
         'numOther
-        Me.numOther.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.numOther.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.numOther.Location = New System.Drawing.Point(6, 19)
         Me.numOther.Maximum = New Decimal(New Integer() {500, 0, 0, 0})
         Me.numOther.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
@@ -100,13 +100,13 @@ Public Class NameTypeSelector
         Me.numOther.TabIndex = 0
         Me.numOther.Value = New Decimal(New Integer() {1, 0, 0, 0})
         'grpOther
-        Me.grpOther.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right),System.Windows.Forms.AnchorStyles)
+        Me.grpOther.Anchor = CType((System.Windows.Forms.AnchorStyles.Left Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.grpOther.Controls.Add(Me.numOther)
         Me.grpOther.Location = New System.Drawing.Point(12, 150)
         Me.grpOther.Name = "grpOther"
         Me.grpOther.Size = New System.Drawing.Size(173, 46)
         Me.grpOther.TabIndex = 6
-        Me.grpOther.TabStop = false
+        Me.grpOther.TabStop = False
         'optOther
         Me.optOther.Anchor = System.Windows.Forms.AnchorStyles.Left
         Me.optOther.BackColor = System.Drawing.Color.Transparent
@@ -114,12 +114,12 @@ Public Class NameTypeSelector
         Me.optOther.Name = "optOther"
         Me.optOther.Size = New System.Drawing.Size(54, 24)
         Me.optOther.TabIndex = 5
-        Me.optOther.TabStop = true
+        Me.optOther.TabStop = True
         Me.optOther.Text = "Other:"
         Me.optOther.UseVisualStyleBackColor = False
         'NameTypeSelector
         Me.AcceptButton = Me.btnSave
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCancel
         Me.ClientSize = New System.Drawing.Size(197, 237)
@@ -134,17 +134,17 @@ Public Class NameTypeSelector
         Me.Controls.Add(Me.btnSave)
         ' Comment this out to get code auto-complete
         Me.Icon = Global.NetEdit.Resources.NetEdit
-        Me.MaximizeBox = false
-        Me.MinimizeBox = false
+        Me.MaximizeBox = False
+        Me.MinimizeBox = False
         Me.Name = "NameTypeSelector"
-        Me.ShowInTaskbar = false
+        Me.ShowInTaskbar = False
         Me.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "Select Profile NameType"
-        CType(Me.numOther,System.ComponentModel.ISupportInitialize).EndInit
-        Me.grpOther.ResumeLayout(false)
-        Me.ResumeLayout(false)
-        Me.PerformLayout
+        CType(Me.numOther, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.grpOther.ResumeLayout(False)
+        Me.ResumeLayout(False)
+        Me.PerformLayout()
     End Sub
     Private WithEvents optWired As System.Windows.Forms.RadioButton
     Private WithEvents optVPN As System.Windows.Forms.RadioButton
@@ -160,24 +160,24 @@ Public Class NameTypeSelector
     Public Sub New()
         Me.InitializeComponent()
     End Sub
-    
+
     Public Property SelectedNameType As Integer
         Get
             Return Decimal.ToInt32(numOther.Value)
         End Get
-        
+
         Set
-            numOther.Value = value
-            Select Case value
-                Case 6: optWired.Checked = True
-                Case 23: optVPN.Checked = True
-                Case 71: optWireless.Checked = True
-                Case 243: optMobile.Checked = True
-                Case Else: optOther.Checked = True
+            numOther.Value = Value
+            Select Case Value
+                Case 6 : optWired.Checked = True
+                Case 23 : optVPN.Checked = True
+                Case 71 : optWireless.Checked = True
+                Case 243 : optMobile.Checked = True
+                Case Else : optOther.Checked = True
             End Select
         End Set
     End Property
-    
+
     Sub OptionsCheckedChanged() Handles optWired.CheckedChanged, optVPN.CheckedChanged, optWireless.CheckedChanged, optMobile.CheckedChanged, optOther.CheckedChanged
         If optWired.Checked Then numOther.Value = 6
         If optVPN.Checked Then numOther.Value = 23
