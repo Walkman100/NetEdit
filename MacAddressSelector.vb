@@ -3,6 +3,8 @@ Option Strict On
 Option Compare Binary
 Option Infer On
 
+Imports System
+
 Public Class MacAddressSelector
     Inherits System.Windows.Forms.Form
     Private components As System.ComponentModel.IContainer

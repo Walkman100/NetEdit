@@ -3,7 +3,14 @@ Option Strict On
 Option Compare Binary
 Option Infer On
 
-Public Partial Class NetEdit
+Imports System
+Imports System.Collections.Generic
+Imports System.Diagnostics
+Imports System.Windows.Forms
+Imports Microsoft
+Imports Microsoft.VisualBasic
+
+Partial Public Class NetEdit
     Public Sub New()
         Me.InitializeComponent()
         
