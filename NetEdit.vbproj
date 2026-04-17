@@ -68,7 +68,9 @@
     <Compile Include="NetEdit.Designer.vb">
       <DependentUpon>NetEdit.vb</DependentUpon>
     </Compile>
-    <Compile Include="NetEdit.vb" />
+    <Compile Include="NetEdit.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="NetworkTypeSelector.vb" />
     <Compile Include="Properties\Application.vb" />
     <Compile Include="Properties\AssemblyInfo.vb" />
@@ -76,6 +78,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="WalkmanLib\NativeErrorCodes.vb" />
     <Compile Include="WalkmanLib\WalkmanLibDotNet.vb" />
   </ItemGroup>
   <ItemGroup>
