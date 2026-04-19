@@ -55,6 +55,7 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq">
@@ -78,8 +79,23 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <AutoGen>True</AutoGen>
     </Compile>
+    <Compile Include="WalkmanLib\CustomInputDialog.Designer.vb">
+      <DependentUpon>CustomInputDialog.vb</DependentUpon>
+    </Compile>
+    <Compile Include="WalkmanLib\CustomInputDialog.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WalkmanLib\CustomMsgBox.Designer.vb">
+      <DependentUpon>CustomMsgBox.vb</DependentUpon>
+    </Compile>
+    <Compile Include="WalkmanLib\CustomMsgBox.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="WalkmanLib\NativeErrorCodes.vb" />
     <Compile Include="WalkmanLib\WalkmanLibDotNet.vb" />
+    <Compile Include="WalkmanLib\WalkmanLibTheming.vb" />
+    <Compile Include="WalkmanLib\WalkmanLibThemingMsgBox.vb" />
+    <Compile Include="WalkmanLib\WalkmanLibWin32.vb" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\App.config" />
@@ -89,6 +105,9 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WalkmanLib\CustomMsgBox.resx">
+      <DependentUpon>CustomMsgBox.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
