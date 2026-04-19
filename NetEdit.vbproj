@@ -8,7 +8,7 @@
     <MyType>WindowsForms</MyType>
     <RootNamespace>NetEdit</RootNamespace>
     <AssemblyName>NetEdit</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <LangVersion>11</LangVersion>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <OptionInfer>On</OptionInfer>
