@@ -11,6 +11,16 @@ Imports Microsoft
 Imports Microsoft.VisualBasic
 
 Partial Public Class NetEdit
+    ReadOnly theme As WalkmanLib.Theme = WalkmanLib.Theme.Default
+    Function MessageBox(text As String, Optional buttons As MessageBoxButtons = 0, Optional icon As MessageBoxIcon = 0, Optional title As String = Nothing) As DialogResult
+        If title Is Nothing Then title = Application.ProductName
+        Return WalkmanLib.CustomMsgBox(text, theme, title, buttons, icon, WinVersionStyle.Win10, Me)
+    End Function
+    Function GetInput(ByRef input As String, Optional header As String = Nothing, Optional windowTitle As String = Nothing, Optional content As String = Nothing) As DialogResult
+        If windowTitle Is Nothing Then windowTitle = Application.ProductName
+        Return WalkmanLib.InputDialog(input, theme, header, windowTitle, content, ownerForm:=Me)
+    End Function
+
     Public Sub New()
         Me.InitializeComponent()
 
@@ -25,6 +35,21 @@ Partial Public Class NetEdit
             btnAllNetworkWizard.Visible = False
         End If
 
+        If WalkmanLib.GetDarkThemeEnabled() Then
+            theme = WalkmanLib.Theme.Dark
+
+            WalkmanLib.InitCustomRenderers(Me.Controls)
+            WalkmanLib.SetPreferredAppMode(theme.SystemAppMode)
+            WalkmanLib.ApplyThemeRenderer(theme, Me.Controls)
+            WalkmanLib.ApplyTheme(theme, Me, True)
+            WalkmanLib.ApplyTheme(theme, Me.components.Components, True)
+
+            WalkmanLib.ApplyTheme(theme, NetworkTypeSelector, True)
+            WalkmanLib.ApplyTheme(theme, NameTypeSelector, True)
+            WalkmanLib.ApplyTheme(theme, IntegerSelector, True)
+            WalkmanLib.ApplyTheme(theme, MacAddressSelector, True)
+        End If
+
         timerDelayedScan.Start()
     End Sub
 
@@ -36,7 +61,6 @@ Partial Public Class NetEdit
 
         PopulateNetworkList()
         PopulateProfileList()
-
     End Sub
 
     ' =================== Connected Networks ===================
@@ -116,8 +140,8 @@ Partial Public Class NetEdit
 
             Return returnProfiles
         Catch ex As Exception
-            If MsgBox("Error getting active networks from PowerShell! Show full error?", MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, "Error getting active networks") = MsgBoxResult.Yes Then
-                WalkmanLib.ErrorDialog(ex, , False)
+            If MessageBox("Error getting active networks from PowerShell! Show full error?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, "Error getting active networks") = DialogResult.Yes Then
+                WalkmanLib.ErrorDialog(ex, theme, , False)
             End If
 
             Return New List(Of ActiveNetworkProfile)
@@ -176,8 +200,8 @@ Partial Public Class NetEdit
 
                     If PowerShellFunctionExitCode <> 0 Then
                         If PowerShellFunctionError.Contains("PermissionDenied") Then
-                            If MsgBox("Permission Denied! Either run " & My.Application.Info.AssemblyName & " as an administrator or run the PowerShell command as administrator." & vbNewLine & vbNewLine &
-                                "Attempt to launch PowerShell as administrator?", MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, "Permission Denied") = MsgBoxResult.Yes Then
+                            If MessageBox("Permission Denied! Either run " & My.Application.Info.AssemblyName & " as an administrator or run the PowerShell command as administrator." & vbNewLine & vbNewLine &
+                                "Attempt to launch PowerShell as administrator?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, "Permission Denied") = DialogResult.Yes Then
 
                                 ' apparently you can't run programs in Sysnative as administrator...
                                 'WalkmanLib.RunAsAdmin(PowerShellPath, PowerShellArgs)
@@ -191,8 +215,8 @@ Partial Public Class NetEdit
                         End If
                     End If
                 Catch ex As Exception
-                    If MsgBox("Error setting active network type with PowerShell! Show full error?", MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, "Error setting active network type") = MsgBoxResult.Yes Then
-                        WalkmanLib.ErrorDialog(ex, , False)
+                    If MessageBox("Error setting active network type with PowerShell! Show full error?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, "Error setting active network type") = DialogResult.Yes Then
+                        WalkmanLib.ErrorDialog(ex, theme, , False)
                     End If
                 End Try
 
@@ -266,7 +290,7 @@ Partial Public Class NetEdit
             enableProfiles = Not (
                 lstAll.SelectedItems.Item(0).Text = "" And lstAll.SelectedItems.Item(0).SubItems.Item(1).Text = "" And lstAll.SelectedItems.Item(0).SubItems.Item(2).Text = "" And
                 lstAll.SelectedItems.Item(0).SubItems.Item(3).Text = "" And lstAll.SelectedItems.Item(0).SubItems.Item(4).Text = "" And lstAll.SelectedItems.Item(0).SubItems.Item(5).Text = ""
-                )
+            )
 
             btnAllDeleteProfile.Enabled = enableProfiles
             btnAllLocationWizard.Enabled = enableProfiles
@@ -312,7 +336,7 @@ Partial Public Class NetEdit
         localKey = localKey.OpenSubKey(ProfileRegPath)
 
         If localKey Is Nothing Then
-            MsgBox("Error loading registry key!", MsgBoxStyle.Critical)
+            MessageBox("Error loading registry key!", icon:=MessageBoxIcon.Error)
             Return New List(Of NetworkProfile)
         End If
 
@@ -336,7 +360,7 @@ Partial Public Class NetEdit
                 tmpProfile = New NetworkProfile
             Next
         Catch ex As Exception
-            WalkmanLib.ErrorDialog(ex, "Error reading profiles from the registry: ")
+            WalkmanLib.ErrorDialog(ex, theme, "Error reading profiles from the registry: ")
         End Try
 
         Return returnProfiles
@@ -348,7 +372,7 @@ Partial Public Class NetEdit
         localKeyRoot = localKeyRoot.OpenSubKey(SignatureRegPath)
 
         If localKeyRoot Is Nothing Then
-            MsgBox("Error loading registry key!", MsgBoxStyle.Critical)
+            MessageBox("Error loading registry key!", icon:=MessageBoxIcon.Error)
             Return New List(Of NetworkProfile)
         End If
 
@@ -392,7 +416,7 @@ Partial Public Class NetEdit
                 tmpProfile = New NetworkProfile
             Next
         Catch ex As Exception
-            WalkmanLib.ErrorDialog(ex, "Error reading profile signatures from the registry: ")
+            WalkmanLib.ErrorDialog(ex, theme, "Error reading profile signatures from the registry: ")
         End Try
 
         Return returnProfiles
@@ -504,8 +528,8 @@ Partial Public Class NetEdit
                 ' this uses 32-bit registry on 64-bit windows, we need 64-bit registry on 64-bit windows
                 'Win32.Registry.SetValue(keyPath, value, data)
             Catch ex As UnauthorizedAccessException
-                If MsgBox("Permission Denied! Either run " & My.Application.Info.AssemblyName & " as an administrator or run the system registry editor." & vbNewLine & vbNewLine &
-                    "Attempt to launch a system tool as administrator?", MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, "Permission Denied") = MsgBoxResult.Yes Then
+                If MessageBox("Permission Denied! Either run " & My.Application.Info.AssemblyName & " as an administrator or run the system registry editor." & vbNewLine & vbNewLine &
+                    "Attempt to launch a system tool as administrator?", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, "Permission Denied") = DialogResult.Yes Then
 
                     WalkmanLib.RunAsAdmin("reg.exe", "ADD """ & keyPath & """ /v """ & value & """ /d """ & data.ToString() & """ /f ")
 
@@ -513,7 +537,7 @@ Partial Public Class NetEdit
                     Threading.Thread.Sleep(100)
                 End If
             Catch ex As Exception
-                WalkmanLib.ErrorDialog(ex, "Error setting registry key: ")
+                WalkmanLib.ErrorDialog(ex, theme, "Error setting registry key: ")
             End Try
 
             PopulateProfileList()
@@ -546,7 +570,7 @@ Partial Public Class NetEdit
                     regBackupContents(3) &= "hex:" & dataString 'hex:c4,e9,84,33,ff,5d
 
                 Else
-                    MsgBox("Error! Unknown datatype to backup: " & data.GetType.FullName, MsgBoxStyle.Critical)
+                    MessageBox("Error! Unknown datatype to backup: " & data.GetType.FullName, icon:=MessageBoxIcon.Error)
 
                 End If
 
@@ -591,8 +615,8 @@ Partial Public Class NetEdit
 
     Sub btnAllName_Click() Handles btnAllName.Click
         If lstAll.SelectedIndices.Count <> 0 Then
-            Dim response = InputBox("Enter new name:", "Set Profile Name", lstAll.SelectedItems.Item(0).Text)
-            If response <> "" Then
+            Dim response As String = lstAll.SelectedItems.Item(0).Text
+            If GetInput(response, header:="Enter new name:", windowTitle:="Set Profile Name") = DialogResult.OK Then
                 SetKey(ProfileRegPath & lstAll.SelectedItems.Item(0).Tag.ToString, "ProfileName", response)
             End If
         End If
@@ -621,16 +645,16 @@ Partial Public Class NetEdit
 
     Sub btnAllDescription_Click() Handles btnAllDescription.Click
         If lstAll.SelectedIndices.Count <> 0 Then
-            Dim response = InputBox("Enter new description:", "Set Profile Description", lstAll.SelectedItems.Item(0).SubItems.Item(2).Text)
-            If response <> "" Then
+            Dim response As String = lstAll.SelectedItems.Item(0).SubItems.Item(2).Text
+            If GetInput(response, header:="Enter new description:", windowTitle:="Set Profile Description") = DialogResult.OK Then
                 SetKey(ProfileRegPath & lstAll.SelectedItems.Item(0).Tag.ToString, "Description", response)
             End If
         End If
     End Sub
 
     Sub btnAllManaged_Click() Handles btnAllManaged.Click
-        If lstAll.SelectedIndices.Count <> 0 AndAlso MsgBox("Are you sure you want to change this profile's managed status? This will also move the signature to the appropriate type",
-          MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, "Toggle Managed") = DialogResult.Yes Then
+        If lstAll.SelectedIndices.Count <> 0 AndAlso MessageBox("Are you sure you want to change this profile's managed status? This will also move the signature to the appropriate type",
+          buttons:=MessageBoxButtons.YesNo, icon:=MessageBoxIcon.Exclamation, title:="Toggle Managed") = DialogResult.Yes Then
             Dim lstAllSelectedItem = lstAll.SelectedItems.Item(0)
 
             Dim parentKey As Win32.RegistryKey = GetNativeKey()
@@ -758,8 +782,8 @@ Partial Public Class NetEdit
 
     Sub btnAllSignatureDNS_Click() Handles btnAllSignatureDNS.Click
         If lstAll.SelectedIndices.Count <> 0 Then
-            Dim response = InputBox("Enter DNS suffix:", "Set Signature's DNS Suffix", lstAll.SelectedItems.Item(0).SubItems.Item(7).Text)
-            If response <> "" Then
+            Dim response As String = lstAll.SelectedItems.Item(0).SubItems.Item(7).Text
+            If GetInput(response, header:="Enter DNS suffix:", windowTitle:="Set Signature's DNS Suffix") = DialogResult.OK Then
                 SetKey(SignatureRegPath & GetSignatureManagedString(lstAll.SelectedItems.Item(0)) & lstAll.SelectedItems.Item(0).SubItems.Item(11).Text, "DnsSuffix", response)
             End If
         End If
@@ -767,8 +791,8 @@ Partial Public Class NetEdit
 
     Sub btnAllSignatureDescription_Click() Handles btnAllSignatureDescription.Click
         If lstAll.SelectedIndices.Count <> 0 Then
-            Dim response = InputBox("Enter Description:", "Set Signature's Description", lstAll.SelectedItems.Item(0).SubItems.Item(8).Text)
-            If response <> "" Then
+            Dim response As String = lstAll.SelectedItems.Item(0).SubItems.Item(8).Text
+            If GetInput(response, header:="Enter Description:", windowTitle:="Set Signature's Description") = DialogResult.OK Then
                 SetKey(SignatureRegPath & GetSignatureManagedString(lstAll.SelectedItems.Item(0)) & lstAll.SelectedItems.Item(0).SubItems.Item(11).Text, "Description", response)
             End If
         End If
@@ -776,8 +800,8 @@ Partial Public Class NetEdit
 
     Sub btnAllSignatureFirstNetwork_Click() Handles btnAllSignatureFirstNetwork.Click
         If lstAll.SelectedIndices.Count <> 0 Then
-            Dim response = InputBox("Enter FirstNetwork name:", "Set Signature's FirstNetwork name", lstAll.SelectedItems.Item(0).SubItems.Item(9).Text)
-            If response <> "" Then
+            Dim response As String = lstAll.SelectedItems.Item(0).SubItems.Item(9).Text
+            If GetInput(response, header:="Enter FirstNetwork name:", windowTitle:="Set Signature's FirstNetwork name") = DialogResult.OK Then
                 SetKey(SignatureRegPath & GetSignatureManagedString(lstAll.SelectedItems.Item(0)) & lstAll.SelectedItems.Item(0).SubItems.Item(11).Text, "FirstNetwork", response)
             End If
         End If
@@ -803,8 +827,8 @@ Partial Public Class NetEdit
 
     Sub btnAllSignatureDelete_Click() Handles btnAllSignatureDelete.Click
         If lstAll.SelectedIndices.Count <> 0 Then
-            If writeToRegFile = True OrElse MsgBox("Are you sure you want to delete the selected signature? This cannot be undone, and if a profile was assigned to it that profile will not be reassigned if it is detected again.",
-              MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, "Deleting a Network Signature") = MsgBoxResult.Yes Then
+            If writeToRegFile = True OrElse MessageBox("Are you sure you want to delete the selected signature? This cannot be undone, and if a profile was assigned to it that profile will not be reassigned if it is detected again.",
+              MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, "Deleting a Network Signature") = DialogResult.Yes Then
 
                 DeleteKey(SignatureRegPath & GetSignatureManagedString(lstAll.SelectedItems.Item(0)) & lstAll.SelectedItems.Item(0).SubItems.Item(11).Text)
             End If
@@ -813,8 +837,9 @@ Partial Public Class NetEdit
 
     Sub btnAllDeleteProfile_Click() Handles btnAllDeleteProfile.Click
         If lstAll.SelectedIndices.Count <> 0 Then
-            If writeToRegFile = True OrElse MsgBox("Are you sure you want to delete profile """ & lstAll.SelectedItems.Item(0).Text & """? This cannot be undone, but if it matches a signature then Windows will re-create it.",
-              MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, "Deleting a Network Profile") = MsgBoxResult.Yes Then
+            If writeToRegFile = True OrElse MessageBox("Are you sure you want to delete profile """ & lstAll.SelectedItems.Item(0).Text & """? This cannot be undone, but if it matches a signature then Windows will re-create it.",
+              MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, "Deleting a Network Profile") = DialogResult.Yes Then
+
                 DeleteKey(ProfileRegPath & lstAll.SelectedItems.Item(0).Tag.ToString)
             End If
         End If
@@ -822,8 +847,8 @@ Partial Public Class NetEdit
 
     Sub btnAllDeleteBoth_Click() Handles btnAllDeleteBoth.Click
         If lstAll.SelectedIndices.Count <> 0 Then
-            If writeToRegFile = True OrElse MsgBox("Are you sure you want to delete profile """ & lstAll.SelectedItems.Item(0).Text & """ and it's signature? This cannot be undone, but both will be re-created by Windows if encountered again.",
-              MsgBoxStyle.YesNo Or MsgBoxStyle.Exclamation, "Deleting a Network Profile & Signature") = MsgBoxResult.Yes Then
+            If writeToRegFile = True OrElse MessageBox("Are you sure you want to delete profile """ & lstAll.SelectedItems.Item(0).Text & """ and it's signature? This cannot be undone, but both will be re-created by Windows if encountered again.",
+              MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation, "Deleting a Network Profile & Signature") = DialogResult.Yes Then
 
                 Dim signatureFullPath As String = GetSignatureManagedString(lstAll.SelectedItems.Item(0)) & lstAll.SelectedItems.Item(0).SubItems.Item(11).Text
                 ' have to get the signature path before deleting the profile as DeleteKey() refreshes the list
@@ -860,7 +885,7 @@ Partial Public Class NetEdit
         writeToRegFile = True
 
         If Not IsNothing(contextMenuStripOpenedOn) Then
-            contextMenuStripOpenedOn.PerformClick
+            contextMenuStripOpenedOn.PerformClick()
         End If
     End Sub
 
@@ -896,9 +921,9 @@ Partial Public Class NetEdit
 
             If RegExeFunctionExitCode <> 0 Then Throw New Exception("reg.exe: " & RegExeFunctionError)
 
-            MsgBox("Backup of """ & sourceKey & """ Succesful!", MsgBoxStyle.Information)
+            MessageBox("Backup of """ & sourceKey & """ Succesful!", icon:=MessageBoxIcon.Information)
         Catch ex As Exception
-            WalkmanLib.ErrorDialog(ex, "Error saving backup of """ & sourceKey & """: ")
+            WalkmanLib.ErrorDialog(ex, theme, "Error saving backup of """ & sourceKey & """: ")
         End Try
     End Sub
 
@@ -929,7 +954,7 @@ Partial Public Class NetEdit
 
         IO.File.AppendAllLines(mainFile, combineFileContents, System.Text.Encoding.Unicode)
 
-        MsgBox("Combining Backups Succesful!", MsgBoxStyle.Information)
+        MessageBox("Combining Backups Succesful!", icon:=MessageBoxIcon.Information)
     End Sub
 
     Sub toolStripBackupAllBoth_Click() Handles toolStripBackupAllBoth.Click
