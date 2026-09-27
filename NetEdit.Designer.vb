@@ -264,11 +264,10 @@ Partial Class NetEdit
         Me.btnAllDeleteBoth.TabIndex = 6
         Me.btnAllDeleteBoth.Text = "Delete Profile & Signature"
         Me.btnAllDeleteBoth.UseMnemonic = false
-        Me.btnAllDeleteBoth.UseVisualStyleBackColor = false
+        Me.btnAllDeleteBoth.UseVisualStyleBackColor = False
         '
         'btnAllSignatureDelete
         '
-        Me.btnAllSignatureDelete.AutoSize = true
         Me.btnAllSignatureDelete.ContextMenuStrip = Me.contextMenuStripSave
         Me.btnAllSignatureDelete.Image = Global.NetEdit.Resources.mouse_right_click_8x
         Me.btnAllSignatureDelete.ImageAlign = System.Drawing.ContentAlignment.TopRight

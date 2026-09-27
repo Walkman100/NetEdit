@@ -93,6 +93,7 @@
     </Compile>
     <Compile Include="WalkmanLib\NativeErrorCodes.vb" />
     <Compile Include="WalkmanLib\WalkmanLibDotNet.vb" />
+    <Compile Include="WalkmanLib\WalkmanLibExtensions.vb" />
     <Compile Include="WalkmanLib\WalkmanLibTheming.vb" />
     <Compile Include="WalkmanLib\WalkmanLibThemingMsgBox.vb" />
     <Compile Include="WalkmanLib\WalkmanLibWin32.vb" />

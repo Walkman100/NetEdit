@@ -23,6 +23,8 @@ Partial Public Class NetEdit
 
     Public Sub New()
         Me.InitializeComponent()
+        lstConnected.SetDoubleBuffered(True)
+        lstAll.SetDoubleBuffered(True)
 
         lblVersion.Text = My.Application.Info.Version.Major & "." & My.Application.Info.Version.Minor & "." & My.Application.Info.Version.Build
         If WalkmanLib.IsAdmin Then
@@ -48,6 +50,8 @@ Partial Public Class NetEdit
             WalkmanLib.ApplyTheme(theme, NameTypeSelector, True)
             WalkmanLib.ApplyTheme(theme, IntegerSelector, True)
             WalkmanLib.ApplyTheme(theme, MacAddressSelector, True)
+
+            btnAllDeleteBoth.FlatAppearance.BorderColor = Drawing.Color.Maroon
         End If
 
         timerDelayedScan.Start()
